@@ -11,16 +11,18 @@ import 'dart:typed_data';
 import 'dart:html';
 import 'dart:math';
 import 'dart:async';
-import 'package:vector_math/vector_math.dart';
+import 'package:vector_math/vector_math.dart' hide Quad;
 import 'dart:convert';
 import 'dart:web_audio';
+import 'package:tweenengine/tweenengine.dart';
 
 export 'dart:web_gl';
 export 'dart:async';
 export 'dart:web_gl';
 export 'dart:math';
 export 'dart:html';
-export 'package:vector_math/vector_math.dart';
+export 'package:vector_math/vector_math.dart' hide Quad;
+export 'package:tweenengine/tweenengine.dart';
 
 part 'package:cobblestone/src/state/base_game.dart';
 part 'package:cobblestone/src/graphics/gl_program.dart';
@@ -37,3 +39,7 @@ part 'package:cobblestone/src/assets/asset_manager.dart';
 part 'package:cobblestone/src/graphics/sprite_batch.dart';
 part 'package:cobblestone/src/assets/tilemap.dart';
 part 'package:cobblestone/src/audio/sound.dart';
+part 'package:cobblestone/src/tween/vector2_accessor.dart';
+part 'package:cobblestone/src/tween/vector3_accessor.dart';
+part 'package:cobblestone/src/tween/vector4_accessor.dart';
+part 'package:cobblestone/src/tween/num_accessor.dart';
