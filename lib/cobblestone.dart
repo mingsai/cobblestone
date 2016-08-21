@@ -13,6 +13,7 @@ import 'dart:math';
 import 'dart:async';
 import 'package:vector_math/vector_math.dart';
 import 'dart:convert';
+import 'dart:web_audio';
 
 export 'dart:web_gl';
 export 'dart:async';
@@ -20,7 +21,6 @@ export 'dart:web_gl';
 export 'dart:math';
 export 'dart:html';
 export 'package:vector_math/vector_math.dart';
-export 'package:simple_audio/simple_audio.dart';
 
 part 'package:cobblestone/src/state/base_game.dart';
 part 'package:cobblestone/src/graphics/gl_program.dart';
@@ -36,3 +36,4 @@ part 'package:cobblestone/src/math/transform.dart';
 part 'package:cobblestone/src/assets/asset_manager.dart';
 part 'package:cobblestone/src/graphics/sprite_batch.dart';
 part 'package:cobblestone/src/assets/tilemap.dart';
+part 'package:cobblestone/src/audio/sound.dart';

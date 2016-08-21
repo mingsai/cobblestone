@@ -10,10 +10,7 @@ environment:
 dependencies:
   browser: '>=0.10.0 <0.11.0'
   dart_to_js_script_rewriter: '^1.0.1'
-  simple_audio:
-    git: https://github.com/johnmccutchan/simpleaudio.git
   vector_math: any
-  xml: any
 
 dev_dependencies:
   test: '>=0.12.0 <0.13.0'
