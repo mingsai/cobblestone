@@ -33,18 +33,18 @@ class Vector4Accessor implements TweenAccessor<Vector4>{
 
   void setValues(Vector4 target, Tween tween, int tweenType, List<num> newValues){
     if(tweenType == X){
-      target.x = newValues[0];
+      target.x = newValues[0].toDouble();
     } else if(tweenType == Y) {
-      target.y = newValues[0];
+      target.y = newValues[0].toDouble();
     } else if(tweenType == Z) {
-      target.z = newValues[0];
+      target.z = newValues[0].toDouble();
     } else if(tweenType == W) {
-      target.w = newValues[0];
+      target.w = newValues[0].toDouble();
     } else if(tweenType == XYZW) {
-      target.x = newValues[0];
-      target.y = newValues[1];
-      target.z = newValues[2];
-      target.w = newValues[3];
+      target.x = newValues[0].toDouble();
+      target.y = newValues[1].toDouble();
+      target.z = newValues[2].toDouble();
+      target.w = newValues[3].toDouble();
     }
   }
 }

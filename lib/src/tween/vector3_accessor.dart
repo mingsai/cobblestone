@@ -28,15 +28,15 @@ class Vector3Accessor implements TweenAccessor<Vector3>{
 
   void setValues(Vector3 target, Tween tween, int tweenType, List<num> newValues){
     if(tweenType == X){
-      target.x = newValues[0];
+      target.x = newValues[0].toDouble();
     } else if(tweenType == Y) {
-      target.y = newValues[0];
+      target.y = newValues[0].toDouble();
     } else if(tweenType == Z) {
-      target.z = newValues[0];
+      target.z = newValues[0].toDouble();
     } else if(tweenType == XYZ) {
-      target.x = newValues[0];
-      target.y = newValues[1];
-      target.z = newValues[2];
+      target.x = newValues[0].toDouble();
+      target.y = newValues[1].toDouble();
+      target.z = newValues[2].toDouble();
     }
   }
 }

@@ -23,12 +23,12 @@ class Vector2Accessor implements TweenAccessor<Vector2>{
 
   void setValues(Vector2 target, Tween tween, int tweenType, List<num> newValues){
     if(tweenType == X){
-      target.x = newValues[0];
+      target.x = newValues[0].toDouble();
     } else if(tweenType == Y) {
-      target.y = newValues[0];
+      target.y = newValues[0].toDouble();
     } else if(tweenType == XY) {
-      target.x = newValues[0];
-      target.y = newValues[1];
+      target.x = newValues[0].toDouble();
+      target.y = newValues[1].toDouble();
     }
   }
 }
