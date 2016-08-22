@@ -61,6 +61,7 @@ abstract class BaseGame {
     assetManager = new AssetManager();
     tweenManager = new TweenManager();
 
+    Tween.combinedAttributesLimit = 4;
     Tween.registerAccessor(num, new NumberAccessor());
     Tween.registerAccessor(Vector2, new Vector2Accessor());
     Tween.registerAccessor(Vector3, new Vector3Accessor());
