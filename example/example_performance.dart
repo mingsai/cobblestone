@@ -48,7 +48,7 @@ class GeometryExample extends BaseGame {
     renderer.begin();
 
     for(BoulderSprite sprite in boulders) {
-      renderer.draw(sprite.texture, sprite.x, sprite.y, 16, 16);
+      renderer.draw(sprite.texture, sprite.x, sprite.y);
     }
 
     renderer.end();

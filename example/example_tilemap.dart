@@ -48,7 +48,7 @@ class GeometryExample extends BaseGame {
 
     int offset = 0;
     for(GameTexture texture in map.tileset) {
-      renderer.draw(texture, offset, height - 16, 16, 16);
+      renderer.draw(texture, offset, height - 16);
       offset += 16;
     }
 

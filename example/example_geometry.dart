@@ -30,12 +30,12 @@ class GeometryExample extends BaseGame {
 
     setGLViewport(canvasWidth, canvasHeight);
 
-    nehe = assetManager.get("nehe.png");
+    nehe = assetManager.get("nehe.gif");
   }
 
   @override
   preload() {
-    assetManager.load("nehe.png", loadTexture("nehe.png", nearest));
+    assetManager.load("nehe.gif", loadTexture("nehe.gif", nearest));
   }
 
   @override
@@ -48,19 +48,19 @@ class GeometryExample extends BaseGame {
     renderer.begin();
 
     renderer.color = Colors.indianRed;
-    renderer.draw(nehe, 0.0, 0.0, 100.0, 100.0);
+    renderer.draw(nehe, 0.0, 0.0, width: 100.0, height: 100.0);
 
     renderer.color = Colors.forestGreen;
-    renderer.draw(nehe, 25.0, 25.0, 100.0, 100.0);
+    renderer.draw(nehe, 25.0, 25.0, width: 100.0, height: 100.0, flipX: true, flipY: true);
 
     renderer.color = Colors.saddleBrown;
-    renderer.draw(nehe, width - 50.0, 0.0, 50.0, height);
+    renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
 
     renderer.color = Colors.lightSkyBlue;
-    renderer.draw(nehe, 0.0, height - 100.0, 100.0, 100.0);
+    renderer.draw(nehe, 0.0, height - 100.0, width: 100.0, height: 100.0, flipY: true);
 
     renderer.color = Colors.lightGoldenrodYellow;
-    renderer.draw(nehe, width / 2 - 50, height / 2 - 50, 100.0, 100.0);
+    renderer.draw(nehe, width / 2 - 50, height / 2 - 50, width: 100.0, height: 100.0, flipX: true, angle: 15, counterTurn: false);
 
     renderer.end();
   }

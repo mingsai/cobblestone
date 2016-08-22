@@ -87,7 +87,7 @@ class TileLayer extends MapLayer {
       int y = width * tileHeight - row * tileHeight - tileHeight;
       for(int col = 0; col < width; col++) {
         if(tiles != null && tiles[width * row + col] != 0)
-          batch.draw(parent.tileset[tiles[width * row + col] - 1], (col * tileHeight), y, tileWidth, tileHeight);
+          batch.draw(parent.tileset[tiles[width * row + col] - 1], (col * tileHeight), y, width: tileWidth, height: tileHeight);
       }
     }
   }

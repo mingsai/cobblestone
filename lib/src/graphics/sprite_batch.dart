@@ -57,7 +57,10 @@ class SpriteBatch {
     shaderProgram.startProgram();
   }
 
-  draw(GameTexture texture, num x, num y, num width, num height) {
+  draw(GameTexture texture, num x, num y,
+      {num width: null, num height: null, num scaleX: 1, num scaleY: 1,
+      bool flipX: false, bool flipY: false,
+      num angle: 0, bool counterTurn: false}) {
     if(spritesInBatch >= maxSprites) {
       flush();
     }
@@ -69,6 +72,15 @@ class SpriteBatch {
     spritesInBatch++;
 
     this.texture = texture;
+
+    if(width == null) {
+      width = texture.width;
+    }
+    if(height == null) {
+      height = texture.height;
+    }
+    width *= scaleX;
+    height *= scaleY;
 
     num x1 = x;
     num y1 = y;
@@ -82,13 +94,78 @@ class SpriteBatch {
     num x4 = x + width;
     num y4 = y + height;
 
-    addVertex(x1, y1, 0, color.r, color.g, color.b, color.a, texture.u, texture.v);
-    addVertex(x2, y2, 0, color.r, color.g, color.b, color.a, texture.u, texture.v2);
-    addVertex(x3, y3, 0, color.r, color.g, color.b, color.a, texture.u2, texture.v);
+    if(angle != 0) {
+      if(counterTurn) {
+        angle = 360 - angle;
+      }
 
-    addVertex(x4, y4, 0, color.r, color.g, color.b, color.a, texture.u2, texture.v2);
-    addVertex(x3, y3, 0, color.r, color.g, color.b, color.a, texture.u2, texture.v);
-    addVertex(x2, y2, 0, color.r, color.g, color.b, color.a, texture.u, texture.v2);
+      num cx = x + width / 2;
+      num cy = y + height / 2;
+
+      num sinAng = sin(angle);
+      num cosAng = cos(angle);
+
+      num tempX = x1 - cx;
+      num tempY = y1 - cy;
+
+      num rotatedX = tempX * cosAng - tempY * sinAng;
+      num rotatedY = tempX * sinAng + tempY * cosAng;
+
+      x1 = rotatedX + cx;
+      y1 = rotatedY + cy;
+
+      tempX = x2 - cx;
+      tempY = y2 - cy;
+
+      rotatedX = tempX * cosAng - tempY * sinAng;
+      rotatedY = tempX * sinAng + tempY * cosAng;
+
+      x2 = rotatedX + cx;
+      y2 = rotatedY + cy;
+
+      tempX = x3 - cx;
+      tempY = y3 - cy;
+
+      rotatedX = tempX * cosAng - tempY * sinAng;
+      rotatedY = tempX * sinAng + tempY * cosAng;
+
+      x3 = rotatedX + cx;
+      y3 = rotatedY + cy;
+
+      tempX = x4 - cx;
+      tempY = y4 - cy;
+
+      rotatedX = tempX * cosAng - tempY * sinAng;
+      rotatedY = tempX * sinAng + tempY * cosAng;
+
+      x4 = rotatedX + cx;
+      y4 = rotatedY + cy;
+    }
+
+    num u = texture.u;
+    num u2 = texture.u2;
+
+    num v = texture.v;
+    num v2 = texture.v2;
+
+    if(flipX) {
+      num temp = u;
+      u = u2;
+      u2 = temp;
+    }
+    if(flipY) {
+      num temp = v;
+      v = v2;
+      v2 = temp;
+    }
+
+    addVertex(x1, y1, 0, color.r, color.g, color.b, color.a, u, v);
+    addVertex(x2, y2, 0, color.r, color.g, color.b, color.a, u, v2);
+    addVertex(x3, y3, 0, color.r, color.g, color.b, color.a, u2, v);
+
+    addVertex(x4, y4, 0, color.r, color.g, color.b, color.a, u2, v2);
+    addVertex(x3, y3, 0, color.r, color.g, color.b, color.a, u2, v);
+    addVertex(x2, y2, 0, color.r, color.g, color.b, color.a, u, v2);
   }
 
   addVertex(num x, num y, num z, num r, num g, num b, num a, num u, num v) {
