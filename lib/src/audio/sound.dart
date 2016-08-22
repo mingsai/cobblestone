@@ -27,7 +27,7 @@ class Sound {
   }
 
   play() {
-    source.start();
+    source.start(0);
   }
 
   stop() {
