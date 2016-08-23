@@ -19,25 +19,24 @@ class Sound {
   GainNode gainNode;
 
   Sound(this.buffer) {
-    source = audioContext.createBufferSource();
     gainNode = audioContext.createGain();
+  }
+
+  play([bool loop = false]) {
+    source = audioContext.createBufferSource();
     source.connectNode(gainNode, 0, 0);
     gainNode.connectNode(audioContext.destination, 0, 0);
     source.buffer = buffer;
-  }
-
-  play() {
+    source.loop = loop;
     source.start(0);
   }
 
   stop() {
-    source.loop = false;
     source.stop();
   }
 
   loop() {
-    source.loop = true;
-    play();
+    play(true);
   }
 
 }

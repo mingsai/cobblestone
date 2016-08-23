@@ -14,10 +14,8 @@ class AudioExample extends BaseGame {
 
   bool get isLoaded => nehe != null;
 
-  num x = 0;
-  num mod = 5;
-
-  num rot = 0.5;
+  Sound music;
+  Sound beat;
 
   @override
   create() {
@@ -25,17 +23,23 @@ class AudioExample extends BaseGame {
 
     setGLViewport(canvasWidth, canvasHeight);
 
-    Sound sound = assetManager.get("technogeek.wav");
-    //sound.play();
+    music = assetManager.get("technogeek.wav");
+    beat = assetManager.get("short wind sound.wav");
 
-    Sound sound2 = assetManager.get("spaceship.wav");
-    sound2.loop();
+    window.onKeyUp.listen((KeyboardEvent e) {
+      if (e.keyCode == KeyCode.ONE) {
+        beat.play();
+      } else if(e.keyCode == KeyCode.TWO) {
+        music.loop();
+      }
+    });
   }
 
   @override
   preload() {
     assetManager.load("technogeek.wav", loadGameSound("technogeek.wav"));
     assetManager.load("spaceship.wav", loadGameSound("spaceship.wav"));
+    assetManager.load("short wind sound.wav", loadGameSound("short wind sound.wav"));
   }
 
   @override
@@ -52,14 +56,5 @@ class AudioExample extends BaseGame {
 
   @override
   update(num delta) {
-    x += mod * delta;
-    if(x >= width) {
-      mod = -mod;
-    }
-    if(x <= -200) {
-      mod = -mod;
-    }
-
-    rot += 0.5 * delta;
   }
 }
