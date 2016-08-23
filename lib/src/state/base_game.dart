@@ -116,4 +116,6 @@ abstract class BaseGame {
 
   resize(num width, num height) {}
 
+  end() {}
+
 }

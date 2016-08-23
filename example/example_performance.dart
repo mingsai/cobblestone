@@ -1,10 +1,10 @@
 import 'package:cobblestone/cobblestone.dart';
 
 main() {
-  new GeometryExample();
+  new PerformanceExample();
 }
 
-class GeometryExample extends BaseGame {
+class PerformanceExample extends BaseGame {
 
   Camera2D camera;
 

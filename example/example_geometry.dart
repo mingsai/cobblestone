@@ -18,10 +18,7 @@ class GeometryExample extends BaseGame {
 
   bool get isLoaded => nehe != null;
 
-  num x = 0;
-  num mod = 5;
-
-  num rot = 0.5;
+  num rot = 0.0;
 
   @override
   create() {
@@ -60,7 +57,7 @@ class GeometryExample extends BaseGame {
     renderer.draw(nehe, 0.0, height - 100.0, width: 100.0, height: 100.0, flipY: true);
 
     renderer.color = Colors.lightGoldenrodYellow;
-    renderer.draw(nehe, width / 2 - 50, height / 2 - 50, width: 100.0, height: 100.0, flipX: true, angle: 15, counterTurn: false);
+    renderer.draw(nehe, width / 2 - 50, height / 2 - 50, width: 100.0, height: 100.0, flipX: true, angle: rot, counterTurn: true);
 
     renderer.end();
   }
@@ -71,14 +68,6 @@ class GeometryExample extends BaseGame {
 
   @override
   update(num delta) {
-    x += mod * delta;
-    if(x >= width) {
-      mod = -mod;
-    }
-    if(x <= -200) {
-      mod = -mod;
-    }
-
     rot += 0.5 * delta;
   }
 }
