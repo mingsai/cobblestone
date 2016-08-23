@@ -31,6 +31,9 @@ class AudioExample extends BaseGame {
         beat.play();
       } else if(e.keyCode == KeyCode.TWO) {
         music.loop();
+      } else if(e.keyCode == KeyCode.ZERO) {
+        music.stop();
+        beat.stop();
       }
     });
   }

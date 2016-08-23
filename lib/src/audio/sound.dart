@@ -12,27 +12,34 @@ Future<Sound> loadGameSound(String url) {
   });
 }
 
+
 class Sound {
 
+  List<AudioBufferSourceNode> sources;
+
   AudioBuffer buffer;
-  AudioBufferSourceNode source;
   GainNode gainNode;
 
   Sound(this.buffer) {
     gainNode = audioContext.createGain();
+    sources = [];
   }
 
   play([bool loop = false]) {
-    source = audioContext.createBufferSource();
+    AudioBufferSourceNode source = audioContext.createBufferSource();
     source.connectNode(gainNode, 0, 0);
     gainNode.connectNode(audioContext.destination, 0, 0);
     source.buffer = buffer;
     source.loop = loop;
     source.start(0);
+    sources.add(source);
   }
 
   stop() {
-    source.stop();
+    for(AudioBufferSourceNode source in sources) {
+      source.stop();
+    }
+    sources.clear();
   }
 
   loop() {
