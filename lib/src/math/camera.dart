@@ -10,6 +10,10 @@ class Camera2D {
 
   Transform transform;
 
+  Transform clamped;
+
+  bool clampInt = false;
+
   Camera2D.originBottomLeft(num width, num height) {
     setDefaults();
     projection = makeOrthographicMatrix(0.0, width, 0.0, height, near, far);
@@ -37,6 +41,7 @@ class Camera2D {
 
   void setDefaults() {
     transform = new Transform.identity();
+    clamped = new Transform.identity();
     combined = new Matrix4.identity();
   }
 
@@ -54,8 +59,21 @@ class Camera2D {
 
   void update() {
     transform.update();
+    if(clampInt) {
+      clamped = new Transform.copy(transform);
+      clamped.translation.round();
+      clamped.currentScale.round();
+      clamped.rotation.round();
+      print(clamped.translation);
+    } else {
+      clamped = new Transform.copy(transform);
+    }
+    clamped.update();
+
     combined.setFrom(projection);
-    combined.multiply(transform.combined);
+    combined.multiply(clamped.combined);
+
+
   }
 
 }

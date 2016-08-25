@@ -12,9 +12,11 @@ class TilemapExample extends BaseGame {
 
   Tilemap map;
 
+  bool north, east, south, west;
+
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
+    camera = new Camera2D.originBottomLeft(width / 2, height / 2);
     renderer = new SpriteBatch.defaultShader();
 
     setGLViewport(canvasWidth, canvasHeight);
@@ -22,6 +24,23 @@ class TilemapExample extends BaseGame {
     GameTexture tileset = assetManager.get("floating_islands.png");
     map = assetManager.get("islands.json");
     map.giveTileset(tileset);
+
+    window.onKeyDown.listen(startMove);
+    window.onKeyUp.listen(endMove);
+  }
+
+  void startMove(KeyboardEvent e) {
+    if(e.keyCode == KeyCode.W) north = true;
+    if(e.keyCode == KeyCode.D) east = true;
+    if(e.keyCode == KeyCode.S) south = true;
+    if(e.keyCode == KeyCode.A) west = true;
+  }
+
+  void endMove(KeyboardEvent e) {
+    if(e.keyCode == KeyCode.W) north = false;
+    if(e.keyCode == KeyCode.D) east = false;
+    if(e.keyCode == KeyCode.S) south = false;
+    if(e.keyCode == KeyCode.A) west = false;
   }
 
   @override
@@ -62,8 +81,13 @@ class TilemapExample extends BaseGame {
 
   @override
   update(num delta) {
-
+    if(north) camera.translate(0.0, -delta * 20);
+    if(east) camera.translate(-delta * 20, 0.0);
+    if(south) camera.translate(0.0, delta * 20);
+    if(west) camera.translate(delta * 20, 0.0);
+    camera.clampInt = true;
   }
+
 }
 
 class BoulderSprite {
