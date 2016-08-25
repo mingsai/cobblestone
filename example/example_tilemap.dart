@@ -19,8 +19,8 @@ class TilemapExample extends BaseGame {
 
     setGLViewport(canvasWidth, canvasHeight);
 
-    GameTexture tileset = assetManager.get("numberTiles.png");
-    map = assetManager.get("test.json");
+    GameTexture tileset = assetManager.get("floating_islands.png");
+    map = assetManager.get("islands.json");
     map.giveTileset(tileset);
   }
 
@@ -31,13 +31,13 @@ class TilemapExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("test.json", loadTilemap("test.json"));
-    assetManager.load("numberTiles.png", loadTexture("numberTiles.png", nearest));
+    assetManager.load("islands.json", loadTilemap("islands.json"));
+    assetManager.load("floating_islands.png", loadTexture("floating_islands.png", nearest));
   }
 
   @override
   render(num delta) {
-    clearScreen(0.0, 0.0, 0.0, 1.0);
+    clearScreen(41 / 256, 38 / 256, 52 / 256, 1.0);
 
     camera.update();
 
