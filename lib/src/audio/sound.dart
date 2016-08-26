@@ -37,7 +37,7 @@ class Sound {
 
   stop() {
     for(AudioBufferSourceNode source in sources) {
-      source.stop();
+      source.stop(0);
     }
     sources.clear();
   }
