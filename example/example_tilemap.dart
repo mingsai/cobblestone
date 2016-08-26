@@ -85,7 +85,7 @@ class TilemapExample extends BaseGame {
     if(east) camera.translate(-delta * 20, 0.0);
     if(south) camera.translate(0.0, delta * 20);
     if(west) camera.translate(delta * 20, 0.0);
-    camera.clampInt = true;
+    camera.roundInt = true;
   }
 
 }
