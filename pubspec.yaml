@@ -17,4 +17,5 @@ dev_dependencies:
   test: '>=0.12.0 <0.13.0'
 
 transformers:
-- dart_to_js_script_rewriter
+- $dart2js:
+    commandLineOptions: [--show-package-warnings]

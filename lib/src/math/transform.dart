@@ -10,6 +10,8 @@ class Transform {
   num rotation;
   Vector2 currentScale;
 
+  bool roundInt;
+
   Transform.identity() {
     setDefaults();
     update();
@@ -35,6 +37,7 @@ class Transform {
     translation = new Vector2.zero();
     rotation = 0;
     currentScale = new Vector2.all(1.0);
+    roundInt = false;
     temp = new Vector2.zero();
 
     combined = new Matrix4.identity();
@@ -88,9 +91,16 @@ class Transform {
 
   void update() {
     combined.setIdentity();
-    combined.translate(translation.x, translation.y, 0.0);
-    combined.rotateZ(rotation);
-    combined.scale(currentScale.x, currentScale.y, 0.0);
+    if(roundInt) {
+      combined.translate(translation.x.roundToDouble(), translation.y.roundToDouble(), 0.0);
+      combined.rotateZ(rotation);
+      combined.scale(currentScale.x.roundToDouble(), currentScale.y.roundToDouble(), 0.0);
+    } else {
+      combined.translate(translation.x, translation.y, 0.0);
+      combined.rotateZ(rotation);
+      combined.scale(currentScale.x, currentScale.y, 0.0);
+    }
+
   }
 
   num get x => translation.x;

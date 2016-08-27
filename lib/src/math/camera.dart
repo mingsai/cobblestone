@@ -10,10 +10,6 @@ class Camera2D {
 
   Transform transform;
 
-  Transform clamped;
-
-  bool clampInt = false;
-
   Camera2D.originBottomLeft(num width, num height) {
     setDefaults();
     projection = makeOrthographicMatrix(0.0, width, 0.0, height, near, far);
@@ -41,7 +37,6 @@ class Camera2D {
 
   void setDefaults() {
     transform = new Transform.identity();
-    clamped = new Transform.identity();
     combined = new Matrix4.identity();
   }
 
@@ -49,31 +44,52 @@ class Camera2D {
     transform.translate(x, y);
   }
 
+  void setTranslation(x, [num y]) {
+    transform.setTranslation(x, y);
+  }
+
   void rotate(num amount, bool counter) {
     transform.rotate(amount, counter);
+  }
+
+  void setRotation(num angle) {
+    transform.setRotation(angle);
   }
 
   void scale(x, [num y]) {
     transform.scale(x, y);
   }
 
+  void setScale(x, [num y]) {
+    transform.setScale(x, y);
+  }
+
   void update() {
     transform.update();
-    if(clampInt) {
-      clamped = new Transform.copy(transform);
-      clamped.translation.round();
-      clamped.currentScale.round();
-      clamped.rotation.round();
-      print(clamped.translation);
-    } else {
-      clamped = new Transform.copy(transform);
-    }
-    clamped.update();
 
     combined.setFrom(projection);
-    combined.multiply(clamped.combined);
-
-
+    combined.multiply(transform.combined);
   }
+
+  bool get roundInt => transform.roundInt;
+  void set roundInt(bool round){
+    transform.roundInt = round;
+  }
+
+  num get x => transform.x;
+  num get y => transform.y;
+
+  void set x(num x) {
+    transform.x = x;
+  }
+  void set y(num y) {
+    transform.y = y;
+  }
+
+  num get scaleX => transform.scaleX;
+  num get scaleY => transform.scaleY;
+
+  void set scaleX(num scaleX) => transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
+  void set scaleY(num scaleY) => transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
 
 }
