@@ -3,6 +3,8 @@ part of cobblestone;
 AssetManager assetManager;
 TweenManager tweenManager;
 
+int width, height;
+
 abstract class BaseGame {
 
   num delta = 0;
@@ -14,8 +16,6 @@ abstract class BaseGame {
 
   CanvasElement canvas;
   int canvasWidth, canvasHeight;
-
-  int width, height;
 
   bool started;
 
