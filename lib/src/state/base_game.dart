@@ -94,8 +94,6 @@ abstract class BaseGame {
   }
 
   tick(time) {
-    window.animationFrame.then(tick);
-
     if(started) {
       delta = stopwatch.elapsedMilliseconds / 1000.0;
       stopwatch.reset();
@@ -108,6 +106,8 @@ abstract class BaseGame {
     } else if (assetManager.allLoaded()) {
       start();
     }
+
+    window.animationFrame.then(tick);
   }
 
   update(num delta);
