@@ -46,9 +46,9 @@ class SpriteBatch {
 
     color = new Vector4.all(1.0);
 
-    rebuildBuffer();
     vertexBuffer = gl.createBuffer();
     indexBuffer = gl.createBuffer();
+    rebuildBuffer();
 
     reset();
   }
@@ -217,7 +217,6 @@ class SpriteBatch {
       indices[i + 3] = j + 2;
       indices[i + 4] = j + 3;
       indices[i + 5] = j + 1;
-      print(j + 3);
     }
 
     gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -225,9 +224,9 @@ class SpriteBatch {
   }
 
   flush() {
-    print("Flush batch");
     gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(ARRAY_BUFFER, vertices, DYNAMIC_DRAW);
+    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
 
     //offsets and strides are by byte, thus multiplied by 4
     gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, FLOAT, false, vertexSize * 4, 0);
@@ -241,16 +240,15 @@ class SpriteBatch {
 
     gl.drawElements(TRIANGLES, maxSprites, UNSIGNED_SHORT, 0);
 
+
     reset();
   }
 
   end() {
-    print("End");
     flush();
     if(spritesTotal > maxSprites) {
       maxSprites = spritesTotal;
       rebuildBuffer();
-      print(maxSprites);
     }
     spritesTotal = 0;
   }
