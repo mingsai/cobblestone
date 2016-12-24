@@ -1,75 +1,24 @@
 part of cobblestone;
 
-class SpriteBatch {
-
-  final List<double> baseRectangle =
-  [1.0, 1.0, 0.0,
-  0.0, 1.0, 0.0,
-  1.0, 0.0, 0.0,
-  0.0, 0.0, 0.0,
-  0.0, 1.0, 0.0,
-  1.0, 0.0, 0.0];
+class SpriteBatch extends VertexBatch {
 
   int maxSprites = 2000;
+
+  int drawMode = TRIANGLES;
 
   final int vertexSize = 9;
   final int verticesPerSprite = 4;
   final int indicesPerSprite = 6;
 
-  int spritesTotal = 0;
-  int spritesInBatch = 0;
-  int index = 0;
-  int elementIndex = 0;
-
-  Float32List vertices;
-  Int16List indices;
-
-  Buffer vertexBuffer;
-  Buffer indexBuffer;
-
-  ShaderProgram shaderProgram;
-
-  Matrix4 projection;
-  Matrix4 transform;
-
   Vector4 color;
 
   GameTexture texture;
 
-  SpriteBatch.customShader(this.shaderProgram);
-
-  SpriteBatch.defaultShader() {
-    shaderProgram = assetManager.get("packages/cobblestone/shaders/batch");
-
-    projection = new Matrix4.identity();
-    transform = new Matrix4.identity();
-
+  SpriteBatch(shaderProgram) : super(shaderProgram) {
     color = new Vector4.all(1.0);
-
-    vertexBuffer = gl.createBuffer();
-    indexBuffer = gl.createBuffer();
-    rebuildBuffer();
-
-    reset();
   }
 
-  rebuildBuffer() {
-    vertices = new Float32List(maxSprites * vertexSize * verticesPerSprite);
-    indices = new Int16List(maxSprites * indicesPerSprite);
-    createIndices();
-  }
-
-  reset() {
-    index = 0;
-    elementIndex = 0;
-    spritesInBatch = 0;
-    vertices.fillRange(0, vertices.length, 0.0);
-  }
-
-  begin() {
-    reset();
-    shaderProgram.startProgram();
-  }
+  SpriteBatch.defaultShader() : this(assetManager.get("packages/cobblestone/shaders/batch"));
 
   draw(GameTexture texture, num x, num y,
       {num width: null, num height: null, num scaleX: 1, num scaleY: 1,
@@ -209,6 +158,7 @@ class SpriteBatch {
     index++;
   }
 
+  @override
   createIndices() {
     for(int i = 0, j = 0; i < indices.length; i += 6, j += 4) {
       indices[i] = j;
@@ -223,34 +173,12 @@ class SpriteBatch {
     gl.bufferData(ELEMENT_ARRAY_BUFFER, indices, STATIC_DRAW);
   }
 
-  flush() {
-    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(ARRAY_BUFFER, vertices, DYNAMIC_DRAW);
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-    //offsets and strides are by byte, thus multiplied by 4
+  @override
+  setAttribPointers() {
     gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, FLOAT, false, vertexSize * 4, 0);
     gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3, FLOAT, false, vertexSize * 4, 3 * 4);
     gl.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4, FLOAT, false, vertexSize * 4, 5 * 4);
 
     gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind());
-    //gl.uniform4fv(shaderProgram.uniforms[colorUni], color.storage);
-    gl.uniformMatrix4fv(shaderProgram.uniforms[projMatUni], false, projection.storage);
-    gl.uniformMatrix4fv(shaderProgram.uniforms[transMatUni], false, transform.storage);
-
-    gl.drawElements(TRIANGLES, maxSprites, UNSIGNED_SHORT, 0);
-
-
-    reset();
   }
-
-  end() {
-    flush();
-    if(spritesTotal > maxSprites) {
-      maxSprites = spritesTotal;
-      rebuildBuffer();
-    }
-    spritesTotal = 0;
-  }
-
 }

@@ -9,6 +9,8 @@ loadDefaultShaders() {
   //    loadProgram("packages/cobblestone/shaders/untextured.vertex", "packages/cobblestone/shaders/untextured.fragment"));
   assetManager.load("packages/cobblestone/shaders/batch",
       loadProgram("packages/cobblestone/shaders/batch.vertex", "packages/cobblestone/shaders/batch.fragment"));
+  assetManager.load("packages/cobblestone/shaders/point",
+      loadProgram("packages/cobblestone/shaders/point.vertex", "packages/cobblestone/shaders/point.fragment"));
 }
 
 clearScreen(r, [num g, num b, num a]) {

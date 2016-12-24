@@ -34,21 +34,27 @@ class ShaderProgram {
     int activeAttributes = gl.getProgramParameter(program, ACTIVE_ATTRIBUTES);
     int activeUniforms = gl.getProgramParameter(program, ACTIVE_UNIFORMS);
 
-    for (int i = 0; i < activeAttributes; ++i) {
+    for (int i = 0; i < activeAttributes; i++) {
       ActiveInfo a = gl.getActiveAttrib(program, i);
       int attributeLocation = gl.getAttribLocation(program, a.name);
-      gl.enableVertexAttribArray(attributeLocation);
       attributes[a.name] = attributeLocation;
     }
 
-    for (int i = 0; i < activeUniforms; ++i) {
+    for (int i = 0; i < activeUniforms; i++) {
       ActiveInfo a = gl.getActiveUniform(program, i);
       uniforms[a.name] = gl.getUniformLocation(program, a.name);
     }
   }
 
   startProgram() {
+    attributes.forEach((name, location) =>
+        gl.enableVertexAttribArray(location));
     gl.useProgram(program);
+  }
+
+  endProgram() {
+    attributes.forEach((name, location) =>
+        gl.disableVertexAttribArray(location));
   }
 
 }
