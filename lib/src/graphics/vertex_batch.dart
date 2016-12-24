@@ -8,7 +8,7 @@ abstract class VertexBatch {
   int verticesPerSprite = 1;
   int indicesPerSprite = 1;
 
-  int drawMode = POINTS;
+  int drawMode = WebGL.POINTS;
 
   int spritesTotal = 0;
   int spritesInBatch = 0;
@@ -18,8 +18,8 @@ abstract class VertexBatch {
   Float32List vertices;
   Int16List indices;
 
-  Buffer vertexBuffer;
-  Buffer indexBuffer;
+  WebGL.Buffer vertexBuffer;
+  WebGL.Buffer indexBuffer;
 
   ShaderProgram shaderProgram;
 
@@ -66,21 +66,21 @@ abstract class VertexBatch {
       indices[i] = i;
     }
 
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(ELEMENT_ARRAY_BUFFER, indices, STATIC_DRAW);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
   }
 
   flush() {
-    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(ARRAY_BUFFER, vertices, DYNAMIC_DRAW);
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(WebGL.ARRAY_BUFFER, vertices, WebGL.DYNAMIC_DRAW);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
     setAttribPointers();
 
     gl.uniformMatrix4fv(shaderProgram.uniforms[projMatUni], false, projection.storage);
     gl.uniformMatrix4fv(shaderProgram.uniforms[transMatUni], false, transform.storage);
 
-    gl.drawElements(drawMode, maxSprites, UNSIGNED_SHORT, 0);
+    gl.drawElements(drawMode, maxSprites, WebGL.UNSIGNED_SHORT, 0);
 
     reset();
   }

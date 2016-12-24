@@ -1,6 +1,6 @@
 part of cobblestone;
 
-class Vector4Accessor implements TweenAccessor<Vector4>{
+class Vector4Accessor implements Tween.TweenAccessor<Vector4>{
 
   static const X = 1, R = 1;
   static const Y = 2, G = 2;
@@ -8,7 +8,7 @@ class Vector4Accessor implements TweenAccessor<Vector4>{
   static const W = 4, A = 4;
   static const XYZW = 5, RGBA = 5;
 
-  int getValues(Vector4 target, Tween tween, int tweenType, List<num> returnValues){
+  int getValues(Vector4 target, Tween.Tween tween, int tweenType, List<num> returnValues){
     if(tweenType == X){
       returnValues[0] = target.x;
       return 1;
@@ -31,7 +31,7 @@ class Vector4Accessor implements TweenAccessor<Vector4>{
     return 0;
   }
 
-  void setValues(Vector4 target, Tween tween, int tweenType, List<num> newValues){
+  void setValues(Vector4 target, Tween.Tween tween, int tweenType, List<num> newValues){
     if(tweenType == X){
       target.x = newValues[0].toDouble();
     } else if(tweenType == Y) {

@@ -12,36 +12,36 @@ Future<GameTexture> loadTexture(String url, handle(ImageElement ele)) {
   return completer.future;
 }
 
-Texture mipMap(ImageElement image) {
-  Texture texture = gl.createTexture();
-  gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-  gl.bindTexture(TEXTURE_2D, texture);
-  gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, image);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_S, CLAMP_TO_EDGE);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_T, CLAMP_TO_EDGE);
-  gl.generateMipmap(TEXTURE_2D);
-  gl.bindTexture(TEXTURE_2D, null);
+WebGL.Texture mipMap(ImageElement image) {
+  WebGL.Texture texture = gl.createTexture();
+  gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+  gl.bindTexture(WebGL.TEXTURE_2D, texture);
+  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
+  gl.generateMipmap(WebGL.TEXTURE_2D);
+  gl.bindTexture(WebGL.TEXTURE_2D, null);
   return texture;
 }
 
-Texture nearest(ImageElement element) {
-  Texture texture = gl.createTexture();
-  gl.bindTexture(TEXTURE_2D, texture);
-  gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
-  gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, element);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_S, CLAMP_TO_EDGE);
-  gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_T, CLAMP_TO_EDGE);
-  gl.bindTexture(TEXTURE_2D, null);
+WebGL.Texture nearest(ImageElement element) {
+  WebGL.Texture texture = gl.createTexture();
+  gl.bindTexture(WebGL.TEXTURE_2D, texture);
+  gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, element);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
+  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
+  gl.bindTexture(WebGL.TEXTURE_2D, null);
   return texture;
 }
 
 class GameTexture {
 
-  Texture texture;
+  WebGL.Texture texture;
 
   num u, v, u2, v2;
 
@@ -124,8 +124,8 @@ class GameTexture {
   }
 
   int bind() {
-    gl.activeTexture(TEXTURE0);
-    gl.bindTexture(TEXTURE_2D, texture);
+    gl.activeTexture(WebGL.TEXTURE0);
+    gl.bindTexture(WebGL.TEXTURE_2D, texture);
     return 0;
   }
 

@@ -1,7 +1,7 @@
 part of cobblestone;
 
 AssetManager assetManager;
-TweenManager tweenManager;
+Tween.TweenManager tweenManager;
 
 int width, height;
 
@@ -59,13 +59,13 @@ abstract class BaseGame {
 
   startLoop() {
     assetManager = new AssetManager();
-    tweenManager = new TweenManager();
+    tweenManager = new Tween.TweenManager();
 
-    Tween.combinedAttributesLimit = 4;
-    Tween.registerAccessor(num, new NumberAccessor());
-    Tween.registerAccessor(Vector2, new Vector2Accessor());
-    Tween.registerAccessor(Vector3, new Vector3Accessor());
-    Tween.registerAccessor(Vector4, new Vector4Accessor());
+    Tween.Tween.combinedAttributesLimit = 4;
+    Tween.Tween.registerAccessor(num, new NumberAccessor());
+    Tween.Tween.registerAccessor(Vector2, new Vector2Accessor());
+    Tween.Tween.registerAccessor(Vector3, new Vector3Accessor());
+    Tween.Tween.registerAccessor(Vector4, new Vector4Accessor());
 
     loadDefaultShaders();
     preload();

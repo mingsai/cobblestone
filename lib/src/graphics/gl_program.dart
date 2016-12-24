@@ -8,17 +8,17 @@ Future<ShaderProgram> loadProgram(String vertex, String fragment) {
 class ShaderProgram {
 
   Map<String, int> attributes = new Map<String, int>();
-  Map<String, UniformLocation> uniforms = new Map<String, UniformLocation>();
-  Program program;
+  Map<String, WebGL.UniformLocation> uniforms = new Map<String, WebGL.UniformLocation>();
+  WebGL.Program program;
 
-  Shader fragShader, vertShader;
+  WebGL.Shader fragShader, vertShader;
 
   ShaderProgram.compile(String vertexSource, String fragmentSource) {
-    fragShader = gl.createShader(FRAGMENT_SHADER);
+    fragShader = gl.createShader(WebGL.FRAGMENT_SHADER);
     gl.shaderSource(fragShader, fragmentSource);
     gl.compileShader(fragShader);
 
-    vertShader = gl.createShader(VERTEX_SHADER);
+    vertShader = gl.createShader(WebGL.VERTEX_SHADER);
     gl.shaderSource(vertShader, vertexSource);
     gl.compileShader(vertShader);
 
@@ -27,21 +27,21 @@ class ShaderProgram {
     gl.attachShader(program, fragShader);
     gl.linkProgram(program);
 
-    if (!gl.getProgramParameter(program, LINK_STATUS)) {
+    if (!gl.getProgramParameter(program, WebGL.LINK_STATUS)) {
       print("Could not initialise shaders");
     }
 
-    int activeAttributes = gl.getProgramParameter(program, ACTIVE_ATTRIBUTES);
-    int activeUniforms = gl.getProgramParameter(program, ACTIVE_UNIFORMS);
+    int activeAttributes = gl.getProgramParameter(program, WebGL.ACTIVE_ATTRIBUTES);
+    int activeUniforms = gl.getProgramParameter(program, WebGL.ACTIVE_UNIFORMS);
 
     for (int i = 0; i < activeAttributes; i++) {
-      ActiveInfo a = gl.getActiveAttrib(program, i);
+      WebGL.ActiveInfo a = gl.getActiveAttrib(program, i);
       int attributeLocation = gl.getAttribLocation(program, a.name);
       attributes[a.name] = attributeLocation;
     }
 
     for (int i = 0; i < activeUniforms; i++) {
-      ActiveInfo a = gl.getActiveUniform(program, i);
+      WebGL.ActiveInfo a = gl.getActiveUniform(program, i);
       uniforms[a.name] = gl.getUniformLocation(program, a.name);
     }
   }

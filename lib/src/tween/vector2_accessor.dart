@@ -1,12 +1,12 @@
 part of cobblestone;
 
-class Vector2Accessor implements TweenAccessor<Vector2>{
+class Vector2Accessor implements Tween.TweenAccessor<Vector2>{
 
   static const X = 1;
   static const Y = 2;
   static const XY = 3;
 
-  int getValues(Vector2 target, Tween tween, int tweenType, List<num> returnValues){
+  int getValues(Vector2 target, Tween.Tween tween, int tweenType, List<num> returnValues){
     if(tweenType == X){
       returnValues[0] = target.x;
       return 1;
@@ -21,7 +21,7 @@ class Vector2Accessor implements TweenAccessor<Vector2>{
     return 0;
   }
 
-  void setValues(Vector2 target, Tween tween, int tweenType, List<num> newValues){
+  void setValues(Vector2 target, Tween.Tween tween, int tweenType, List<num> newValues){
     if(tweenType == X){
       target.x = newValues[0].toDouble();
     } else if(tweenType == Y) {

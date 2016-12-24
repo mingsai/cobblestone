@@ -4,7 +4,7 @@ class SpriteBatch extends VertexBatch {
 
   int maxSprites = 2000;
 
-  int drawMode = TRIANGLES;
+  int drawMode = WebGL.TRIANGLES;
 
   final int vertexSize = 9;
   final int verticesPerSprite = 4;
@@ -169,15 +169,15 @@ class SpriteBatch extends VertexBatch {
       indices[i + 5] = j + 1;
     }
 
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(ELEMENT_ARRAY_BUFFER, indices, STATIC_DRAW);
+    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
   }
 
   @override
   setAttribPointers() {
-    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, FLOAT, false, vertexSize * 4, 0);
-    gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3, FLOAT, false, vertexSize * 4, 3 * 4);
-    gl.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4, FLOAT, false, vertexSize * 4, 5 * 4);
+    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 0);
+    gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
+    gl.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4, WebGL.FLOAT, false, vertexSize * 4, 5 * 4);
 
     gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind());
   }

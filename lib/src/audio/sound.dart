@@ -2,11 +2,11 @@ part of cobblestone;
 
 Future<Sound> loadSound;
 
-AudioContext audioContext = new AudioContext();
+WebAudio.AudioContext audioContext = new WebAudio.AudioContext();
 
 Future<Sound> loadGameSound(String url) {
   return HttpRequest.request(url, responseType: 'arraybuffer').then((HttpRequest request) {
-    return audioContext.decodeAudioData(request.response).then((AudioBuffer buffer) {
+    return audioContext.decodeAudioData(request.response).then((WebAudio.AudioBuffer buffer) {
       return new Sound(buffer);
     });
   });
@@ -15,10 +15,10 @@ Future<Sound> loadGameSound(String url) {
 
 class Sound {
 
-  List<AudioBufferSourceNode> sources;
+  List<WebAudio.AudioBufferSourceNode> sources;
 
-  AudioBuffer buffer;
-  GainNode gainNode;
+  WebAudio.AudioBuffer buffer;
+  WebAudio.GainNode gainNode;
 
   Sound(this.buffer) {
     gainNode = audioContext.createGain();
@@ -26,7 +26,7 @@ class Sound {
   }
 
   play([bool loop = false]) {
-    AudioBufferSourceNode source = audioContext.createBufferSource();
+    WebAudio.AudioBufferSourceNode source = audioContext.createBufferSource();
     source.connectNode(gainNode, 0, 0);
     gainNode.connectNode(audioContext.destination, 0, 0);
     source.buffer = buffer;
@@ -36,7 +36,7 @@ class Sound {
   }
 
   stop() {
-    for(AudioBufferSourceNode source in sources) {
+    for(WebAudio.AudioBufferSourceNode source in sources) {
       source.stop(0);
     }
     sources.clear();

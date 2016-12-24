@@ -1,13 +1,13 @@
 part of cobblestone;
 
-class Vector3Accessor implements TweenAccessor<Vector3>{
+class Vector3Accessor implements Tween.TweenAccessor<Vector3>{
 
   static const X = 1;
   static const Y = 2;
   static const Z = 3;
   static const XYZ = 4;
 
-  int getValues(Vector3 target, Tween tween, int tweenType, List<num> returnValues){
+  int getValues(Vector3 target, Tween.Tween tween, int tweenType, List<num> returnValues){
     if(tweenType == X){
       returnValues[0] = target.x;
       return 1;
@@ -26,7 +26,7 @@ class Vector3Accessor implements TweenAccessor<Vector3>{
     return 0;
   }
 
-  void setValues(Vector3 target, Tween tween, int tweenType, List<num> newValues){
+  void setValues(Vector3 target, Tween.Tween tween, int tweenType, List<num> newValues){
     if(tweenType == X){
       target.x = newValues[0].toDouble();
     } else if(tweenType == Y) {
