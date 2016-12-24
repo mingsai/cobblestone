@@ -8,10 +8,7 @@ class GeometryExample extends BaseGame {
 
   ShaderProgram shaderProgram;
 
-  Mesh triangle, square;
-
   Camera2D camera;
-  Matrix4 pMatrix;
 
   SpriteBatch renderer;
   GameTexture nehe;

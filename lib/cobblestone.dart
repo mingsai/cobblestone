@@ -26,13 +26,10 @@ export 'package:tweenengine/tweenengine.dart';
 
 part 'package:cobblestone/src/state/base_game.dart';
 part 'package:cobblestone/src/graphics/gl_program.dart';
-part 'package:cobblestone/src/graphics/mesh.dart';
 part 'package:cobblestone/src/graphics/const_data.dart';
-part 'package:cobblestone/src/graphics/imediate_renderer.dart';
 part 'package:cobblestone/src/graphics/gl_util.dart';
 part 'package:cobblestone/src/math/scale.dart';
 part 'package:cobblestone/src/graphics/texture.dart';
-part 'package:cobblestone/src/graphics/imediate_texture_renderer.dart';
 part 'package:cobblestone/src/math/camera.dart';
 part 'package:cobblestone/src/math/transform.dart';
 part 'package:cobblestone/src/assets/asset_manager.dart';
