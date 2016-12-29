@@ -133,6 +133,8 @@ class SpriteBatch extends VertexBatch {
     addVertex(x2, y2, 0.0, color.r, color.g, color.b, color.a, u, v2);
     addVertex(x3, y3, 0.0, color.r, color.g, color.b, color.a, u2, v);
     addVertex(x4, y4, 0.0, color.r, color.g, color.b, color.a, u2, v2);
+
+    spritesInBatch++;
   }
 
   addVertex(double x, double y, double z, double r, double g, double b, double a, double u, double v) {

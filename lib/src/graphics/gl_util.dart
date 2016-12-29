@@ -11,6 +11,8 @@ loadDefaultShaders() {
       loadProgram("packages/cobblestone/shaders/batch.vertex", "packages/cobblestone/shaders/batch.fragment"));
   assetManager.load("packages/cobblestone/shaders/point",
       loadProgram("packages/cobblestone/shaders/point.vertex", "packages/cobblestone/shaders/point.fragment"));
+  assetManager.load("packages/cobblestone/shaders/wire",
+      loadProgram("packages/cobblestone/shaders/wire.vertex", "packages/cobblestone/shaders/wire.fragment"));
 }
 
 clearScreen(r, [num g, num b, num a]) {

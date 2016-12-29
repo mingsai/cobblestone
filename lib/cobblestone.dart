@@ -39,3 +39,4 @@ part 'package:cobblestone/src/tween/vector4_accessor.dart';
 part 'package:cobblestone/src/tween/num_accessor.dart';
 part 'package:cobblestone/src/graphics/vertex_batch.dart';
 part 'package:cobblestone/src/graphics/point_batch.dart';
+part 'package:cobblestone/src/graphics/physbox_batch.dart';
