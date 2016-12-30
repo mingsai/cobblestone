@@ -66,8 +66,8 @@ class TilemapExample extends BaseGame {
     map.render(renderer, camera);
 
     int offset = 0;
-    for(GameTexture texture in map.tileset) {
-      renderer.draw(texture, offset, height - 16);
+    for(BasicTile texture in map.basicTiles) {
+      renderer.draw(texture.texture, offset, height - 16);
       offset += 16;
     }
 
@@ -86,16 +86,7 @@ class TilemapExample extends BaseGame {
     if(south) camera.translate(0.0, delta * 20);
     if(west) camera.translate(delta * 20, 0.0);
     camera.roundInt = true;
+    map.update(delta);
   }
-
-}
-
-class BoulderSprite {
-
-  GameTexture texture;
-
-  num x, y;
-
-  BoulderSprite(this.texture, this.x, this.y);
 
 }

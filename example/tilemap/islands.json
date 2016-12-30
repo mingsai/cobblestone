@@ -24,20 +24,53 @@
         }],
  "nextobjectid":1,
  "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
  "renderorder":"left-up",
  "tileheight":16,
  "tilesets":[
         {
-         "columns":23,
          "firstgid":1,
-         "image":"floating_islands.png",
+         "image":"..\/floating_islands.png",
          "imageheight":128,
          "imagewidth":368,
          "margin":0,
          "name":"floating_islands",
+         "properties":
+            {
+
+            },
          "spacing":0,
-         "tilecount":184,
          "tileheight":16,
+         "tiles":
+            {
+             "148":
+                {
+                 "animation":[
+                        {
+                         "duration":500,
+                         "tileid":148
+                        }, 
+                        {
+                         "duration":2000,
+                         "tileid":171
+                        }]
+                },
+             "171":
+                {
+                 "animation":[
+                        {
+                         "duration":2000,
+                         "tileid":171
+                        }, 
+                        {
+                         "duration":500,
+                         "tileid":148
+                        }]
+                }
+            },
          "tilewidth":16
         }],
  "tilewidth":16,
