@@ -96,7 +96,6 @@ class TileLayer extends MapLayer {
 
     tiles = layer["data"];
     //tiles = tiles.reversed.toList();
-    print(tiles);
 
     tileWidth = parent.tileWidth;
     tileHeight = parent.tileHeight;

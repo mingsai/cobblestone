@@ -11,7 +11,7 @@ abstract class VertexBatch {
   int drawMode = WebGL.POINTS;
 
   int spritesTotal = 0;
-  int spritesInBatch = 0;
+  int spritesToEnd = 0;
   int index = 0;
   int elementIndex = 0;
 
@@ -47,7 +47,7 @@ abstract class VertexBatch {
   reset() {
     index = 0;
     elementIndex = 0;
-    spritesInBatch = 0;
+    spritesTotal = 0;
     vertices.fillRange(0, vertices.length, 0.0);
   }
 
@@ -82,6 +82,7 @@ abstract class VertexBatch {
 
     gl.drawElements(drawMode, maxSprites, WebGL.UNSIGNED_SHORT, 0);
 
+    spritesToEnd += spritesTotal;
     reset();
   }
 
@@ -89,11 +90,12 @@ abstract class VertexBatch {
 
   end() {
     flush();
-    if(spritesTotal > maxSprites) {
-      maxSprites = spritesTotal;
+    if(spritesToEnd > maxSprites) {
+      maxSprites = spritesToEnd;
+      print(maxSprites);
       rebuildBuffer();
     }
-    spritesTotal = 0;
+    spritesToEnd = 0;
     shaderProgram.endProgram();
   }
 

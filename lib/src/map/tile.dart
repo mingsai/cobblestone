@@ -47,7 +47,6 @@ class AnimatedTile extends Tile {
     int timeSum = 0;
     for (var i = 0; i < timings.length; i++) {
       if(currentTime > timeSum) {
-        print(currentTime);
         texture = frames[i];
       }
       timeSum += timings[i];
