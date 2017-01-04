@@ -80,19 +80,20 @@ abstract class VertexBatch {
     gl.uniformMatrix4fv(shaderProgram.uniforms[projMatUni], false, projection.storage);
     gl.uniformMatrix4fv(shaderProgram.uniforms[transMatUni], false, transform.storage);
 
-    gl.drawElements(drawMode, maxSprites, WebGL.UNSIGNED_SHORT, 0);
+    //The indices are important!
+    gl.drawElements(drawMode, maxSprites * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
 
     spritesToEnd += spritesTotal;
     reset();
   }
 
-  setAttribPointers();
+  void setAttribPointers();
 
   end() {
     flush();
     if(spritesToEnd > maxSprites) {
       maxSprites = spritesToEnd;
-      print(maxSprites);
+      print("Resized: " + maxSprites.toString());
       rebuildBuffer();
     }
     spritesToEnd = 0;
