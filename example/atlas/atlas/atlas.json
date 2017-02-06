@@ -1,0 +1,5 @@
+{
+    "spriteC" : {"rect" : [ 1, 1, 16, 16 ], "index" : 0 },
+    "spriteB" : {"rect" : [ 19, 1, 16, 16 ], "index" : 1 },
+    "spriteA" : {"rect" : [ 1, 19, 16, 16 ], "index" : 2 }
+}
