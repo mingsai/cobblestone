@@ -13,6 +13,7 @@ import 'dart:math';
 import 'dart:async';
 import 'package:vector_math/vector_math.dart';
 import 'dart:convert';
+import 'package:path/path.dart' as Path;
 import 'dart:web_audio' as WebAudio;
 import 'package:tweenengine/tweenengine.dart' as Tween;
 

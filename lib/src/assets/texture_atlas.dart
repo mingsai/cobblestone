@@ -11,7 +11,6 @@ Future<Map<String, GameTexture>> loadAtlas(String atlasUrl, Future<GameTexture> 
       atlasTexture.height - data["rect"][3] - data["rect"][1],
       data["rect"][2],
       data["rect"][3]);
-    print(data["rect"]);
   });
   return atlas;
 }

@@ -32,7 +32,7 @@ class AnimatedTile extends Tile {
 
   double currentTime = 0.0;
 
-  AnimatedTile(dynamic data, List<BasicTile> basicTiles) {
+  AnimatedTile(dynamic data, Map<int, BasicTile> basicTiles) {
     for(dynamic frame in data["animation"]) {
       frames.add(basicTiles[frame["tileid"]].texture);
       timings.add(frame["duration"]);

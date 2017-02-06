@@ -6,6 +6,8 @@ Future<Tilemap> loadTilemap(String url) {
   );
 }
 
+
+
 class Tilemap {
 
   Map file;
@@ -15,8 +17,8 @@ class Tilemap {
   int width, height;
   int tileWidth, tileHeight;
 
-  List<BasicTile> basicTiles;
-  List<Tile> tileset;
+  Map<int, BasicTile> basicTiles;
+  Map<int, Tile> tileset;
 
   Tilemap(this.file) {
     this.width = file["width"];
@@ -33,26 +35,24 @@ class Tilemap {
     //layers = layers.reversed.toList();
   }
 
-  giveTileset(GameTexture set) {
-    List<GameTexture> textures = set.split(tileWidth, tileHeight);
-    basicTiles = [];
-    for(GameTexture texture in textures) {
-      basicTiles.add(new BasicTile(texture));
-    }
+  giveTileset(Map<String, GameTexture> set) {
+    basicTiles = new Map<int, BasicTile>();
+    tileset = new Map<int, BasicTile>();
+    file["tilesets"][0]["tiles"].forEach((id, tile) {
+      basicTiles[int.parse(id)] = new BasicTile(set[Path.basenameWithoutExtension(tile["image"])]);
+    });
 
-    tileset = [];
-    tileset.addAll(basicTiles);
-    if(file["tilesets"][0].containsKey("tiles")) {
-      file["tilesets"][0]["tiles"].forEach(setTile);
-    }
-  }
-
-  setTile(String id, Map animation) {
-    tileset[int.parse(id)] = new AnimatedTile(animation, basicTiles);
+    file["tilesets"][0]["tiles"].forEach((id, tile) {
+      if(tile["animation"] != null){
+        tileset[int.parse(id)] = new AnimatedTile(tile, basicTiles);
+      } else {
+        tileset[int.parse(id)] = basicTiles[int.parse(id)];
+      }
+    });
   }
 
   update(double delta) {
-    for(Tile tile in tileset) {
+    for(Tile tile in tileset.values) {
       tile.update(delta);
     }
   }
