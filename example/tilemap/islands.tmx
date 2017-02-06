@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="left-up" width="35" height="21" tilewidth="16" tileheight="16" nextobjectid="1">
- <tileset firstgid="1" name="floating_islands" tilewidth="16" tileheight="16" tilecount="184" columns="23">
-  <image source="floating_islands.png" width="368" height="128"/>
+ <tileset firstgid="1" name="floating_islands" tilewidth="16" tileheight="16">
+  <image source="../floating_islands.png" width="368" height="128"/>
+  <tile id="148">
+   <animation>
+    <frame tileid="148" duration="500"/>
+    <frame tileid="171" duration="2000"/>
+   </animation>
+  </tile>
+  <tile id="171">
+   <animation>
+    <frame tileid="171" duration="2000"/>
+    <frame tileid="148" duration="500"/>
+   </animation>
+  </tile>
  </tileset>
  <layer name="Tile Layer 1" width="35" height="21">
   <data encoding="csv">

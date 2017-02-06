@@ -28,7 +28,6 @@ class PerformanceExample extends BaseGame {
     for(int i = 0; i < 20000; i++) {
       boulders.add(new BoulderSprite(textures[rand.nextInt(textures.length)], rand.nextInt(width), rand.nextInt(height)));
     }
-    print(boulders.length);
   }
 
   @override

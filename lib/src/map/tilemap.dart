@@ -15,7 +15,8 @@ class Tilemap {
   int width, height;
   int tileWidth, tileHeight;
 
-  List<GameTexture> tileset;
+  List<BasicTile> basicTiles;
+  List<Tile> tileset;
 
   Tilemap(this.file) {
     this.width = file["width"];
@@ -33,7 +34,27 @@ class Tilemap {
   }
 
   giveTileset(GameTexture set) {
-    tileset = set.split(tileWidth, tileHeight);
+    List<GameTexture> textures = set.split(tileWidth, tileHeight);
+    basicTiles = [];
+    for(GameTexture texture in textures) {
+      basicTiles.add(new BasicTile(texture));
+    }
+
+    tileset = [];
+    tileset.addAll(basicTiles);
+    if(file["tilesets"][0].containsKey("tiles")) {
+      file["tilesets"][0]["tiles"].forEach(setTile);
+    }
+  }
+
+  setTile(String id, Map animation) {
+    tileset[int.parse(id)] = new AnimatedTile(animation, basicTiles);
+  }
+
+  update(double delta) {
+    for(Tile tile in tileset) {
+      tile.update(delta);
+    }
   }
 
   render(SpriteBatch batch, Camera2D camera) {
@@ -75,7 +96,6 @@ class TileLayer extends MapLayer {
 
     tiles = layer["data"];
     //tiles = tiles.reversed.toList();
-    print(tiles);
 
     tileWidth = parent.tileWidth;
     tileHeight = parent.tileHeight;
@@ -87,7 +107,7 @@ class TileLayer extends MapLayer {
       int y = width * tileHeight - row * tileHeight - tileHeight;
       for(int col = 0; col < width; col++) {
         if(tiles != null && tiles[width * row + col] != 0)
-          batch.draw(parent.tileset[tiles[width * row + col] - 1], (col * tileHeight), y, width: tileWidth, height: tileHeight);
+          parent.tileset[tiles[width * row + col] - 1].render(batch, (col * tileWidth), y, tileWidth, tileHeight);
       }
     }
   }

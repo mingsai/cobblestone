@@ -11,7 +11,7 @@ abstract class VertexBatch {
   int drawMode = WebGL.POINTS;
 
   int spritesTotal = 0;
-  int spritesInBatch = 0;
+  int spritesToEnd = 0;
   int index = 0;
   int elementIndex = 0;
 
@@ -47,7 +47,7 @@ abstract class VertexBatch {
   reset() {
     index = 0;
     elementIndex = 0;
-    spritesInBatch = 0;
+    spritesTotal = 0;
     vertices.fillRange(0, vertices.length, 0.0);
   }
 
@@ -80,20 +80,23 @@ abstract class VertexBatch {
     gl.uniformMatrix4fv(shaderProgram.uniforms[projMatUni], false, projection.storage);
     gl.uniformMatrix4fv(shaderProgram.uniforms[transMatUni], false, transform.storage);
 
-    gl.drawElements(drawMode, maxSprites, WebGL.UNSIGNED_SHORT, 0);
+    //The indices are important!
+    gl.drawElements(drawMode, maxSprites * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
 
+    spritesToEnd += spritesTotal;
     reset();
   }
 
-  setAttribPointers();
+  void setAttribPointers();
 
   end() {
     flush();
-    if(spritesTotal > maxSprites) {
-      maxSprites = spritesTotal;
+    if(spritesToEnd > maxSprites) {
+      maxSprites = spritesToEnd;
+      print("Resized: " + maxSprites.toString());
       rebuildBuffer();
     }
-    spritesTotal = 0;
+    spritesToEnd = 0;
     shaderProgram.endProgram();
   }
 
