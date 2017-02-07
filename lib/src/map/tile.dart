@@ -17,7 +17,8 @@ class BasicTile extends Tile {
 
   GameTexture texture;
 
-  BasicTile(this.texture, this.data) {
+  BasicTile(this.texture, var data) {
+    this.data = data;
     image = Path.basenameWithoutExtension(data["image"]);
   }
 
@@ -37,7 +38,8 @@ class AnimatedTile extends Tile {
 
   double currentTime = 0.0;
 
-  AnimatedTile(this.data, Map<int, BasicTile> basicTiles) {
+  AnimatedTile(var data, Map<int, BasicTile> basicTiles) {
+    this.data = data;
     for(dynamic frame in data["animation"]) {
       frames.add(basicTiles[frame["tileid"]].texture);
       timings.add(frame["duration"]);
