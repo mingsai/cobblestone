@@ -57,11 +57,17 @@ class Tilemap {
     }
   }
 
-  render(SpriteBatch batch, Camera2D camera) {
+  render(SpriteBatch batch, Camera2D camera, {List<int> layerList: null}) {
     camera.update();
     batch.projection = camera.combined;
-    for(MapLayer layer in layers) {
-      layer.render(batch, camera);
+    if(layerList == null) {
+      for (MapLayer layer in layers) {
+        layer.render(batch, camera);
+      }
+    } else {
+      for (int layer in layerList) {
+        layers[layer].render(batch, camera);
+      }
     }
   }
 

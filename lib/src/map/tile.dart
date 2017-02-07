@@ -3,6 +3,7 @@ part of cobblestone;
 abstract class Tile {
 
   var data;
+  String image;
 
   void render(SpriteBatch batch, num x, num y, num width, num height);
 
@@ -15,7 +16,6 @@ abstract class Tile {
 class BasicTile extends Tile {
 
   GameTexture texture;
-  String image;
 
   BasicTile(this.texture, this.data) {
     image = Path.basenameWithoutExtension(data["image"]);
