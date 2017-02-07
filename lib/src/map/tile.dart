@@ -2,6 +2,8 @@ part of cobblestone;
 
 abstract class Tile {
 
+  var data;
+
   void render(SpriteBatch batch, num x, num y, num width, num height);
 
   void update(double delta) {
@@ -13,8 +15,11 @@ abstract class Tile {
 class BasicTile extends Tile {
 
   GameTexture texture;
+  String image;
 
-  BasicTile(this.texture);
+  BasicTile(this.texture, this.data) {
+    image = Path.basenameWithoutExtension(data["image"]);
+  }
 
   @override
   void render(SpriteBatch batch, num x, num y, num width, num height) {
@@ -32,7 +37,7 @@ class AnimatedTile extends Tile {
 
   double currentTime = 0.0;
 
-  AnimatedTile(dynamic data, Map<int, BasicTile> basicTiles) {
+  AnimatedTile(this.data, Map<int, BasicTile> basicTiles) {
     for(dynamic frame in data["animation"]) {
       frames.add(basicTiles[frame["tileid"]].texture);
       timings.add(frame["duration"]);

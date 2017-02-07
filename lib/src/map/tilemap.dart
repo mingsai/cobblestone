@@ -39,7 +39,7 @@ class Tilemap {
     basicTiles = new Map<int, BasicTile>();
     tileset = new Map<int, BasicTile>();
     file["tilesets"][0]["tiles"].forEach((id, tile) {
-      basicTiles[int.parse(id)] = new BasicTile(set[Path.basenameWithoutExtension(tile["image"])]);
+      basicTiles[int.parse(id)] = new BasicTile(set[Path.basenameWithoutExtension(tile["image"])], tile);
     });
 
     file["tilesets"][0]["tiles"].forEach((id, tile) {
@@ -77,7 +77,7 @@ class TileLayer extends MapLayer {
 
   Tilemap parent;
 
-  Map layer;
+  var layer;
 
   List<int> tiles;
   int width;
