@@ -10,7 +10,7 @@ abstract class VertexBatch {
 
   int drawMode = WebGL.POINTS;
 
-  int spritesTotal = 0;
+  int spritesInFlush = 0;
   int spritesToEnd = 0;
   int index = 0;
   int elementIndex = 0;
@@ -47,7 +47,7 @@ abstract class VertexBatch {
   reset() {
     index = 0;
     elementIndex = 0;
-    spritesTotal = 0;
+    spritesInFlush = 0;
     vertices.fillRange(0, vertices.length, 0.0);
   }
 
@@ -72,7 +72,7 @@ abstract class VertexBatch {
 
   flush() {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(WebGL.ARRAY_BUFFER, vertices, WebGL.DYNAMIC_DRAW);
+    gl.bufferData(WebGL.ARRAY_BUFFER, vertices.sublist(0, spritesInFlush * verticesPerSprite * vertexSize), WebGL.DYNAMIC_DRAW);
     gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
     setAttribPointers();
@@ -81,9 +81,9 @@ abstract class VertexBatch {
     gl.uniformMatrix4fv(shaderProgram.uniforms[transMatUni], false, transform.storage);
 
     //The indices are important!
-    gl.drawElements(drawMode, maxSprites * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
+    gl.drawElements(drawMode, spritesInFlush * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
 
-    spritesToEnd += spritesTotal;
+    spritesToEnd += spritesInFlush;
     reset();
   }
 
