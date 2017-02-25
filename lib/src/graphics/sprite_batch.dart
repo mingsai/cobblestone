@@ -6,7 +6,7 @@ class SpriteBatch extends VertexBatch {
 
   int drawMode = WebGL.TRIANGLES;
 
-  final int vertexSize = 9;
+  final int vertexSize = 5;
   final int verticesPerSprite = 4;
   final int indicesPerSprite = 6;
 
@@ -128,10 +128,10 @@ class SpriteBatch extends VertexBatch {
     }
 
     vertices.setAll(spritesInFlush * verticesPerSprite * vertexSize, [
-      x1, y1, 0.0, u, v, color.r, color.g, color.b, color.a,
-      x2, y2, 0.0, u, v2, color.r, color.g, color.b, color.a,
-      x3, y3, 0.0, u2, v, color.r, color.g, color.b, color.a,
-      x4, y4, 0.0, u2, v2, color.r, color.g, color.b, color.a
+      x1, y1, 0.0, u, v,
+      x2, y2, 0.0, u, v2,
+      x3, y3, 0.0, u2, v,
+      x4, y4, 0.0, u2, v2
     ]);
 
     spritesInFlush++;
@@ -156,8 +156,8 @@ class SpriteBatch extends VertexBatch {
   setAttribPointers() {
     gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 0);
     gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
-    gl.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4, WebGL.FLOAT, false, vertexSize * 4, 5 * 4);
 
     gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind());
+    gl.uniform4f(shaderProgram.uniforms[colorUni], color.r, color.g, color.b, color.a);
   }
 }
