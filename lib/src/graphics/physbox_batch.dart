@@ -60,7 +60,7 @@ class PhysboxBatch extends VertexBatch {
       appendAttrib(box.min.y);
       appendAttrib(0);
 
-      spritesTotal++;
+      spritesInFlush++;
     } else if (box is Obb3) {
       box.copyCorner(0, point);
       appendAttrib(point.x);
@@ -82,7 +82,7 @@ class PhysboxBatch extends VertexBatch {
       appendAttrib(point.y);
       appendAttrib(0);
 
-      spritesTotal++;
+      spritesInFlush++;
     }
   }
 

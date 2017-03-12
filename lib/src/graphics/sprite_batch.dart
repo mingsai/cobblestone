@@ -6,7 +6,7 @@ class SpriteBatch extends VertexBatch {
 
   int drawMode = WebGL.TRIANGLES;
 
-  final int vertexSize = 9;
+  final int vertexSize = 5;
   final int verticesPerSprite = 4;
   final int indicesPerSprite = 6;
 
@@ -28,7 +28,7 @@ class SpriteBatch extends VertexBatch {
     x = x.toDouble();
     y = y.toDouble();
 
-    if(spritesTotal >= maxSprites) {
+    if(spritesInFlush >= maxSprites) {
       print("Batch full");
       flush();
     }
@@ -38,7 +38,6 @@ class SpriteBatch extends VertexBatch {
         flush();
       }
     }
-    spritesTotal++;
 
     this.texture = texture;
 
@@ -128,33 +127,14 @@ class SpriteBatch extends VertexBatch {
       v2 = temp;
     }
 
-    addVertex(x1, y1, 0.0, color.r, color.g, color.b, color.a, u, v);
-    addVertex(x2, y2, 0.0, color.r, color.g, color.b, color.a, u, v2);
-    addVertex(x3, y3, 0.0, color.r, color.g, color.b, color.a, u2, v);
-    addVertex(x4, y4, 0.0, color.r, color.g, color.b, color.a, u2, v2);
-  }
+    vertices.setAll(spritesInFlush * verticesPerSprite * vertexSize, [
+      x1, y1, 0.0, u, v,
+      x2, y2, 0.0, u, v2,
+      x3, y3, 0.0, u2, v,
+      x4, y4, 0.0, u2, v2
+    ]);
 
-  addVertex(double x, double y, double z, double r, double g, double b, double a, double u, double v) {
-    vertices[index] = x;
-    index++;
-    vertices[index] = y;
-    index++;
-    vertices[index] = z;
-    index++;
-
-    vertices[index] = u;
-    index++;
-    vertices[index] = v;
-    index++;
-
-    vertices[index] = r;
-    index++;
-    vertices[index] = g;
-    index++;
-    vertices[index] = b;
-    index++;
-    vertices[index] = a;
-    index++;
+    spritesInFlush++;
   }
 
   @override
@@ -176,8 +156,8 @@ class SpriteBatch extends VertexBatch {
   setAttribPointers() {
     gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 0);
     gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
-    gl.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4, WebGL.FLOAT, false, vertexSize * 4, 5 * 4);
 
     gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind());
+    gl.uniform4f(shaderProgram.uniforms[colorUni], color.r, color.g, color.b, color.a);
   }
 }

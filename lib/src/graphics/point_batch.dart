@@ -28,7 +28,7 @@ class PointBatch extends VertexBatch {
     appendAttrib(color.b);
     appendAttrib(color.a);
 
-    spritesTotal++;
+    spritesInFlush++;
   }
 
 }
