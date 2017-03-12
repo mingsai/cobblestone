@@ -72,7 +72,7 @@ abstract class VertexBatch {
 
   flush() {
     gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(WebGL.ARRAY_BUFFER, vertices.sublist(0, spritesInFlush * verticesPerSprite * vertexSize), WebGL.DYNAMIC_DRAW);
+    gl.bufferData(WebGL.ARRAY_BUFFER, vertices, WebGL.DYNAMIC_DRAW);
     gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
     setAttribPointers();
