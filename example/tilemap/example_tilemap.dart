@@ -16,10 +16,10 @@ class TilemapExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width / 2, height / 2);
-    renderer = new SpriteBatch.defaultShader();
-
     setGLViewport(canvasWidth, canvasHeight);
+    camera = new Camera2D.originBottomLeft(width, height);
+
+    renderer = new SpriteBatch.defaultShader();
 
     Map<String, GameTexture> atlas = assetManager.get("atlas");
     map = assetManager.get("islands2.json");
@@ -63,7 +63,7 @@ class TilemapExample extends BaseGame {
     renderer.projection = camera.combined;
     renderer.begin();
 
-    map.render(renderer, camera);
+    map.render(renderer);
 
     int offset = 0;
     for(BasicTile texture in map.basicTiles.values) {

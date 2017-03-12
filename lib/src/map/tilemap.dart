@@ -6,8 +6,6 @@ Future<Tilemap> loadTilemap(String url) {
   );
 }
 
-
-
 class Tilemap {
 
   Map file;
@@ -57,25 +55,31 @@ class Tilemap {
     }
   }
 
-  render(SpriteBatch batch, Camera2D camera, {List<int> layerList: null}) {
-    camera.update();
-    batch.projection = camera.combined;
-    if(layerList == null) {
+  render(SpriteBatch batch, {Pattern filter: null}) {
+    if(filter == null) {
       for (MapLayer layer in layers) {
-        layer.render(batch, camera);
+        layer.render(batch);
       }
     } else {
-      for (int layer in layerList) {
-        layers[layer].render(batch, camera);
+      for (MapLayer layer in getLayersContaining(filter)) {
+        layer.render(batch);
       }
     }
+  }
+
+  List<MapLayer> getLayersContaining(Pattern filter) {
+    return layers.where((MapLayer layer) =>
+      layer.name.contains(filter)
+    );
   }
 
 }
 
 abstract class MapLayer {
 
-  render(SpriteBatch batch, Camera2D camera);
+  String name;
+
+  render(SpriteBatch batch);
 
 }
 
@@ -86,13 +90,12 @@ class TileLayer extends MapLayer {
   var layer;
 
   List<int> tiles;
-  int width;
-  int height;
 
   int tileWidth;
   int tileHeight;
 
-  String name;
+  int width;
+  int height;
 
   TileLayer(this.layer, this.parent) {
     width = layer["width"];
@@ -101,23 +104,24 @@ class TileLayer extends MapLayer {
     name = layer["name"];
 
     tiles = layer["data"];
-    //tiles = tiles.reversed.toList();
 
     tileWidth = parent.tileWidth;
     tileHeight = parent.tileHeight;
   }
 
   @override
-  render(SpriteBatch batch, Camera2D camera) {
+  render(SpriteBatch batch) {
     for(int row = 0; row < height; row++) {
       int y = width * tileHeight - row * tileHeight - tileHeight;
       for(int col = 0; col < width; col++) {
         if(tiles != null && tiles[width * row + col] != 0)
-          parent.tileset[tiles[width * row + col] - 1].render(batch, (col * tileWidth), y, tileWidth, tileHeight);
+          getTile(row, col).render(batch, (col * tileWidth), y, tileWidth, tileHeight);
       }
     }
   }
 
-
+  Tile getTile(x, y) {
+    return parent.tileset[tiles[width * x + y] - 1];
+  }
 
 }

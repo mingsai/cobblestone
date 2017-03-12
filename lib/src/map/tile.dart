@@ -2,8 +2,8 @@ part of cobblestone;
 
 abstract class Tile {
 
-  var data;
-  String image;
+  var data = null;
+  String image = "";
 
   void render(SpriteBatch batch, num x, num y, num width, num height);
 

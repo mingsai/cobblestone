@@ -81,7 +81,7 @@ abstract class VertexBatch {
     gl.uniformMatrix4fv(shaderProgram.uniforms[transMatUni], false, transform.storage);
 
     //The indices are important!
-    gl.drawElements(drawMode, maxSprites * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
+    gl.drawElements(drawMode, spritesTotal * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
 
     spritesToEnd += spritesTotal;
     reset();
