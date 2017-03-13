@@ -114,7 +114,7 @@ class TileLayer extends MapLayer {
     for(int row = 0; row < height; row++) {
       for(int col = 0; col < width; col++) {
         if(tiles != null && tiles[width * row + col] != 0)
-          getTile(row, col).render(batch, col * tileWidth + x, row * tileHeight + y, tileWidth, tileHeight);
+          getTile(row, col).render(batch, col * tileWidth + x, (height * tileHeight - tileHeight - row * tileHeight) + y, tileWidth, tileHeight);
       }
     }
   }

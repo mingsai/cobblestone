@@ -63,7 +63,7 @@ class TilemapExample extends BaseGame {
     renderer.projection = camera.combined;
     renderer.begin();
 
-    map.render(renderer, 32, 64);
+    map.render(renderer, 0, 0);
 
     int offset = 0;
     for(BasicTile texture in map.basicTiles.values) {
