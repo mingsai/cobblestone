@@ -113,14 +113,15 @@ class TileLayer extends MapLayer {
   render(SpriteBatch batch, num x, num y) {
     for(int row = 0; row < height; row++) {
       for(int col = 0; col < width; col++) {
-        if(tiles != null && tiles[width * row + col] != 0)
-          getTile(row, col).render(batch, col * tileWidth + x, (height * tileHeight - tileHeight - row * tileHeight) + y, tileWidth, tileHeight);
+        if(getTile(col, row) != null)
+          getTile(col, row).render(batch, col * tileWidth + x, row * tileHeight + y, tileWidth, tileHeight);
       }
     }
   }
 
   Tile getTile(x, y) {
-    return parent.tileset[tiles[width * x + y] - 1];
+    //I know this function makes little sense to us mere mortals, but it works (I think)!
+    return parent.tileset[tiles[width * (height - y - 1) + x] - 1];
   }
 
 }
