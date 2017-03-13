@@ -55,14 +55,14 @@ class Tilemap {
     }
   }
 
-  render(SpriteBatch batch, {Pattern filter: null}) {
+  render(SpriteBatch batch, num x, num y, {Pattern filter: null}) {
     if(filter == null) {
       for (MapLayer layer in layers) {
-        layer.render(batch);
+        layer.render(batch, x, y);
       }
     } else {
       for (MapLayer layer in getLayersContaining(filter)) {
-        layer.render(batch);
+        layer.render(batch, x, y);
       }
     }
   }
@@ -79,7 +79,7 @@ abstract class MapLayer {
 
   String name;
 
-  render(SpriteBatch batch);
+  render(SpriteBatch batch, num x, num y);
 
 }
 
@@ -110,12 +110,11 @@ class TileLayer extends MapLayer {
   }
 
   @override
-  render(SpriteBatch batch) {
+  render(SpriteBatch batch, num x, num y) {
     for(int row = 0; row < height; row++) {
-      int y = width * tileHeight - row * tileHeight - tileHeight;
       for(int col = 0; col < width; col++) {
         if(tiles != null && tiles[width * row + col] != 0)
-          getTile(row, col).render(batch, (col * tileWidth), y, tileWidth, tileHeight);
+          getTile(row, col).render(batch, col * tileWidth + x, row * tileHeight + y, tileWidth, tileHeight);
       }
     }
   }
