@@ -73,6 +73,30 @@ class GameTexture {
     this.v2 = other.v2;
   }
 
+  GameTexture.empty(this.width, this.height) {
+    texture = gl.createTexture();
+    gl.bindTexture(WebGL.TEXTURE_2D, texture);
+    //gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
+    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
+    gl.texImage2D(
+        WebGL.TEXTURE_2D, 0, WebGL.RGBA, width, height, 0,
+        WebGL.RGBA, WebGL.UNSIGNED_BYTE, null);
+    gl.bindTexture(WebGL.TEXTURE_2D, null);
+
+    this.source = "None";
+
+    this.sourceWidth = width;
+    this.sourceHeight = height;
+
+    this.u = 0;
+    this.v = 0;
+    this.u2 = 1;
+    this.v2 = 1;
+  }
+
   setRegion(int x, int y, int width, int height) {
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
