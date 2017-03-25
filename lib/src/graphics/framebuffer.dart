@@ -12,7 +12,7 @@ class Framebuffer {
     if(shader == null) {
       shader = assetManager.get("packages/cobblestone/shaders/batch");
     }
-    batch = new SpriteBatch(shader);
+    batch = new SpriteBatch(shader, maxSprites: 2);
 
     texture = new GameTexture.empty(width, height);
 
