@@ -20,12 +20,15 @@ class Sound {
   WebAudio.AudioBuffer buffer;
   WebAudio.GainNode gainNode;
 
+  double volume = 1.0;
+
   Sound(this.buffer) {
     gainNode = audioContext.createGain();
     sources = [];
   }
 
   play([bool loop = false]) {
+    gainNode.gain.value = volume;
     WebAudio.AudioBufferSourceNode source = audioContext.createBufferSource();
     source.connectNode(gainNode, 0, 0);
     gainNode.connectNode(audioContext.destination, 0, 0);

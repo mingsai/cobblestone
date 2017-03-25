@@ -14,7 +14,7 @@ class AudioExample extends BaseGame {
 
   bool get isLoaded => nehe != null;
 
-  Sound music;
+  Music music;
   Sound beat;
 
   @override
@@ -24,6 +24,7 @@ class AudioExample extends BaseGame {
     setGLViewport(canvasWidth, canvasHeight);
 
     music = assetManager.get("technogeek.wav");
+    music.volume = 0.1;
     beat = assetManager.get("short wind sound.wav");
 
     window.onKeyUp.listen((KeyboardEvent e) {
@@ -40,7 +41,7 @@ class AudioExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("technogeek.wav", loadGameSound("technogeek.wav"));
+    assetManager.load("technogeek.wav", loadMusic("technogeek.wav"));
     assetManager.load("spaceship.wav", loadGameSound("spaceship.wav"));
     assetManager.load("short wind sound.wav", loadGameSound("short wind sound.wav"));
   }
