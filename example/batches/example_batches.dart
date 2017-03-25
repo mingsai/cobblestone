@@ -15,8 +15,9 @@ class GeometryExample extends BaseGame {
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    pointBatch = new PointBatch.defaultShader();
-    physboxBatch = new PhysboxBatch.defaultShader();
+    pointBatch = new PointBatch.defaultShader(maxSprites: 2);
+
+    physboxBatch = new PhysboxBatch.defaultShader(maxSprites: 2);
 
     setGLViewport(canvasWidth, canvasHeight);
   }
@@ -35,6 +36,7 @@ class GeometryExample extends BaseGame {
     pointBatch.begin();
 
     pointBatch.draw(new Vector3(10.0, 10.0, 0.0), new Vector4(0.0, 1.0, 0.0, 1.0));
+    pointBatch.draw(new Vector3(10.0, 20.0, 0.0), new Vector4(1.0, 1.0, 0.0, 1.0));
 
     pointBatch.end();
 

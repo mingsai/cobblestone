@@ -14,11 +14,11 @@ class SpriteBatch extends VertexBatch {
 
   GameTexture texture;
 
-  SpriteBatch(shaderProgram) : super(shaderProgram) {
+  SpriteBatch(shaderProgram, {this.maxSprites = 2000}) : super(shaderProgram) {
     color = new Vector4.all(1.0);
   }
 
-  SpriteBatch.defaultShader() : this(assetManager.get("packages/cobblestone/shaders/batch"));
+  SpriteBatch.defaultShader({int maxSprites = 2000}) : this(assetManager.get("packages/cobblestone/shaders/batch"), maxSprites: maxSprites);
 
   draw(GameTexture texture, num x, num y,
       {num width: null, num height: null, num scaleX: 1, num scaleY: 1,

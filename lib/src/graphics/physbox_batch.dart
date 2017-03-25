@@ -2,6 +2,8 @@ part of cobblestone;
 
 class PhysboxBatch extends VertexBatch {
 
+  int maxSprites = 2000;
+
   final int drawMode = WebGL.LINES;
 
   final int vertexSize = 3;
@@ -10,10 +12,10 @@ class PhysboxBatch extends VertexBatch {
 
   Vector3 point = new Vector3.zero();
 
-  PhysboxBatch(ShaderProgram shaderProgram) : super(shaderProgram);
+  PhysboxBatch(ShaderProgram shaderProgram, {this.maxSprites = 2000}) : super(shaderProgram);
 
-  PhysboxBatch.defaultShader()
-      : this(assetManager.get("packages/cobblestone/shaders/wire"));
+  PhysboxBatch.defaultShader({int maxSprites = 2000})
+      : this(assetManager.get("packages/cobblestone/shaders/wire"), maxSprites: maxSprites);
 
   @override
   setAttribPointers() {

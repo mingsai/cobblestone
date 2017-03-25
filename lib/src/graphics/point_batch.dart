@@ -2,15 +2,17 @@ part of cobblestone;
 
 class PointBatch extends VertexBatch {
 
+  int maxSprites = 8000;
+
   final int drawMode = WebGL.POINTS;
 
   final int vertexSize = 7;
   final int verticesPerSprite = 1;
   final int indicesPerSprite = 1;
 
-  PointBatch(ShaderProgram shaderProgram) : super(shaderProgram);
+  PointBatch(ShaderProgram shaderProgram, {this.maxSprites = 8000}) : super(shaderProgram);
 
-  PointBatch.defaultShader() : this(assetManager.get("packages/cobblestone/shaders/point"));
+  PointBatch.defaultShader({int maxSprites = 8000}) : this(assetManager.get("packages/cobblestone/shaders/point"), maxSprites: maxSprites);
 
   @override
   setAttribPointers() {

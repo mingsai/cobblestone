@@ -15,7 +15,7 @@ class PerformanceExample extends BaseGame {
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader();
+    renderer = new SpriteBatch.defaultShader(maxSprites: 20000);
 
     setGLViewport(canvasWidth, canvasHeight);
 

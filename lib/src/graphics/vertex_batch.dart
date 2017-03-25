@@ -26,7 +26,7 @@ abstract class VertexBatch {
   Matrix4 projection;
   Matrix4 transform;
 
-  VertexBatch(this.shaderProgram) {
+  VertexBatch(this.shaderProgram, {this.maxSprites = 8000}) {
     projection = new Matrix4.identity();
     transform = new Matrix4.identity();
 
