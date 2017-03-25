@@ -157,7 +157,7 @@ class SpriteBatch extends VertexBatch {
     gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 0);
     gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
 
-    gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind());
+    gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind(0));
     gl.uniform4f(shaderProgram.uniforms[colorUni], color.r, color.g, color.b, color.a);
   }
 }

@@ -147,10 +147,10 @@ class GameTexture {
     return tiles;
   }
 
-  int bind() {
-    gl.activeTexture(WebGL.TEXTURE0);
+  int bind([int location = 0]) {
+    gl.activeTexture(location);
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
-    return 0;
+    return location;
   }
 
 }
