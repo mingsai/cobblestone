@@ -89,6 +89,22 @@ abstract class VertexBatch {
 
   void setAttribPointers();
 
+  setUniform(String name, dynamic value) {
+    if(value is int) {
+      gl.uniform1i(shaderProgram.uniforms[name], value);
+    } else if(value is double) {
+      gl.uniform1f(shaderProgram.uniforms[name], value);
+    } else if(value is Vector2) {
+      gl.uniform2f(shaderProgram.uniforms[name], value.x, value.y);
+    } else if(value is Vector3) {
+      gl.uniform3f(shaderProgram.uniforms[name], value.x, value.y, value.z);
+    } else if(value is Vector4) {
+      gl.uniform4f(shaderProgram.uniforms[name], value.x, value.y, value.z, value.w);
+    } else if(value is Matrix4) {
+      gl.uniformMatrix4fv(shaderProgram.uniforms[name], false, value.storage);
+    }
+  }
+
   end() {
     flush();
     if(spritesToEnd > maxSprites) {

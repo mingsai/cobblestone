@@ -1,0 +1,14 @@
+precision highp float;
+
+uniform sampler2D uTexture;
+uniform vec4 uColor;
+uniform vec4 uLightColor;
+
+varying vec2 vTextureCoord;
+
+void main(void) {
+    gl_FragColor = texture2D(uTexture, vec2(vTextureCoord.s, vTextureCoord.t)) * uColor * uLightColor;
+    //gl_FragColor = vColor;
+    if(gl_FragColor.a <= 0.0)
+        discard;
+}
