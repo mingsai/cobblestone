@@ -5,7 +5,6 @@ main() {
 }
 
 class TilemapExample extends BaseGame {
-
   Camera2D camera;
 
   SpriteBatch renderer;
@@ -21,7 +20,7 @@ class TilemapExample extends BaseGame {
 
     renderer = new SpriteBatch.defaultShader();
 
-    Map<String, GameTexture> atlas = assetManager.get("atlas");
+    Map<String, Texture> atlas = assetManager.get("atlas");
     map = assetManager.get("islands2.json");
     map.giveTileset(atlas);
 
@@ -30,17 +29,17 @@ class TilemapExample extends BaseGame {
   }
 
   void startMove(KeyboardEvent e) {
-    if(e.keyCode == KeyCode.W) north = true;
-    if(e.keyCode == KeyCode.D) east = true;
-    if(e.keyCode == KeyCode.S) south = true;
-    if(e.keyCode == KeyCode.A) west = true;
+    if (e.keyCode == KeyCode.W) north = true;
+    if (e.keyCode == KeyCode.D) east = true;
+    if (e.keyCode == KeyCode.S) south = true;
+    if (e.keyCode == KeyCode.A) west = true;
   }
 
   void endMove(KeyboardEvent e) {
-    if(e.keyCode == KeyCode.W) north = false;
-    if(e.keyCode == KeyCode.D) east = false;
-    if(e.keyCode == KeyCode.S) south = false;
-    if(e.keyCode == KeyCode.A) west = false;
+    if (e.keyCode == KeyCode.W) north = false;
+    if (e.keyCode == KeyCode.D) east = false;
+    if (e.keyCode == KeyCode.S) south = false;
+    if (e.keyCode == KeyCode.A) west = false;
   }
 
   @override
@@ -51,7 +50,8 @@ class TilemapExample extends BaseGame {
   @override
   preload() {
     assetManager.load("islands2.json", loadTilemap("islands2.json"));
-    assetManager.load("atlas", loadAtlas("atlas.json", loadTexture("atlas.png", nearest)));
+    assetManager.load(
+        "atlas", loadAtlas("atlas.json", loadTexture("atlas.png", nearest)));
   }
 
   @override
@@ -66,7 +66,7 @@ class TilemapExample extends BaseGame {
     map.render(renderer, 0, 0);
 
     int offset = 0;
-    for(BasicTile texture in map.basicTiles.values) {
+    for (BasicTile texture in map.basicTiles.values) {
       renderer.draw(texture.texture, offset, height - 16);
       offset += 16;
     }
@@ -81,12 +81,11 @@ class TilemapExample extends BaseGame {
 
   @override
   update(num delta) {
-    if(north) camera.translate(0.0, -delta * 20);
-    if(east) camera.translate(-delta * 20, 0.0);
-    if(south) camera.translate(0.0, delta * 20);
-    if(west) camera.translate(delta * 20, 0.0);
+    if (north) camera.translate(0.0, -delta * 20);
+    if (east) camera.translate(-delta * 20, 0.0);
+    if (south) camera.translate(0.0, delta * 20);
+    if (west) camera.translate(delta * 20, 0.0);
     camera.roundInt = true;
     map.update(delta);
   }
-
 }

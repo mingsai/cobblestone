@@ -7,18 +7,24 @@ loadDefaultShaders() {
   //    loadProgram("packages/cobblestone/shaders/textured.vertex", "packages/cobblestone/shaders/textured.fragment"));
   //assetManager.load("packages/cobblestone/shaders/untextured",
   //    loadProgram("packages/cobblestone/shaders/untextured.vertex", "packages/cobblestone/shaders/untextured.fragment"));
-  assetManager.load("packages/cobblestone/shaders/batch",
-      loadProgram("packages/cobblestone/shaders/batch.vertex", "packages/cobblestone/shaders/batch.fragment"));
-  assetManager.load("packages/cobblestone/shaders/point",
-      loadProgram("packages/cobblestone/shaders/point.vertex", "packages/cobblestone/shaders/point.fragment"));
-  assetManager.load("packages/cobblestone/shaders/wire",
-      loadProgram("packages/cobblestone/shaders/wire.vertex", "packages/cobblestone/shaders/wire.fragment"));
+  assetManager.load(
+      "packages/cobblestone/shaders/batch",
+      loadProgram("packages/cobblestone/shaders/batch.vertex",
+          "packages/cobblestone/shaders/batch.fragment"));
+  assetManager.load(
+      "packages/cobblestone/shaders/point",
+      loadProgram("packages/cobblestone/shaders/point.vertex",
+          "packages/cobblestone/shaders/point.fragment"));
+  assetManager.load(
+      "packages/cobblestone/shaders/wire",
+      loadProgram("packages/cobblestone/shaders/wire.vertex",
+          "packages/cobblestone/shaders/wire.fragment"));
 }
 
 clearScreen(r, [num g, num b, num a]) {
-  if(r is Vector4) {
+  if (r is Vector4) {
     gl.clearColor(r.r, r.g, r.b, r.a);
-  }else {
+  } else {
     gl.clearColor(r, g, b, a);
   }
 

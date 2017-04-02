@@ -1,21 +1,16 @@
 part of cobblestone;
 
 abstract class Tile {
-
   var data = null;
   String image = "";
 
   void render(SpriteBatch batch, num x, num y, num width, num height);
 
-  void update(double delta) {
-
-  }
-
+  void update(double delta) {}
 }
 
 class BasicTile extends Tile {
-
-  GameTexture texture;
+  Texture texture;
 
   BasicTile(this.texture, var data) {
     this.data = data;
@@ -26,21 +21,19 @@ class BasicTile extends Tile {
   void render(SpriteBatch batch, num x, num y, num width, num height) {
     batch.draw(texture, x, y, width: width, height: height);
   }
-
 }
 
 class AnimatedTile extends Tile {
-
-  List<GameTexture> frames = [];
+  List<Texture> frames = [];
   List<num> timings = [];
 
-  GameTexture texture;
+  Texture texture;
 
   double currentTime = 0.0;
 
   AnimatedTile(var data, Map<int, BasicTile> basicTiles) {
     this.data = data;
-    for(dynamic frame in data["animation"]) {
+    for (dynamic frame in data["animation"]) {
       frames.add(basicTiles[frame["tileid"]].texture);
       timings.add(frame["duration"]);
     }
@@ -53,13 +46,13 @@ class AnimatedTile extends Tile {
 
     int timeSum = 0;
     for (var i = 0; i < timings.length; i++) {
-      if(currentTime >= timeSum) {
+      if (currentTime >= timeSum) {
         texture = frames[i];
       }
       timeSum += timings[i];
     }
 
-    if(currentTime >= timeSum) {
+    if (currentTime >= timeSum) {
       currentTime = 0.0;
       texture = frames[0];
     }
@@ -69,5 +62,4 @@ class AnimatedTile extends Tile {
   void render(SpriteBatch batch, num x, num y, num width, num height) {
     batch.draw(texture, x, y, width: width, height: height);
   }
-
 }

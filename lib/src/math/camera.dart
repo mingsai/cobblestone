@@ -4,7 +4,6 @@ const num near = -100;
 const num far = 100;
 
 class Camera2D {
-
   Matrix4 projection;
   Matrix4 combined;
 
@@ -18,7 +17,8 @@ class Camera2D {
 
   Camera2D.originCenter(num width, num height) {
     setDefaults();
-    projection = makeOrthographicMatrix(-width / 2, width / 2, -height / 2, height / 2, near, far);
+    projection = makeOrthographicMatrix(
+        -width / 2, width / 2, -height / 2, height / 2, near, far);
     update();
   }
 
@@ -72,7 +72,7 @@ class Camera2D {
   }
 
   bool get roundInt => transform.roundInt;
-  void set roundInt(bool round){
+  void set roundInt(bool round) {
     transform.roundInt = round;
   }
 
@@ -82,6 +82,7 @@ class Camera2D {
   void set x(num x) {
     transform.x = x;
   }
+
   void set y(num y) {
     transform.y = y;
   }
@@ -89,7 +90,8 @@ class Camera2D {
   num get scaleX => transform.scaleX;
   num get scaleY => transform.scaleY;
 
-  void set scaleX(num scaleX) => transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
-  void set scaleY(num scaleY) => transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
-
+  void set scaleX(num scaleX) =>
+      transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
+  void set scaleY(num scaleY) =>
+      transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
 }

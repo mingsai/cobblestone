@@ -1,7 +1,6 @@
 part of cobblestone;
 
 class PhysboxBatch extends VertexBatch {
-
   int maxSprites = 2000;
 
   final int drawMode = WebGL.LINES;
@@ -12,16 +11,17 @@ class PhysboxBatch extends VertexBatch {
 
   Vector3 point = new Vector3.zero();
 
-  PhysboxBatch(ShaderProgram shaderProgram, {this.maxSprites = 2000}) : super(shaderProgram);
+  PhysboxBatch(ShaderProgram shaderProgram, {this.maxSprites: 2000})
+      : super(shaderProgram);
 
-  PhysboxBatch.defaultShader({int maxSprites = 2000})
-      : this(assetManager.get("packages/cobblestone/shaders/wire"), maxSprites: maxSprites);
+  PhysboxBatch.defaultShader({int maxSprites: 2000})
+      : this(assetManager.get("packages/cobblestone/shaders/wire"),
+            maxSprites: maxSprites);
 
   @override
   setAttribPointers() {
-    gl.vertexAttribPointer(
-        shaderProgram.attributes[vertPosAttrib], 3, WebGL.FLOAT, false,
-        vertexSize * 4, 0);
+    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+        WebGL.FLOAT, false, vertexSize * 4, 0);
 
     gl.uniform4fv(shaderProgram.uniforms[colorUni], Colors.white.storage);
     //print(shaderProgram.attributes);
@@ -87,5 +87,4 @@ class PhysboxBatch extends VertexBatch {
       spritesInFlush++;
     }
   }
-
 }

@@ -5,7 +5,6 @@ main() {
 }
 
 class GeometryExample extends BaseGame {
-
   SpriteBatch renderer;
   Camera2D camera;
 
@@ -19,7 +18,8 @@ class GeometryExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("atlas", loadAtlas("atlas/atlas.json", loadTexture("atlas/atlas.png", nearest)));
+    assetManager.load("atlas",
+        loadAtlas("atlas/atlas.json", loadTexture("atlas/atlas.png", nearest)));
   }
 
   @override
@@ -30,9 +30,12 @@ class GeometryExample extends BaseGame {
 
     renderer.projection = camera.combined;
     renderer.begin();
-    renderer.draw(assetManager.get("atlas")["spriteA"], 0, 0, width: 64, height: 64);
-    renderer.draw(assetManager.get("atlas")["spriteB"], 64, 0, width: 64, height: 64);
-    renderer.draw(assetManager.get("atlas")["spriteC"], 128, 0, width: 64, height: 64);
+    renderer.draw(assetManager.get("atlas")["spriteA"], 0, 0,
+        width: 64, height: 64);
+    renderer.draw(assetManager.get("atlas")["spriteB"], 64, 0,
+        width: 64, height: 64);
+    renderer.draw(assetManager.get("atlas")["spriteC"], 128, 0,
+        width: 64, height: 64);
     renderer.end();
   }
 
@@ -41,7 +44,5 @@ class GeometryExample extends BaseGame {
   }
 
   @override
-  update(num delta) {
-
-  }
+  update(num delta) {}
 }

@@ -1,7 +1,6 @@
 part of cobblestone;
 
 class Transform {
-
   Matrix4 combined;
 
   Vector2 temp;
@@ -44,7 +43,7 @@ class Transform {
   }
 
   void translate(x, [num y]) {
-    if(x is Vector2) {
+    if (x is Vector2) {
       translation.add(x);
     } else {
       temp.setValues(x, y);
@@ -53,7 +52,7 @@ class Transform {
   }
 
   void setTranslation(x, [num y]) {
-    if(x is Vector2) {
+    if (x is Vector2) {
       translation.setFrom(x);
     } else {
       translation.setValues(x.toDouble(), y.toDouble());
@@ -61,7 +60,7 @@ class Transform {
   }
 
   void rotate(num amount, bool counter) {
-    if(!counter) {
+    if (!counter) {
       rotation += amount;
     } else {
       rotation -= amount;
@@ -73,7 +72,7 @@ class Transform {
   }
 
   void scale(x, [num y]) {
-    if(x is Vector2) {
+    if (x is Vector2) {
       currentScale.multiply(x);
     } else {
       temp.setValues(x, y);
@@ -82,7 +81,7 @@ class Transform {
   }
 
   void setScale(x, [num y]) {
-    if(x is Vector2) {
+    if (x is Vector2) {
       currentScale.setFrom(x);
     } else {
       currentScale.setValues(x.toDouble(), y.toDouble());
@@ -91,16 +90,17 @@ class Transform {
 
   void update() {
     combined.setIdentity();
-    if(roundInt) {
-      combined.translate(translation.x.roundToDouble(), translation.y.roundToDouble(), 0.0);
+    if (roundInt) {
+      combined.translate(
+          translation.x.roundToDouble(), translation.y.roundToDouble(), 0.0);
       combined.rotateZ(rotation);
-      combined.scale(currentScale.x.roundToDouble(), currentScale.y.roundToDouble(), 0.0);
+      combined.scale(
+          currentScale.x.roundToDouble(), currentScale.y.roundToDouble(), 0.0);
     } else {
       combined.translate(translation.x, translation.y, 0.0);
       combined.rotateZ(rotation);
       combined.scale(currentScale.x, currentScale.y, 0.0);
     }
-
   }
 
   num get x => translation.x;
@@ -112,7 +112,8 @@ class Transform {
   num get scaleX => currentScale.x;
   num get scaleY => currentScale.y;
 
-  void set scaleX(num scaleX) => translation.setValues(scaleX.toDouble(), scaleY.toDouble());
-  void set scaleY(num scaleY) => translation.setValues(scaleX.toDouble(), scaleY.toDouble());
-
+  void set scaleX(num scaleX) =>
+      translation.setValues(scaleX.toDouble(), scaleY.toDouble());
+  void set scaleY(num scaleY) =>
+      translation.setValues(scaleX.toDouble(), scaleY.toDouble());
 }

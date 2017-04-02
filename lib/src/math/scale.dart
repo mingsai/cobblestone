@@ -1,13 +1,10 @@
 part of cobblestone;
 
-enum ScaleMode {
-  static, fill, fit, resize
-}
+enum ScaleMode { static, fill, fit, resize }
 
-scaleCanvas(CanvasElement element, ScaleMode mode,
-    int requestWidth, int requestHeight,
-    int parentWidth, int parentHeight) {
-  switch(mode) {
+scaleCanvas(CanvasElement element, ScaleMode mode, int requestWidth,
+    int requestHeight, int parentWidth, int parentHeight) {
+  switch (mode) {
     case ScaleMode.static:
       break;
     case ScaleMode.fill:
@@ -28,7 +25,7 @@ scaleCanvas(CanvasElement element, ScaleMode mode,
 }
 
 int effectiveDimension(ScaleMode mode, int requested, int canvas) {
-  switch(mode) {
+  switch (mode) {
     case ScaleMode.resize:
       return canvas;
     default:

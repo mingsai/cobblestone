@@ -1,7 +1,6 @@
 part of cobblestone;
 
 class AssetManager {
-
   Map<String, dynamic> assets;
 
   List<String> toLoad;
@@ -12,8 +11,8 @@ class AssetManager {
   }
 
   bool allLoaded() {
-    for(String asset in toLoad) {
-      if(!assets.containsKey(asset)) {
+    for (String asset in toLoad) {
+      if (!assets.containsKey(asset)) {
         return false;
       }
     }
@@ -30,5 +29,4 @@ class AssetManager {
   get(String asset) {
     return assets[asset];
   }
-
 }

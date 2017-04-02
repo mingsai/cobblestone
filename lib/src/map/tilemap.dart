@@ -1,13 +1,12 @@
 part of cobblestone;
 
 Future<Tilemap> loadTilemap(String url) {
-  return HttpRequest.getString(url).then((String file) =>
-    new Tilemap(JSON.decode(file))
-  );
+  return HttpRequest
+      .getString(url)
+      .then((String file) => new Tilemap(JSON.decode(file)));
 }
 
 class Tilemap {
-
   Map file;
 
   List<MapLayer> layers;
@@ -26,22 +25,22 @@ class Tilemap {
     this.tileHeight = file["tileheight"];
 
     layers = [];
-    for(Map layer in file["layers"]) {
-      if(layer["type"] == "tilelayer")
-        layers.add(new TileLayer(layer, this));
+    for (Map layer in file["layers"]) {
+      if (layer["type"] == "tilelayer") layers.add(new TileLayer(layer, this));
     }
     //layers = layers.reversed.toList();
   }
 
-  giveTileset(Map<String, GameTexture> set) {
+  giveTileset(Map<String, Texture> set) {
     basicTiles = new Map<int, BasicTile>();
     tileset = new Map<int, BasicTile>();
     file["tilesets"][0]["tiles"].forEach((id, tile) {
-      basicTiles[int.parse(id)] = new BasicTile(set[Path.basenameWithoutExtension(tile["image"])], tile);
+      basicTiles[int.parse(id)] = new BasicTile(
+          set[Path.basenameWithoutExtension(tile["image"])], tile);
     });
 
     file["tilesets"][0]["tiles"].forEach((id, tile) {
-      if(tile["animation"] != null){
+      if (tile["animation"] != null) {
         tileset[int.parse(id)] = new AnimatedTile(tile, basicTiles);
       } else {
         tileset[int.parse(id)] = basicTiles[int.parse(id)];
@@ -50,13 +49,13 @@ class Tilemap {
   }
 
   update(double delta) {
-    for(Tile tile in tileset.values) {
+    for (Tile tile in tileset.values) {
       tile.update(delta);
     }
   }
 
   render(SpriteBatch batch, num x, num y, {Pattern filter: null}) {
-    if(filter == null) {
+    if (filter == null) {
       for (MapLayer layer in layers) {
         layer.render(batch, x, y);
       }
@@ -68,23 +67,17 @@ class Tilemap {
   }
 
   List<MapLayer> getLayersContaining(Pattern filter) {
-    return layers.where((MapLayer layer) =>
-      layer.name.contains(filter)
-    );
+    return layers.where((MapLayer layer) => layer.name.contains(filter));
   }
-
 }
 
 abstract class MapLayer {
-
   String name;
 
   render(SpriteBatch batch, num x, num y);
-
 }
 
 class TileLayer extends MapLayer {
-
   Tilemap parent;
 
   var layer;
@@ -111,10 +104,11 @@ class TileLayer extends MapLayer {
 
   @override
   render(SpriteBatch batch, num x, num y) {
-    for(int row = 0; row < height; row++) {
-      for(int col = 0; col < width; col++) {
-        if(getTile(col, row) != null)
-          getTile(col, row).render(batch, col * tileWidth + x, row * tileHeight + y, tileWidth, tileHeight);
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
+        if (getTile(col, row) != null)
+          getTile(col, row).render(batch, col * tileWidth + x,
+              row * tileHeight + y, tileWidth, tileHeight);
       }
     }
   }
@@ -123,5 +117,4 @@ class TileLayer extends MapLayer {
     //I know this function makes little sense to us mere mortals, but it works (I think)!
     return parent.tileset[tiles[width * (height - y - 1) + x] - 1];
   }
-
 }

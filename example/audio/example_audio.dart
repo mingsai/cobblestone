@@ -5,12 +5,11 @@ main() {
 }
 
 class AudioExample extends BaseGame {
-
   Camera2D camera;
   Matrix4 pMatrix;
 
   SpriteBatch renderer;
-  GameTexture nehe;
+  Texture nehe;
 
   bool get isLoaded => nehe != null;
 
@@ -30,9 +29,9 @@ class AudioExample extends BaseGame {
     window.onKeyUp.listen((KeyboardEvent e) {
       if (e.keyCode == KeyCode.ONE) {
         beat.play();
-      } else if(e.keyCode == KeyCode.TWO) {
+      } else if (e.keyCode == KeyCode.TWO) {
         music.loop();
-      } else if(e.keyCode == KeyCode.ZERO) {
+      } else if (e.keyCode == KeyCode.ZERO) {
         music.stop();
         beat.stop();
       }
@@ -42,8 +41,9 @@ class AudioExample extends BaseGame {
   @override
   preload() {
     assetManager.load("technogeek.wav", loadMusic("technogeek.wav"));
-    assetManager.load("spaceship.wav", loadGameSound("spaceship.wav"));
-    assetManager.load("short wind sound.wav", loadGameSound("short wind sound.wav"));
+    assetManager.load("spaceship.wav", loadSound("spaceship.wav"));
+    assetManager.load(
+        "short wind sound.wav", loadSound("short wind sound.wav"));
   }
 
   @override
@@ -51,7 +51,6 @@ class AudioExample extends BaseGame {
     clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
-
   }
 
   resize(num width, num height) {
@@ -59,6 +58,5 @@ class AudioExample extends BaseGame {
   }
 
   @override
-  update(num delta) {
-  }
+  update(num delta) {}
 }

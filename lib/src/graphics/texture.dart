@@ -1,11 +1,12 @@
 part of cobblestone;
 
-Future<GameTexture> loadTexture(String url, handle(ImageElement ele)) {
-  var completer = new Completer<GameTexture>();
+Future<Texture> loadTexture(String url, [handle(ImageElement ele) = nearest]) {
+  var completer = new Completer<Texture>();
   var element = new ImageElement();
   element.onLoad.listen((e) {
     var texture = handle(element);
-    GameTexture gameTexture = new GameTexture(texture, url, element.width, element.height);
+    Texture gameTexture =
+        new Texture(texture, url, element.width, element.height);
     completer.complete(gameTexture);
   });
   element.src = url;
@@ -16,9 +17,11 @@ WebGL.Texture mipMap(ImageElement image) {
   WebGL.Texture texture = gl.createTexture();
   gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   gl.bindTexture(WebGL.TEXTURE_2D, texture);
-  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
+  gl.texImage2D(
+      WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
   gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
+  gl.texParameteri(
+      WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
   gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
   gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
   gl.generateMipmap(WebGL.TEXTURE_2D);
@@ -30,7 +33,8 @@ WebGL.Texture nearest(ImageElement element) {
   WebGL.Texture texture = gl.createTexture();
   gl.bindTexture(WebGL.TEXTURE_2D, texture);
   gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
-  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, element);
+  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
+      WebGL.UNSIGNED_BYTE, element);
   gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
   gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
   gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
@@ -39,8 +43,7 @@ WebGL.Texture nearest(ImageElement element) {
   return texture;
 }
 
-class GameTexture {
-
+class Texture {
   WebGL.Texture texture;
 
   num u, v, u2, v2;
@@ -53,11 +56,11 @@ class GameTexture {
   num width;
   num height;
 
-  GameTexture(this.texture, this.source, this.sourceWidth, this.sourceHeight) {
+  Texture(this.texture, this.source, this.sourceWidth, this.sourceHeight) {
     setRegion(0, 0, sourceWidth, sourceHeight);
   }
 
-  GameTexture.clone(GameTexture other) {
+  Texture.clone(Texture other) {
     this.texture = other.texture;
 
     this.source = other.source;
@@ -73,17 +76,18 @@ class GameTexture {
     this.v2 = other.v2;
   }
 
-  GameTexture.empty(this.width, this.height) {
+  Texture.empty(this.width, this.height) {
     texture = gl.createTexture();
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
     //gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
     gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
     gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
-    gl.texImage2D(
-        WebGL.TEXTURE_2D, 0, WebGL.RGBA, width, height, 0,
-        WebGL.RGBA, WebGL.UNSIGNED_BYTE, null);
+    gl.texParameteri(
+        WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
+    gl.texParameteri(
+        WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
+    gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, width, height, 0, WebGL.RGBA,
+        WebGL.UNSIGNED_BYTE, null);
     gl.bindTexture(WebGL.TEXTURE_2D, null);
 
     this.source = "None";
@@ -100,7 +104,8 @@ class GameTexture {
   setRegion(int x, int y, int width, int height) {
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
-    setRegionCoords(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
+    setRegionCoords(x * invTexWidth, y * invTexHeight,
+        (x + width) * invTexWidth, (y + height) * invTexHeight);
 
     this.width = width;
     this.height = height;
@@ -126,7 +131,7 @@ class GameTexture {
     this.v2 = v2;
   }
 
-  List<GameTexture> split(int tileWidth, int tileHeight) {
+  List<Texture> split(int tileWidth, int tileHeight) {
     int x = u;
     int y = v + height - tileHeight;
 
@@ -134,11 +139,11 @@ class GameTexture {
     int cols = (width / tileWidth).floor();
 
     int startX = x;
-    List<GameTexture> tiles = [];
+    List<Texture> tiles = [];
     for (int row = 0; row < rows; row++, y -= tileHeight) {
       x = startX;
       for (int col = 0; col < cols; col++, x += tileWidth) {
-        GameTexture tile = new GameTexture.clone(this);
+        Texture tile = new Texture.clone(this);
         tile.setRegion(x, y, tileWidth, tileHeight);
         tiles.add(tile);
       }
@@ -152,5 +157,4 @@ class GameTexture {
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
     return location;
   }
-
 }

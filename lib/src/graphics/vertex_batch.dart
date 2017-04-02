@@ -1,7 +1,6 @@
 part of cobblestone;
 
 abstract class VertexBatch {
-
   int maxSprites = 8000;
 
   int vertexSize = 3;
@@ -26,7 +25,7 @@ abstract class VertexBatch {
   Matrix4 projection;
   Matrix4 transform;
 
-  VertexBatch(this.shaderProgram, {this.maxSprites = 8000}) {
+  VertexBatch(this.shaderProgram, {this.maxSprites: 8000}) {
     projection = new Matrix4.identity();
     transform = new Matrix4.identity();
 
@@ -62,7 +61,7 @@ abstract class VertexBatch {
   }
 
   createIndices() {
-    for(int i = 0; i < indices.length; i++) {
+    for (int i = 0; i < indices.length; i++) {
       indices[i] = i;
     }
 
@@ -77,37 +76,27 @@ abstract class VertexBatch {
 
     setAttribPointers();
 
-    gl.uniformMatrix4fv(shaderProgram.uniforms[projMatUni], false, projection.storage);
-    gl.uniformMatrix4fv(shaderProgram.uniforms[transMatUni], false, transform.storage);
+    gl.uniformMatrix4fv(
+        shaderProgram.uniforms[projMatUni], false, projection.storage);
+    gl.uniformMatrix4fv(
+        shaderProgram.uniforms[transMatUni], false, transform.storage);
 
     //The indices are important!
-    gl.drawElements(drawMode, spritesInFlush * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
+    gl.drawElements(
+        drawMode, spritesInFlush * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
 
     spritesToEnd += spritesInFlush;
     reset();
   }
 
-  void setAttribPointers();
+  void setUniform(String name, dynamic value) =>
+      shaderProgram.setUniform(name, value);
 
-  setUniform(String name, dynamic value) {
-    if(value is int) {
-      gl.uniform1i(shaderProgram.uniforms[name], value);
-    } else if(value is double) {
-      gl.uniform1f(shaderProgram.uniforms[name], value);
-    } else if(value is Vector2) {
-      gl.uniform2f(shaderProgram.uniforms[name], value.x, value.y);
-    } else if(value is Vector3) {
-      gl.uniform3f(shaderProgram.uniforms[name], value.x, value.y, value.z);
-    } else if(value is Vector4) {
-      gl.uniform4f(shaderProgram.uniforms[name], value.x, value.y, value.z, value.w);
-    } else if(value is Matrix4) {
-      gl.uniformMatrix4fv(shaderProgram.uniforms[name], false, value.storage);
-    }
-  }
+  void setAttribPointers();
 
   end() {
     flush();
-    if(spritesToEnd > maxSprites) {
+    if (spritesToEnd > maxSprites) {
       maxSprites = spritesToEnd;
       print("Resized: " + maxSprites.toString());
       rebuildBuffer();
@@ -115,5 +104,4 @@ abstract class VertexBatch {
     spritesToEnd = 0;
     shaderProgram.endProgram();
   }
-
 }

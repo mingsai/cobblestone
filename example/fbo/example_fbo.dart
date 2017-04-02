@@ -5,13 +5,12 @@ main() {
 }
 
 class GeometryExample extends BaseGame {
-
   ShaderProgram effect;
 
   Camera2D camera;
 
   SpriteBatch renderer;
-  GameTexture nehe;
+  Texture nehe;
 
   Framebuffer fbo;
 
@@ -33,7 +32,8 @@ class GeometryExample extends BaseGame {
   @override
   preload() {
     assetManager.load("nehe.gif", loadTexture("nehe.gif", nearest));
-    assetManager.load("effect", loadProgram("effect.vertex", "effect.fragment"));
+    assetManager.load(
+        "effect", loadProgram("effect.vertex", "effect.fragment"));
   }
 
   @override
@@ -50,16 +50,23 @@ class GeometryExample extends BaseGame {
     renderer.draw(nehe, 0.0, 0.0, width: 100.0, height: 100.0);
 
     renderer.color = Colors.forestGreen;
-    renderer.draw(nehe, 25.0, 25.0, width: 100.0, height: 100.0, flipX: true, flipY: true);
+    renderer.draw(nehe, 25.0, 25.0,
+        width: 100.0, height: 100.0, flipX: true, flipY: true);
 
     renderer.color = Colors.saddleBrown;
     renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
 
     renderer.color = Colors.lightSkyBlue;
-    renderer.draw(nehe, 0.0, height - 100.0, width: 100.0, height: 100.0, flipY: true);
+    renderer.draw(nehe, 0.0, height - 100.0,
+        width: 100.0, height: 100.0, flipY: true);
 
     renderer.color = Colors.lightGoldenrodYellow;
-    renderer.draw(nehe, width / 2 - 50, height / 2 - 50, width: 100.0, height: 100.0, flipX: true, angle: rot, counterTurn: true);
+    renderer.draw(nehe, width / 2 - 50, height / 2 - 50,
+        width: 100.0,
+        height: 100.0,
+        flipX: true,
+        angle: rot,
+        counterTurn: true);
 
     renderer.end();
     fbo.endCapture();

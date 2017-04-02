@@ -6,14 +6,11 @@ Future<Music> loadMusic(String url) async {
 }
 
 class Music {
-
   AudioElement audio;
 
   double volume = 1.0;
 
-  Music(this.audio) {
-
-  }
+  Music(this.audio) {}
 
   play([bool loop = false]) {
     audio.loop = loop;
@@ -29,5 +26,4 @@ class Music {
   loop() {
     play(true);
   }
-
 }

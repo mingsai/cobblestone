@@ -5,7 +5,6 @@ main() {
 }
 
 class GeometryExample extends BaseGame {
-
   Camera2D camera;
   Matrix4 pMatrix;
 
@@ -23,8 +22,7 @@ class GeometryExample extends BaseGame {
   }
 
   @override
-  preload() {
-  }
+  preload() {}
 
   @override
   render(num delta) {
@@ -35,15 +33,18 @@ class GeometryExample extends BaseGame {
     pointBatch.projection = camera.combined;
     pointBatch.begin();
 
-    pointBatch.draw(new Vector3(10.0, 10.0, 0.0), new Vector4(0.0, 1.0, 0.0, 1.0));
-    pointBatch.draw(new Vector3(10.0, 20.0, 0.0), new Vector4(1.0, 1.0, 0.0, 1.0));
+    pointBatch.draw(
+        new Vector3(10.0, 10.0, 0.0), new Vector4(0.0, 1.0, 0.0, 1.0));
+    pointBatch.draw(
+        new Vector3(10.0, 20.0, 0.0), new Vector4(1.0, 1.0, 0.0, 1.0));
 
     pointBatch.end();
 
     physboxBatch.projection = camera.combined;
     physboxBatch.begin();
 
-    Aabb2 box = new Aabb2.centerAndHalfExtents(new Vector2(10.0, 10.0), new Vector2(10.0, 100.0));
+    Aabb2 box = new Aabb2.centerAndHalfExtents(
+        new Vector2(10.0, 10.0), new Vector2(10.0, 100.0));
     physboxBatch.draw2D(box);
 
     Obb3 ob = new Obb3();
@@ -62,6 +63,5 @@ class GeometryExample extends BaseGame {
   }
 
   @override
-  update(num delta) {
-  }
+  update(num delta) {}
 }

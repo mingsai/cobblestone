@@ -5,7 +5,6 @@ main() {
 }
 
 class PerformanceExample extends BaseGame {
-
   Camera2D camera;
 
   SpriteBatch renderer;
@@ -21,18 +20,19 @@ class PerformanceExample extends BaseGame {
 
     Random rand = new Random();
 
-    GameTexture boulderSheet = assetManager.get("boulders2.png");
+    Texture boulderSheet = assetManager.get("boulders2.png");
     int num = 0;
 
-    List<GameTexture> textures = boulderSheet.split(16, 16);
-    for(int i = 0; i < 20000; i++) {
-      boulders.add(new BoulderSprite(textures[rand.nextInt(textures.length)], rand.nextInt(width), rand.nextInt(height)));
+    List<Texture> textures = boulderSheet.split(16, 16);
+    for (int i = 0; i < 20000; i++) {
+      boulders.add(new BoulderSprite(textures[rand.nextInt(textures.length)],
+          rand.nextInt(width), rand.nextInt(height)));
     }
   }
 
   @override
   preload() {
-    assetManager.load("boulders2.png", loadTexture("boulders2.png", nearest));
+    assetManager.load("boulders2.png", loadTexture("boulders2.png"));
   }
 
   @override
@@ -47,7 +47,7 @@ class PerformanceExample extends BaseGame {
     window.console.timeEnd("Begin Batch");
 
     window.console.time("Build Batch");
-    for(BoulderSprite sprite in boulders) {
+    for (BoulderSprite sprite in boulders) {
       renderer.draw(sprite.texture, sprite.x, sprite.y);
     }
     window.console.timeEnd("Build Batch");
@@ -62,17 +62,13 @@ class PerformanceExample extends BaseGame {
   }
 
   @override
-  update(num delta) {
-
-  }
+  update(num delta) {}
 }
 
 class BoulderSprite {
-
-  GameTexture texture;
+  Texture texture;
 
   num x, y;
 
   BoulderSprite(this.texture, this.x, this.y);
-
 }

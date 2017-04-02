@@ -1,7 +1,6 @@
 part of cobblestone;
 
 class SpriteBatch extends VertexBatch {
-
   int maxSprites = 2000;
 
   int drawMode = WebGL.TRIANGLES;
@@ -12,27 +11,33 @@ class SpriteBatch extends VertexBatch {
 
   Vector4 color;
 
-  GameTexture texture;
+  Texture texture;
 
-  SpriteBatch(shaderProgram, {this.maxSprites = 2000}) : super(shaderProgram) {
+  SpriteBatch(shaderProgram, {this.maxSprites: 2000}) : super(shaderProgram) {
     color = new Vector4.all(1.0);
   }
 
-  SpriteBatch.defaultShader({int maxSprites = 2000}) : this(assetManager.get("packages/cobblestone/shaders/batch"), maxSprites: maxSprites);
+  SpriteBatch.defaultShader({int maxSprites: 2000})
+      : this(assetManager.get("packages/cobblestone/shaders/batch"),
+            maxSprites: maxSprites);
 
-  draw(GameTexture texture, num x, num y,
-      {num width: null, num height: null, num scaleX: 1, num scaleY: 1,
-      bool flipX: false, bool flipY: false,
-      num angle: 0, bool counterTurn: false}) {
-
+  draw(Texture texture, num x, num y,
+      {num width: null,
+      num height: null,
+      num scaleX: 1,
+      num scaleY: 1,
+      bool flipX: false,
+      bool flipY: false,
+      num angle: 0,
+      bool counterTurn: false}) {
     x = x.toDouble();
     y = y.toDouble();
 
-    if(spritesInFlush >= maxSprites) {
+    if (spritesInFlush >= maxSprites) {
       print("Batch full");
       flush();
     }
-    if(this.texture != null) {
+    if (this.texture != null) {
       if (texture.texture != this.texture.texture) {
         print("Wrong texture");
         flush();
@@ -41,10 +46,10 @@ class SpriteBatch extends VertexBatch {
 
     this.texture = texture;
 
-    if(width == null) {
+    if (width == null) {
       width = texture.width;
     }
-    if(height == null) {
+    if (height == null) {
       height = texture.height;
     }
     width *= scaleX;
@@ -62,8 +67,8 @@ class SpriteBatch extends VertexBatch {
     double x4 = x + width;
     double y4 = y + height;
 
-    if(angle != 0) {
-      if(counterTurn) {
+    if (angle != 0) {
+      if (counterTurn) {
         angle = 360 - angle;
       }
 
@@ -116,22 +121,38 @@ class SpriteBatch extends VertexBatch {
     double v = texture.v;
     double v2 = texture.v2;
 
-    if(flipX) {
+    if (flipX) {
       double temp = u;
       u = u2;
       u2 = temp;
     }
-    if(flipY) {
+    if (flipY) {
       double temp = v;
       v = v2;
       v2 = temp;
     }
 
     vertices.setAll(spritesInFlush * verticesPerSprite * vertexSize, [
-      x1, y1, 0.0, u, v,
-      x2, y2, 0.0, u, v2,
-      x3, y3, 0.0, u2, v,
-      x4, y4, 0.0, u2, v2
+      x1,
+      y1,
+      0.0,
+      u,
+      v,
+      x2,
+      y2,
+      0.0,
+      u,
+      v2,
+      x3,
+      y3,
+      0.0,
+      u2,
+      v,
+      x4,
+      y4,
+      0.0,
+      u2,
+      v2
     ]);
 
     spritesInFlush++;
@@ -139,7 +160,7 @@ class SpriteBatch extends VertexBatch {
 
   @override
   createIndices() {
-    for(int i = 0, j = 0; i < indices.length; i += 6, j += 4) {
+    for (int i = 0, j = 0; i < indices.length; i += 6, j += 4) {
       indices[i] = j;
       indices[i + 1] = j + 1;
       indices[i + 2] = j + 2;
@@ -154,10 +175,13 @@ class SpriteBatch extends VertexBatch {
 
   @override
   setAttribPointers() {
-    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 0);
-    gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3, WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
+    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+        WebGL.FLOAT, false, vertexSize * 4, 0);
+    gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3,
+        WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
 
     gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind(0));
-    gl.uniform4f(shaderProgram.uniforms[colorUni], color.r, color.g, color.b, color.a);
+    gl.uniform4f(
+        shaderProgram.uniforms[colorUni], color.r, color.g, color.b, color.a);
   }
 }

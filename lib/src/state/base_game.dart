@@ -6,7 +6,6 @@ Tween.TweenManager tweenManager;
 int width, height;
 
 abstract class BaseGame {
-
   num delta = 0;
   Stopwatch stopwatch;
 
@@ -42,8 +41,7 @@ abstract class BaseGame {
   }
 
   resizeCanvas() {
-    scaleCanvas(canvas, scaleMode,
-        requestedWidth, requestedHeight,
+    scaleCanvas(canvas, scaleMode, requestedWidth, requestedHeight,
         window.innerWidth, window.innerHeight);
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
@@ -53,8 +51,7 @@ abstract class BaseGame {
 
     setGLViewport(canvasWidth, canvasHeight);
 
-    if(started)
-      resize(width, height);
+    if (started) resize(width, height);
   }
 
   startLoop() {
@@ -94,7 +91,7 @@ abstract class BaseGame {
   }
 
   tick(time) {
-    if(started) {
+    if (started) {
       delta = stopwatch.elapsedMilliseconds / 1000.0;
       stopwatch.reset();
 
@@ -117,5 +114,4 @@ abstract class BaseGame {
   resize(num width, num height) {}
 
   end() {}
-
 }
