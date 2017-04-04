@@ -153,7 +153,7 @@ class Texture {
   }
 
   int bind([int location = 0]) {
-    gl.activeTexture(location);
+    gl.activeTexture(textureBind(location));
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
     return location;
   }

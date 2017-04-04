@@ -5,7 +5,7 @@ Tween.TweenManager tweenManager;
 
 int width, height;
 
-abstract class BaseGame {
+abstract class BaseGame implements State {
   num delta = 0;
   Stopwatch stopwatch;
 
@@ -114,4 +114,9 @@ abstract class BaseGame {
   resize(num width, num height) {}
 
   end() {}
+
+  pause() {}
+
+  resume() {}
+
 }
