@@ -1,5 +1,6 @@
 part of cobblestone;
 
+/// A generic batch, used as a base for others like [SpriteBatch]
 abstract class VertexBatch {
   int maxSprites = 8000;
 

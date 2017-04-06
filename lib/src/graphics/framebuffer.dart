@@ -1,5 +1,6 @@
 part of cobblestone;
 
+/// An offscreen texture that can be rendered to
 class Framebuffer {
   Texture texture;
   WebGL.Framebuffer buffer;
@@ -7,6 +8,7 @@ class Framebuffer {
   ShaderProgram shader;
   SpriteBatch batch;
 
+  /// Creates a new framebuffer of [width], [height]. Can use [shader] for effects.
   Framebuffer(int width, int height, {this.shader: null}) {
     if (shader == null) {
       shader = assetManager.get("packages/cobblestone/shaders/batch");
@@ -24,16 +26,20 @@ class Framebuffer {
     endCapture();
   }
 
+  /// Directs all further rendering to this framebuffer
   void beginCapture() {
     gl.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);
   }
 
+  /// Stops capturing the rendering
   void endCapture() {
     gl.bindFramebuffer(WebGL.FRAMEBUFFER, null);
   }
 
+  /// Sets a uniform for [shader]
   void setUniform(String name, dynamic value) => shader.setUniform(name, value);
 
+  /// Renders this to the screen
   void render(Matrix4 projection) {
     clearScreen(0.0, 0.0, 0.0, 1.0);
     batch.projection = projection;

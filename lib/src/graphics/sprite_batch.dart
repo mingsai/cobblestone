@@ -1,5 +1,6 @@
 part of cobblestone;
 
+/// A batch of textured sprites.
 class SpriteBatch extends VertexBatch {
   int maxSprites = 2000;
 
@@ -13,14 +14,18 @@ class SpriteBatch extends VertexBatch {
 
   Texture texture;
 
+  /// Creates a new sprite batch with a custom shader
   SpriteBatch(shaderProgram, {this.maxSprites: 2000}) : super(shaderProgram) {
     color = new Vector4.all(1.0);
   }
 
+  /// Creates a new sprite batch with a simple shader
   SpriteBatch.defaultShader({int maxSprites: 2000})
       : this(assetManager.get("packages/cobblestone/shaders/batch"),
             maxSprites: maxSprites);
 
+  /// Draws the [texture] at ([x], [y]), the bottom left of the sprite. Can optionally draw at a given [height] and [width], scale by [scaleX] and [scaleY],
+  /// flip the texture if [flipX] or [flipY], or turn [angle] around the center.
   draw(Texture texture, num x, num y,
       {num width: null,
       num height: null,

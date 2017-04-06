@@ -1,11 +1,13 @@
 part of cobblestone;
 
+/// Loads a JSON tilemap from a URL. Use Tiled to create these. (http://www.mapeditor.org/)
 Future<Tilemap> loadTilemap(String url) {
   return HttpRequest
       .getString(url)
       .then((String file) => new Tilemap(JSON.decode(file)));
 }
 
+/// A 2D orthographic tilemap
 class Tilemap {
   Map file;
 
@@ -17,6 +19,7 @@ class Tilemap {
   Map<int, BasicTile> basicTiles;
   Map<int, Tile> tileset;
 
+  /// Creates a new tilemap from a JSON map
   Tilemap(this.file) {
     this.width = file["width"];
     this.height = file["height"];
@@ -31,6 +34,7 @@ class Tilemap {
     //layers = layers.reversed.toList();
   }
 
+  /// Gives the tilemap the textures it needs to render
   giveTileset(Map<String, Texture> set) {
     basicTiles = new Map<int, BasicTile>();
     tileset = new Map<int, BasicTile>();
@@ -48,12 +52,14 @@ class Tilemap {
     });
   }
 
+  /// Updates the tilemap, for animations
   update(double delta) {
     for (Tile tile in tileset.values) {
       tile.update(delta);
     }
   }
 
+  /// Renders the tilemap layers. If [filter] is set, only renders the layers with names selected by the it.
   render(SpriteBatch batch, num x, num y, {Pattern filter: null}) {
     if (filter == null) {
       for (MapLayer layer in layers) {
@@ -66,17 +72,20 @@ class Tilemap {
     }
   }
 
+  /// Returns a list of map layers with names satisfying [filter]
   List<MapLayer> getLayersContaining(Pattern filter) {
     return layers.where((MapLayer layer) => layer.name.contains(filter));
   }
 }
 
+/// A renderable layer of the map
 abstract class MapLayer {
   String name;
 
   render(SpriteBatch batch, num x, num y);
 }
 
+/// A tilemap layer filed with tiles
 class TileLayer extends MapLayer {
   Tilemap parent;
 
@@ -90,6 +99,7 @@ class TileLayer extends MapLayer {
   int width;
   int height;
 
+  /// Creates a new tile layer from JSON data
   TileLayer(this.layer, this.parent) {
     width = layer["width"];
     height = layer["height"];
@@ -102,6 +112,7 @@ class TileLayer extends MapLayer {
     tileHeight = parent.tileHeight;
   }
 
+  /// Renders this to batch
   @override
   render(SpriteBatch batch, num x, num y) {
     for (int row = 0; row < height; row++) {
@@ -113,6 +124,7 @@ class TileLayer extends MapLayer {
     }
   }
 
+  /// Returns the tile at ([x], [y]) from the bottom-left
   Tile getTile(x, y) {
     //I know this function makes little sense to us mere mortals, but it works (I think)!
     return parent.tileset[tiles[width * (height - y - 1) + x] - 1];

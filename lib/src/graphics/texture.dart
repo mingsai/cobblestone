@@ -1,5 +1,6 @@
 part of cobblestone;
 
+/// Loads a texture from a url
 Future<Texture> loadTexture(String url, [handle(ImageElement ele) = nearest]) {
   var completer = new Completer<Texture>();
   var element = new ImageElement();
@@ -13,6 +14,7 @@ Future<Texture> loadTexture(String url, [handle(ImageElement ele) = nearest]) {
   return completer.future;
 }
 
+/// Converts an [ImageElement] to a mip-mapped texture
 WebGL.Texture mipMap(ImageElement image) {
   WebGL.Texture texture = gl.createTexture();
   gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
@@ -29,6 +31,7 @@ WebGL.Texture mipMap(ImageElement image) {
   return texture;
 }
 
+/// Converts an [ImageElement] to texture with nearest neighbor scaling
 WebGL.Texture nearest(ImageElement element) {
   WebGL.Texture texture = gl.createTexture();
   gl.bindTexture(WebGL.TEXTURE_2D, texture);
@@ -43,6 +46,7 @@ WebGL.Texture nearest(ImageElement element) {
   return texture;
 }
 
+/// A texture used in the game
 class Texture {
   WebGL.Texture texture;
 
@@ -56,10 +60,12 @@ class Texture {
   num width;
   num height;
 
+  /// Creates a new texture from a [WebGL.Texture]
   Texture(this.texture, this.source, this.sourceWidth, this.sourceHeight) {
     setRegion(0, 0, sourceWidth, sourceHeight);
   }
 
+  /// Creates a clone of another texture
   Texture.clone(Texture other) {
     this.texture = other.texture;
 
@@ -76,6 +82,7 @@ class Texture {
     this.v2 = other.v2;
   }
 
+  /// Creates an empty texture
   Texture.empty(this.width, this.height) {
     texture = gl.createTexture();
     gl.bindTexture(WebGL.TEXTURE_2D, texture);
@@ -101,6 +108,7 @@ class Texture {
     this.v2 = 1;
   }
 
+  /// Sets the bounds of the texture, from the bottom left
   setRegion(int x, int y, int width, int height) {
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
@@ -111,6 +119,7 @@ class Texture {
     this.height = height;
   }
 
+  /// Sets the uv coordinates of the texture manually
   setRegionCoords(double u, double v, double u2, double v2) {
     width = ((u2 - u).abs() * sourceWidth).round();
     height = ((v2 - v).abs() * sourceHeight).round();
@@ -131,6 +140,7 @@ class Texture {
     this.v2 = v2;
   }
 
+  /// Splits this texture into pieces of [tileWidth] by [tileHeight]
   List<Texture> split(int tileWidth, int tileHeight) {
     int x = u;
     int y = v + height - tileHeight;
@@ -152,6 +162,7 @@ class Texture {
     return tiles;
   }
 
+  /// Binds this texture to a given location, or [WebGL.TEXTURE0]
   int bind([int location = 0]) {
     gl.activeTexture(textureBind(location));
     gl.bindTexture(WebGL.TEXTURE_2D, texture);

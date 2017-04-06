@@ -1,15 +1,21 @@
 part of cobblestone;
 
+/// A tile on the map
 abstract class Tile {
+  /// Data from the map file describing it
   var data = null;
+  /// The image currently used by the tile
   String image = "";
 
+  /// Renders the tile using [batch]
   void render(SpriteBatch batch, num x, num y, num width, num height);
 
   void update(double delta) {}
 }
 
+/// A static tile, with a single image
 class BasicTile extends Tile {
+  /// The texture used for rendering this tile
   Texture texture;
 
   BasicTile(this.texture, var data) {
@@ -23,6 +29,7 @@ class BasicTile extends Tile {
   }
 }
 
+/// An looping animated tile
 class AnimatedTile extends Tile {
   List<Texture> frames = [];
   List<num> timings = [];

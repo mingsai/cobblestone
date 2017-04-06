@@ -1,7 +1,9 @@
 part of cobblestone;
 
+/// A method of scaling the game canvas
 enum ScaleMode { static, fill, fit, resize }
 
+/// Scales [element] based on [mode]
 scaleCanvas(CanvasElement element, ScaleMode mode, int requestWidth,
     int requestHeight, int parentWidth, int parentHeight) {
   switch (mode) {
@@ -24,6 +26,7 @@ scaleCanvas(CanvasElement element, ScaleMode mode, int requestWidth,
   }
 }
 
+/// The dimension that can be assumed by users
 int effectiveDimension(ScaleMode mode, int requested, int canvas) {
   switch (mode) {
     case ScaleMode.resize:
