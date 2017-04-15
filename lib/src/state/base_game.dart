@@ -43,7 +43,7 @@ abstract class BaseGame implements State {
 
 
   /// Creates a new game with [canvas]
-  BaseGame.withCanvas(CanvasElement canvas) {
+  BaseGame.withCanvas(this.canvas) {
     config();
     gl = canvas.getContext3d();
     _resizeCanvas();
