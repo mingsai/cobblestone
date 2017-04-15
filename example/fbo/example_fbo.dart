@@ -71,7 +71,7 @@ class GeometryExample extends BaseGame {
     renderer.end();
     fbo.endCapture();
 
-    fbo.render(camera.projection);
+    fbo.render(camera.projection, 20, 20, width, height);
   }
 
   resize(num width, num height) {

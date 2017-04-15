@@ -8,8 +8,11 @@ class Framebuffer {
   ShaderProgram shader;
   SpriteBatch batch;
 
+  int width;
+  int height;
+
   /// Creates a new framebuffer of [width], [height]. Can use [shader] for effects.
-  Framebuffer(int width, int height, {this.shader: null}) {
+  Framebuffer(this.width, this.height, {this.shader: null}) {
     if (shader == null) {
       shader = assetManager.get("packages/cobblestone/shaders/batch");
     }
@@ -40,11 +43,17 @@ class Framebuffer {
   void setUniform(String name, dynamic value) => shader.setUniform(name, value);
 
   /// Renders this to the screen
-  void render(Matrix4 projection) {
+  void render(Matrix4 projection, [int x = 0, int y = 0, int width = null, int height = null]) {
+    if(width == null) {
+      width = this.width ~/ 2;
+    }
+    if(height == null) {
+      height = this.height ~/ 2;
+    }
     clearScreen(0.0, 0.0, 0.0, 1.0);
     batch.projection = projection;
     batch.begin();
-    batch.draw(texture, 0, 0, width: width, height: height);
+    batch.draw(texture, x, y, width: width, height: height);
     batch.end();
   }
 }
