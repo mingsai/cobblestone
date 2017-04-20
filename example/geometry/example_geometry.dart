@@ -73,4 +73,10 @@ class GeometryExample extends BaseGame {
   update(num delta) {
     rot += 0.5 * delta;
   }
+
+  @override
+  config() {
+    scaleMode = ScaleMode.fit;
+  }
+
 }

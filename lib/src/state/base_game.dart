@@ -99,7 +99,7 @@ abstract class BaseGame implements State {
     _stopwatch.start();
 
     _resizeCanvas();
-    window.onResize.listen(_resizeCanvas());
+    window.onResize.listen((Event e) => _resizeCanvas());
 
     _started = true;
   }
