@@ -1,7 +1,7 @@
 part of cobblestone;
 
 abstract class Tile {
-  var data = null;
+  XML.XmlElement data = null;
   String image = "";
 
   void render(SpriteBatch batch, num x, num y, num width, num height);
@@ -12,9 +12,9 @@ abstract class Tile {
 class BasicTile extends Tile {
   Texture texture;
 
-  BasicTile(this.texture, var data) {
+  BasicTile(this.texture, XML.XmlElement data) {
     this.data = data;
-    image = Path.basenameWithoutExtension(data["image"]);
+    image = Path.basenameWithoutExtension(data.findElements("image").first.getAttribute("source"));
   }
 
   @override
@@ -31,11 +31,11 @@ class AnimatedTile extends Tile {
 
   double currentTime = 0.0;
 
-  AnimatedTile(var data, Map<int, BasicTile> basicTiles) {
+  AnimatedTile(XML.XmlElement data, Map<int, BasicTile> basicTiles) {
     this.data = data;
-    for (dynamic frame in data["animation"]) {
-      frames.add(basicTiles[frame["tileid"]].texture);
-      timings.add(frame["duration"]);
+    for (XML.XmlElement frame in data.findElements("animation").first.findElements("frame")) {
+      frames.add(basicTiles[int.parse(frame.getAttribute("tileid"))].texture);
+      timings.add(int.parse(frame.getAttribute("duration")));
     }
     update(0.0);
   }

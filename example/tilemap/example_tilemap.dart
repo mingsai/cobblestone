@@ -21,7 +21,7 @@ class TilemapExample extends BaseGame {
     renderer = new SpriteBatch.defaultShader();
 
     Map<String, Texture> atlas = assetManager.get("atlas");
-    map = assetManager.get("islands2.json");
+    map = assetManager.get("islands2.tmx");
     map.giveTileset(atlas);
 
     window.onKeyDown.listen(startMove);
@@ -49,7 +49,7 @@ class TilemapExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("islands2.json", loadTilemap("islands2.json"));
+    assetManager.load("islands2.tmx", loadTilemap("islands2.tmx"));
     assetManager.load(
         "atlas", loadAtlas("atlas.json", loadTexture("atlas.png", nearest)));
   }

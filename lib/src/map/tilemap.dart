@@ -3,11 +3,17 @@ part of cobblestone;
 Future<Tilemap> loadTilemap(String url) {
   return HttpRequest
       .getString(url)
-      .then((String file) => new Tilemap(JSON.decode(file)));
+      .then((String file) => new Tilemap(XML.parse(file)));
+}
+
+List<int> parseCsv(String csv) {
+  List<int> parsed = [];
+  csv.split(",").forEach((String tile) => parsed.add(int.parse(tile)));
+  return parsed;
 }
 
 class Tilemap {
-  Map file;
+  XML.XmlDocument file;
 
   List<MapLayer> layers;
 
@@ -18,15 +24,15 @@ class Tilemap {
   Map<int, Tile> tileset;
 
   Tilemap(this.file) {
-    this.width = file["width"];
-    this.height = file["height"];
+    this.width = int.parse(file.rootElement.getAttribute("width"));
+    this.height = int.parse(file.rootElement.getAttribute("height"));
 
-    this.tileWidth = file["tilewidth"];
-    this.tileHeight = file["tileheight"];
+    this.tileWidth = int.parse(file.rootElement.getAttribute("tilewidth"));
+    this.tileHeight = int.parse(file.rootElement.getAttribute("tileheight"));
 
     layers = [];
-    for (Map layer in file["layers"]) {
-      if (layer["type"] == "tilelayer") layers.add(new TileLayer(layer, this));
+    for (XML.XmlElement layer in file.rootElement.findElements("layer")) {
+      layers.add(new TileLayer(layer, this));
     }
     //layers = layers.reversed.toList();
   }
@@ -34,16 +40,16 @@ class Tilemap {
   giveTileset(Map<String, Texture> set) {
     basicTiles = new Map<int, BasicTile>();
     tileset = new Map<int, BasicTile>();
-    file["tilesets"][0]["tiles"].forEach((id, tile) {
-      basicTiles[int.parse(id)] = new BasicTile(
-          set[Path.basenameWithoutExtension(tile["image"])], tile);
+    file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
+      basicTiles[int.parse(tile.getAttribute("id"))] = new BasicTile(
+          set[Path.basenameWithoutExtension(tile.findElements("image").first.getAttribute("source"))], tile);
     });
 
-    file["tilesets"][0]["tiles"].forEach((id, tile) {
-      if (tile["animation"] != null) {
-        tileset[int.parse(id)] = new AnimatedTile(tile, basicTiles);
+    file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
+      if (tile.findElements("animation").length > 0) {
+        tileset[int.parse(tile.getAttribute("id"))] = new AnimatedTile(tile, basicTiles);
       } else {
-        tileset[int.parse(id)] = basicTiles[int.parse(id)];
+        tileset[int.parse(tile.getAttribute("id"))] = basicTiles[int.parse(tile.getAttribute("id"))];
       }
     });
   }
@@ -80,7 +86,7 @@ abstract class MapLayer {
 class TileLayer extends MapLayer {
   Tilemap parent;
 
-  var layer;
+  XML.XmlElement layer;
 
   List<int> tiles;
 
@@ -91,12 +97,18 @@ class TileLayer extends MapLayer {
   int height;
 
   TileLayer(this.layer, this.parent) {
-    width = layer["width"];
-    height = layer["height"];
+    width = int.parse(layer.getAttribute("width"));
+    height = int.parse(layer.getAttribute("height"));
 
-    name = layer["name"];
+    name = layer.getAttribute("name");
 
-    tiles = layer["data"];
+    XML.XmlElement data = layer.findElements("data").first;
+    if(data.getAttribute("encoding") == "csv") {
+      tiles = parseCsv(data.text);
+    } else if(data.getAttribute("encoding") == "base64") {
+      tiles = BASE64.decode(data.text);
+    }
+
 
     tileWidth = parent.tileWidth;
     tileHeight = parent.tileHeight;

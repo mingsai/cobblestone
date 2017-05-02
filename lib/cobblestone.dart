@@ -16,7 +16,7 @@ import 'dart:convert';
 import 'package:path/path.dart' as Path;
 import 'dart:web_audio' as WebAudio;
 import 'package:tweenengine/tweenengine.dart' as Tween;
-
+import 'package:xml/xml.dart' as XML;
 export 'dart:html';
 export 'dart:math';
 export 'dart:async';
