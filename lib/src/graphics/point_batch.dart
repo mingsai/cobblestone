@@ -1,5 +1,6 @@
 part of cobblestone;
 
+/// A batch of points
 class PointBatch extends VertexBatch {
   int maxSprites = 8000;
 

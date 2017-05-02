@@ -1,5 +1,6 @@
 part of cobblestone;
 
+/// Compiles a new shader form code at the [vertex] and [fragment] URLS
 Future<ShaderProgram> loadProgram(String vertex, String fragment) {
   return Future.wait([
     HttpRequest.getString(vertex),
@@ -8,6 +9,7 @@ Future<ShaderProgram> loadProgram(String vertex, String fragment) {
       new ShaderProgram.compile(sources[0], sources[1]));
 }
 
+/// A compiled WebGL shader
 class ShaderProgram {
   Map<String, int> attributes = new Map<String, int>();
   Map<String, WebGL.UniformLocation> uniforms =
@@ -16,6 +18,7 @@ class ShaderProgram {
 
   WebGL.Shader fragShader, vertShader;
 
+  /// Compiles a new shader with the text content of [vertexSource] and [fragmentSource]
   ShaderProgram.compile(String vertexSource, String fragmentSource) {
     fragShader = gl.createShader(WebGL.FRAGMENT_SHADER);
     gl.shaderSource(fragShader, fragmentSource);

@@ -1,5 +1,6 @@
 part of cobblestone;
 
+/// A batch of bounding boxes, drawn in wireframe.
 class PhysboxBatch extends VertexBatch {
   int maxSprites = 2000;
 

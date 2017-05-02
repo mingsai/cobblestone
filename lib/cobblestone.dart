@@ -1,9 +1,9 @@
 // Copyright (c) 2016, Ethan Tucker. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-/// Support for doing something awesome.
+/// A 2D-Game library
 ///
-/// More dartdocs go here.
+/// Includes a rendering engine, audio playing, and asset management
 library cobblestone;
 
 import 'dart:web_gl' as WebGL;
@@ -45,3 +45,4 @@ part 'package:cobblestone/src/map/tile.dart';
 part 'package:cobblestone/src/assets/texture_atlas.dart';
 part 'package:cobblestone/src/graphics/framebuffer.dart';
 part 'package:cobblestone/src/audio/music.dart';
+part 'package:cobblestone/src/state/state.dart';
