@@ -1,6 +1,6 @@
 part of cobblestone;
 
-/// Loads a JSON tilemap from a URL. Use Tiled to create these. (http://www.mapeditor.org/)
+/// Loads a TMX tilemap from a URL. Use Tiled to create these. (http://www.mapeditor.org/)
 Future<Tilemap> loadTilemap(String url) {
   return HttpRequest
       .getString(url)
@@ -25,7 +25,7 @@ class Tilemap {
   Map<int, BasicTile> basicTiles;
   Map<int, Tile> tileset;
 
-  /// Creates a new tilemap from a JSON map
+  /// Creates a new tilemap from a TMX map
   Tilemap(this.file) {
     this.width = int.parse(file.rootElement.getAttribute("width"));
     this.height = int.parse(file.rootElement.getAttribute("height"));
@@ -105,7 +105,7 @@ class TileLayer extends MapLayer {
   int width;
   int height;
 
-  /// Creates a new tile layer from JSON data
+  /// Creates a new tile layer from TMX data
   TileLayer(this.layer, this.parent) {
     width = int.parse(layer.getAttribute("width"));
     height = int.parse(layer.getAttribute("height"));
