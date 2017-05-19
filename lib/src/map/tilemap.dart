@@ -56,6 +56,8 @@ class Tilemap {
         tileset[int.parse(tile.getAttribute("id"))] = basicTiles[int.parse(tile.getAttribute("id"))];
       }
     });
+
+    layers.forEach((MapLayer layer) => layer.giveTileset(tileset));
   }
 
   /// Updates the tilemap, for animations
@@ -89,6 +91,8 @@ abstract class MapLayer {
   String name;
 
   render(SpriteBatch batch, num x, num y);
+
+  giveTileset(Map<int, Tile> tileset);
 }
 
 /// A tilemap layer filed with tiles
@@ -97,7 +101,8 @@ class TileLayer extends MapLayer {
 
   XML.XmlElement layer;
 
-  List<int> tiles;
+  List<Tile> tiles;
+  List<int> tileIds;
 
   int tileWidth;
   int tileHeight;
@@ -114,14 +119,20 @@ class TileLayer extends MapLayer {
 
     XML.XmlElement data = layer.findElements("data").first;
     if(data.getAttribute("encoding") == "csv") {
-      tiles = parseCsv(data.text);
+      tileIds = parseCsv(data.text);
     } else if(data.getAttribute("encoding") == "base64") {
-      tiles = BASE64.decode(data.text);
+      tileIds = BASE64.decode(data.text);
     }
-
 
     tileWidth = parent.tileWidth;
     tileHeight = parent.tileHeight;
+  }
+
+  /// Updates the layer with the new tileset
+  @override
+  giveTileset(Map<int, Tile> tileset) {
+    tiles = [];
+    tileIds.forEach((int id) => tiles.add(parent.tileset[id - 1]));
   }
 
   /// Renders this to batch
@@ -139,6 +150,7 @@ class TileLayer extends MapLayer {
   /// Returns the tile at ([x], [y]) from the bottom-left
   Tile getTile(x, y) {
     //I know this function makes little sense to us mere mortals, but it works (I think)!
-    return parent.tileset[tiles[width * (height - y - 1) + x] - 1];
+    return tiles[width * (height - y - 1) + x];
   }
+
 }
