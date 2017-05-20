@@ -142,8 +142,8 @@ class Texture {
 
   /// Splits this texture into pieces of [tileWidth] by [tileHeight]
   List<Texture> split(int tileWidth, int tileHeight) {
-    int x = u;
-    int y = v + height - tileHeight;
+    int x = u * sourceWidth;
+    int y = v * sourceWidth + height - tileHeight;
 
     int rows = (height / tileHeight).floor();
     int cols = (width / tileWidth).floor();
