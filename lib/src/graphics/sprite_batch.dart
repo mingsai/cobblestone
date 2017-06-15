@@ -136,31 +136,7 @@ class SpriteBatch extends VertexBatch {
       v = v2;
       v2 = temp;
     }
-
-    for(var num in [
-      x1,
-      y1,
-      0.0,
-      u,
-      v,
-      x2,
-      y2,
-      0.0,
-      u,
-      v2,
-      x3,
-      y3,
-      0.0,
-      u2,
-      v,
-      x4,
-      y4,
-      0.0,
-      u2,
-      v2
-    ]) {
-      print(num);
-    }
+    
     vertices.setAll(spritesInFlush * verticesPerSprite * vertexSize, [
       x1,
       y1,
