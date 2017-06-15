@@ -120,11 +120,11 @@ class SpriteBatch extends VertexBatch {
       y4 = rotatedY + cy;
     }
 
-    double u = texture.u;
-    double u2 = texture.u2;
+    double u = texture.u.toDouble();
+    double u2 = texture.u2.toDouble();
 
-    double v = texture.v;
-    double v2 = texture.v2;
+    double v = texture.v.toDouble();
+    double v2 = texture.v2.toDouble();
 
     if (flipX) {
       double temp = u;
@@ -137,6 +137,30 @@ class SpriteBatch extends VertexBatch {
       v2 = temp;
     }
 
+    for(var num in [
+      x1,
+      y1,
+      0.0,
+      u,
+      v,
+      x2,
+      y2,
+      0.0,
+      u,
+      v2,
+      x3,
+      y3,
+      0.0,
+      u2,
+      v,
+      x4,
+      y4,
+      0.0,
+      u2,
+      v2
+    ]) {
+      print(num);
+    }
     vertices.setAll(spritesInFlush * verticesPerSprite * vertexSize, [
       x1,
       y1,
