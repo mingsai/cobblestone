@@ -12,6 +12,11 @@ int width;
 /// Varies based on actual canvas size, and [scaleMode]
 int height;
 
+// Keyboard input polling
+Keyboard keyboard;
+// Mouse input polling
+Mouse mouse;
+
 /// A base class for programming games
 ///
 /// This is the starting point for most development with the engine
@@ -67,6 +72,9 @@ abstract class BaseGame implements State {
 
   /// Sets some things up, and starts the loop.
   _startLoop() {
+    keyboard = new Keyboard();
+    mouse = new Mouse();
+
     assetManager = new AssetManager();
     tweenManager = new Tween.TweenManager();
 
@@ -115,6 +123,9 @@ abstract class BaseGame implements State {
       tweenManager.update(delta);
       update(delta);
       render(delta);
+
+      keyboard.update();
+      mouse.update();
     } else if (assetManager.allLoaded()) {
       _start();
     }

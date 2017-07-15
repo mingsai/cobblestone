@@ -46,3 +46,5 @@ part 'package:cobblestone/src/assets/texture_atlas.dart';
 part 'package:cobblestone/src/graphics/framebuffer.dart';
 part 'package:cobblestone/src/audio/music.dart';
 part 'package:cobblestone/src/state/state.dart';
+part 'package:cobblestone/src/input/keyboard.dart';
+part 'package:cobblestone/src/input/mouse.dart';
