@@ -2,6 +2,9 @@ part of cobblestone;
 
 /// An offscreen texture that can be rendered to
 class Framebuffer {
+  GLWrapper wrapper;
+  WebGL.RenderingContext context;
+  
   Texture texture;
   WebGL.Framebuffer buffer;
 
@@ -12,18 +15,20 @@ class Framebuffer {
   int height;
 
   /// Creates a new framebuffer of [width], [height]. Can use [shader] for effects.
-  Framebuffer(this.width, this.height, {this.shader: null}) {
+  Framebuffer(this.wrapper, this.width, this.height, {this.shader: null}) {
+    context = wrapper.context;
+    
     if (shader == null) {
-      shader = assetManager.get("packages/cobblestone/shaders/batch");
+      shader = wrapper.batchShader;
     }
-    batch = new SpriteBatch(shader, maxSprites: 2);
+    batch = new SpriteBatch(wrapper, shader, maxSprites: 2);
 
-    texture = new Texture.empty(width, height);
+    texture = new Texture.empty(wrapper, width, height);
 
-    buffer = gl.createFramebuffer();
-    gl.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);
+    buffer = context.createFramebuffer();
+    context.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);
 
-    gl.framebufferTexture2D(WebGL.FRAMEBUFFER, WebGL.COLOR_ATTACHMENT0,
+    context.framebufferTexture2D(WebGL.FRAMEBUFFER, WebGL.COLOR_ATTACHMENT0,
         WebGL.TEXTURE_2D, texture.texture, 0);
 
     endCapture();
@@ -31,12 +36,12 @@ class Framebuffer {
 
   /// Directs all further rendering to this framebuffer
   void beginCapture() {
-    gl.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);
+    context.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);
   }
 
   /// Stops capturing the rendering
   void endCapture() {
-    gl.bindFramebuffer(WebGL.FRAMEBUFFER, null);
+    context.bindFramebuffer(WebGL.FRAMEBUFFER, null);
   }
 
   /// Sets a uniform for [shader]
@@ -50,7 +55,7 @@ class Framebuffer {
     if(height == null) {
       height = this.height ~/ 2;
     }
-    clearScreen(0.0, 0.0, 0.0, 1.0);
+    wrapper.clearScreen(0.0, 0.0, 0.0, 1.0);
     batch.projection = projection;
     batch.begin();
     batch.draw(texture, x, y, width: width, height: height);

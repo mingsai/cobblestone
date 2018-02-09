@@ -20,7 +20,7 @@ class AudioExample extends BaseGame {
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
 
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
 
     music = assetManager.get("technogeek.wav");
     music.volume = 0.1;
@@ -40,21 +40,21 @@ class AudioExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("technogeek.wav", loadMusic("technogeek.wav"));
-    assetManager.load("spaceship.wav", loadSound("spaceship.wav"));
+    assetManager.load("technogeek.wav", loadMusic(audio, "technogeek.wav"));
+    assetManager.load("spaceship.wav", loadSound(audio, "spaceship.wav"));
     assetManager.load(
-        "short wind sound.wav", loadSound("short wind sound.wav"));
+        "short wind sound.wav", loadSound(audio, "short wind sound.wav"));
   }
 
   @override
   render(num delta) {
-    clearScreen(0.0, 0.0, 0.0, 1.0);
+    gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
   }
 
   resize(num width, num height) {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override

@@ -11,20 +11,21 @@ class GeometryExample extends BaseGame {
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader();
+    renderer = new SpriteBatch.defaultShader(gl);
 
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
   preload() {
     assetManager.load("atlas",
-        loadAtlas("atlas/atlas.json", loadTexture("atlas/atlas.png", nearest)));
+        loadAtlas("atlas/atlas.json", loadTexture(gl, "atlas/atlas.png", nearest)));
+    print(defaultShader);
   }
 
   @override
   render(num delta) {
-    clearScreen(0.0, 1.0, 1.0, 1.0);
+    gl.clearScreen(0.0, 1.0, 1.0, 1.0);
 
     camera.update();
 
@@ -40,7 +41,7 @@ class GeometryExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override

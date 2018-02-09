@@ -1,13 +1,13 @@
 part of cobblestone;
 
 /// Loads a texture from a url
-Future<Texture> loadTexture(String url, [handle(ImageElement ele) = nearest]) {
+Future<Texture> loadTexture(GLWrapper wrapper, String url, [handle(GLWrapper wrapper, ImageElement ele) = nearest]) {
   var completer = new Completer<Texture>();
   var element = new ImageElement();
   element.onLoad.listen((e) {
-    var texture = handle(element);
+    var texture = handle(wrapper, element);
     Texture gameTexture =
-        new Texture(texture, url, element.width, element.height);
+        new Texture(wrapper, texture, url, element.width, element.height);
     completer.complete(gameTexture);
   });
   element.src = url;
@@ -15,39 +15,46 @@ Future<Texture> loadTexture(String url, [handle(ImageElement ele) = nearest]) {
 }
 
 /// Converts an [ImageElement] to a mip-mapped texture
-WebGL.Texture mipMap(ImageElement image) {
-  WebGL.Texture texture = gl.createTexture();
-  gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
-  gl.bindTexture(WebGL.TEXTURE_2D, texture);
-  gl.texImage2D(
+WebGL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
+  var context = wrapper.context;
+  
+  WebGL.Texture texture = context.createTexture();
+  context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+  context.bindTexture(WebGL.TEXTURE_2D, texture);
+  context.texImage2D(
       WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA, WebGL.UNSIGNED_BYTE, image);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
-  gl.texParameteri(
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+  context.texParameteri(
       WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR_MIPMAP_NEAREST);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
-  gl.generateMipmap(WebGL.TEXTURE_2D);
-  gl.bindTexture(WebGL.TEXTURE_2D, null);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
+  context.generateMipmap(WebGL.TEXTURE_2D);
+  context.bindTexture(WebGL.TEXTURE_2D, null);
   return texture;
 }
 
 /// Converts an [ImageElement] to texture with nearest neighbor scaling
-WebGL.Texture nearest(ImageElement element) {
-  WebGL.Texture texture = gl.createTexture();
-  gl.bindTexture(WebGL.TEXTURE_2D, texture);
-  gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
-  gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
+WebGL.Texture nearest(GLWrapper wrapper, ImageElement element) {
+  var context = wrapper.context;
+  
+  WebGL.Texture texture = context.createTexture();
+  context.bindTexture(WebGL.TEXTURE_2D, texture);
+  context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+  context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
       WebGL.UNSIGNED_BYTE, element);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
-  gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
-  gl.bindTexture(WebGL.TEXTURE_2D, null);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
+  context.bindTexture(WebGL.TEXTURE_2D, null);
   return texture;
 }
 
 /// A texture used in the game
 class Texture {
+  GLWrapper wrapper;
+  WebGL.RenderingContext context;
+
   WebGL.Texture texture;
 
   num u, v, u2, v2;
@@ -61,12 +68,16 @@ class Texture {
   num height;
 
   /// Creates a new texture from a [WebGL.Texture]
-  Texture(this.texture, this.source, this.sourceWidth, this.sourceHeight) {
+  Texture(this.wrapper, this.texture, this.source, this.sourceWidth, this.sourceHeight) {
+    context = wrapper.context;
     setRegion(0, 0, sourceWidth, sourceHeight);
   }
 
   /// Creates a clone of another texture
   Texture.clone(Texture other) {
+    this.wrapper = other.wrapper;
+    this.context = other.context;
+
     this.texture = other.texture;
 
     this.source = other.source;
@@ -83,19 +94,21 @@ class Texture {
   }
 
   /// Creates an empty texture
-  Texture.empty(this.width, this.height) {
-    texture = gl.createTexture();
-    gl.bindTexture(WebGL.TEXTURE_2D, texture);
-    //gl.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
-    gl.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
-    gl.texParameteri(
+  Texture.empty(this.wrapper, this.width, this.height) {
+    context = wrapper.context;
+
+    texture = context.createTexture();
+    context.bindTexture(WebGL.TEXTURE_2D, texture);
+    //context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
+    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+    context.texParameteri(
         WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
-    gl.texParameteri(
+    context.texParameteri(
         WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
-    gl.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, width, height, 0, WebGL.RGBA,
+    context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, width, height, 0, WebGL.RGBA,
         WebGL.UNSIGNED_BYTE, null);
-    gl.bindTexture(WebGL.TEXTURE_2D, null);
+    context.bindTexture(WebGL.TEXTURE_2D, null);
 
     this.source = "None";
 
@@ -164,8 +177,8 @@ class Texture {
 
   /// Binds this texture to a given location, or [WebGL.TEXTURE0]
   int bind([int location = 0]) {
-    gl.activeTexture(textureBind(location));
-    gl.bindTexture(WebGL.TEXTURE_2D, texture);
+    context.activeTexture(textureBind(location));
+    context.bindTexture(WebGL.TEXTURE_2D, texture);
     return location;
   }
 }

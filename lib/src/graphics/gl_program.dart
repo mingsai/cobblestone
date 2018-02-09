@@ -1,16 +1,19 @@
 part of cobblestone;
 
 /// Compiles a new shader form code at the [vertex] and [fragment] URLS
-Future<ShaderProgram> loadProgram(String vertex, String fragment) {
+Future<ShaderProgram> loadProgram(GLWrapper wrapper, String vertex, String fragment) {
   return Future.wait([
     HttpRequest.getString(vertex),
     HttpRequest.getString(fragment)
   ]).then((List<String> sources) =>
-      new ShaderProgram.compile(sources[0], sources[1]));
+      wrapper.compileShader(sources[0], sources[1]));
 }
 
 /// A compiled WebGL shader
 class ShaderProgram {
+  GLWrapper wrapper;
+  WebGL.RenderingContext context;
+
   Map<String, int> attributes = new Map<String, int>();
   Map<String, WebGL.UniformLocation> uniforms =
       new Map<String, WebGL.UniformLocation>();
@@ -19,64 +22,66 @@ class ShaderProgram {
   WebGL.Shader fragShader, vertShader;
 
   /// Compiles a new shader with the text content of [vertexSource] and [fragmentSource]
-  ShaderProgram.compile(String vertexSource, String fragmentSource) {
-    fragShader = gl.createShader(WebGL.FRAGMENT_SHADER);
-    gl.shaderSource(fragShader, fragmentSource);
-    gl.compileShader(fragShader);
+  ShaderProgram.compile(this.wrapper, String vertexSource, String fragmentSource) {
+    context = wrapper.context;
+    
+    fragShader = context.createShader(WebGL.FRAGMENT_SHADER);
+    context.shaderSource(fragShader, fragmentSource);
+    context.compileShader(fragShader);
 
-    vertShader = gl.createShader(WebGL.VERTEX_SHADER);
-    gl.shaderSource(vertShader, vertexSource);
-    gl.compileShader(vertShader);
+    vertShader = context.createShader(WebGL.VERTEX_SHADER);
+    context.shaderSource(vertShader, vertexSource);
+    context.compileShader(vertShader);
 
-    program = gl.createProgram();
-    gl.attachShader(program, vertShader);
-    gl.attachShader(program, fragShader);
-    gl.linkProgram(program);
+    program = context.createProgram();
+    context.attachShader(program, vertShader);
+    context.attachShader(program, fragShader);
+    context.linkProgram(program);
 
-    if (!gl.getProgramParameter(program, WebGL.LINK_STATUS)) {
+    if (!context.getProgramParameter(program, WebGL.LINK_STATUS)) {
       print("Could not initialise shaders");
     }
 
     int activeAttributes =
-        gl.getProgramParameter(program, WebGL.ACTIVE_ATTRIBUTES);
-    int activeUniforms = gl.getProgramParameter(program, WebGL.ACTIVE_UNIFORMS);
+        context.getProgramParameter(program, WebGL.ACTIVE_ATTRIBUTES);
+    int activeUniforms = context.getProgramParameter(program, WebGL.ACTIVE_UNIFORMS);
 
     for (int i = 0; i < activeAttributes; i++) {
-      WebGL.ActiveInfo a = gl.getActiveAttrib(program, i);
-      int attributeLocation = gl.getAttribLocation(program, a.name);
+      WebGL.ActiveInfo a = context.getActiveAttrib(program, i);
+      int attributeLocation = context.getAttribLocation(program, a.name);
       attributes[a.name] = attributeLocation;
     }
 
     for (int i = 0; i < activeUniforms; i++) {
-      WebGL.ActiveInfo a = gl.getActiveUniform(program, i);
-      uniforms[a.name] = gl.getUniformLocation(program, a.name);
+      WebGL.ActiveInfo a = context.getActiveUniform(program, i);
+      uniforms[a.name] = context.getUniformLocation(program, a.name);
     }
   }
 
   startProgram() {
     attributes
-        .forEach((name, location) => gl.enableVertexAttribArray(location));
-    gl.useProgram(program);
+        .forEach((name, location) => context.enableVertexAttribArray(location));
+    context.useProgram(program);
   }
 
   setUniform(String name, dynamic value) {
     if (value is int) {
-      gl.uniform1i(uniforms[name], value);
+      context.uniform1i(uniforms[name], value);
     } else if (value is double) {
-      gl.uniform1f(uniforms[name], value);
+      context.uniform1f(uniforms[name], value);
     } else if (value is Vector2) {
-      gl.uniform2f(uniforms[name], value.x, value.y);
+      context.uniform2f(uniforms[name], value.x, value.y);
     } else if (value is Vector3) {
-      gl.uniform3f(uniforms[name], value.x, value.y, value.z);
+      context.uniform3f(uniforms[name], value.x, value.y, value.z);
     } else if (value is Vector4) {
-      gl.uniform4f(uniforms[name], value.x, value.y, value.z, value.w);
+      context.uniform4f(uniforms[name], value.x, value.y, value.z, value.w);
     } else if (value is Matrix4) {
-      gl.uniformMatrix4fv(uniforms[name], false, value.storage);
+      context.uniformMatrix4fv(uniforms[name], false, value.storage);
     }
   }
 
   endProgram() {
     attributes
-        .forEach((name, location) => gl.disableVertexAttribArray(location));
+        .forEach((name, location) => context.disableVertexAttribArray(location));
   }
 }

@@ -1,22 +1,23 @@
 part of cobblestone;
 
-WebAudio.AudioContext audioContext = new WebAudio.AudioContext();
-
 /// Loads a sound from a url
-Future<Sound> loadSound(String url) {
+Future<Sound> loadSound(audio, String url) {
   return HttpRequest
       .request(url, responseType: 'arraybuffer')
       .then((HttpRequest request) {
-    return audioContext
+    return audio.context
         .decodeAudioData(request.response)
         .then((WebAudio.AudioBuffer buffer) {
-      return new Sound(buffer);
+      return new Sound(audio, buffer);
     });
   });
 }
 
 /// A playable sound using WebAudio
 class Sound {
+  AudioWrapper audio;
+  WebAudio.AudioContext context;
+
   List<WebAudio.AudioBufferSourceNode> sources;
 
   WebAudio.AudioBuffer buffer;
@@ -26,17 +27,18 @@ class Sound {
   double volume = 1.0;
 
   /// Creates a new sound form an audio buffer
-  Sound(this.buffer) {
-    gainNode = audioContext.createGain();
+  Sound(this.audio, this.buffer) {
+    this.context = audio.context;
+    gainNode = context.createGain();
     sources = [];
   }
 
   /// Plays this sound. If [loop] is set, repeats indefinitely
   play([bool loop = false]) {
     gainNode.gain.value = volume;
-    WebAudio.AudioBufferSourceNode source = audioContext.createBufferSource();
+    WebAudio.AudioBufferSourceNode source = context.createBufferSource();
     source.connectNode(gainNode, 0, 0);
-    gainNode.connectNode(audioContext.destination, 0, 0);
+    gainNode.connectNode(context.destination, 0, 0);
     source.buffer = buffer;
     source.loop = loop;
     source.start(0);

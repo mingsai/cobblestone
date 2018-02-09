@@ -14,11 +14,11 @@ class GeometryExample extends BaseGame {
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    pointBatch = new PointBatch.defaultShader(maxSprites: 2);
+    pointBatch = new PointBatch.defaultShader(gl, maxSprites: 2);
 
-    physboxBatch = new PhysboxBatch.defaultShader(maxSprites: 2);
+    physboxBatch = new PhysboxBatch.defaultShader(gl, maxSprites: 2);
 
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
@@ -26,7 +26,7 @@ class GeometryExample extends BaseGame {
 
   @override
   render(num delta) {
-    clearScreen(0.0, 0.0, 0.0, 1.0);
+    gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
 
@@ -59,7 +59,7 @@ class GeometryExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override

@@ -1,21 +1,8 @@
 part of cobblestone;
 
-/// Global reference to the asset manager
-AssetManager assetManager;
-/// Global reference to the tween manager
-Tween.TweenManager tweenManager;
+/// Global WedAudio context
+// TODO THE LAST GLOBAL
 
-/// The effective width of the game. Use this for most calculations.
-/// Varies based on actual canvas size, and [scaleMode]
-int width;
-/// The effective width of the game. Use this for most calculations.
-/// Varies based on actual canvas size, and [scaleMode]
-int height;
-
-// Keyboard input polling
-Keyboard keyboard;
-// Mouse input polling
-Mouse mouse;
 
 /// A base class for programming games
 ///
@@ -24,6 +11,9 @@ abstract class BaseGame implements State {
 
   /// A stopwatch, used to calculate delta time
   Stopwatch _stopwatch;
+
+  /// Wrapper around common WebGL functions
+  GLWrapper gl;
 
   /// The requested width of the game window. Used for [ScaleMode.fit] or [ScaleMode.fill]
   int requestedWidth = 640;
@@ -38,6 +28,27 @@ abstract class BaseGame implements State {
   /// The actual height of the canvas
   int canvasHeight;
 
+  /// The effective width of the game. Use this for most calculations.
+  /// Varies based on actual canvas size, and [scaleMode]
+  int width;
+  /// The effective width of the game. Use this for most calculations.
+  /// Varies based on actual canvas size, and [scaleMode]
+  int height;
+
+  /// Game asset manager to the asset manager
+  final AssetManager assetManager = new AssetManager();
+
+  /// The game tween manager
+  final Tween.TweenManager tweenManager = new Tween.TweenManager();
+
+  // Game audio context
+  final AudioWrapper audio = new AudioWrapper();
+
+  // Keyboard input polling
+  Keyboard keyboard;
+  // Mouse input polling
+  Mouse mouse;
+
   bool _started;
 
   /// Creates a new game with the first canvas element
@@ -50,7 +61,7 @@ abstract class BaseGame implements State {
   /// Creates a new game with [canvas]
   BaseGame.withCanvas(this.canvas) {
     config();
-    gl = canvas.getContext3d();
+    gl = new GLWrapper(canvas.getContext3d());
     _resizeCanvas();
     _startLoop();
   }
@@ -65,7 +76,7 @@ abstract class BaseGame implements State {
     width = effectiveDimension(scaleMode, requestedWidth, canvasWidth);
     height = effectiveDimension(scaleMode, requestedHeight, canvasHeight);
 
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
 
     if (_started) resize(width, height);
   }
@@ -75,16 +86,12 @@ abstract class BaseGame implements State {
     keyboard = new Keyboard();
     mouse = new Mouse();
 
-    assetManager = new AssetManager();
-    tweenManager = new Tween.TweenManager();
-
     Tween.Tween.combinedAttributesLimit = 4;
     Tween.Tween.registerAccessor(num, new NumberAccessor());
     Tween.Tween.registerAccessor(Vector2, new Vector2Accessor());
     Tween.Tween.registerAccessor(Vector3, new Vector3Accessor());
     Tween.Tween.registerAccessor(Vector4, new Vector4Accessor());
 
-    loadDefaultShaders();
     preload();
 
     _tick(0);
@@ -117,8 +124,6 @@ abstract class BaseGame implements State {
     if (_started) {
       double delta = _stopwatch.elapsedMilliseconds / 1000.0;
       _stopwatch.reset();
-
-      _setGLOptions();
 
       tweenManager.update(delta);
       update(delta);

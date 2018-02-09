@@ -19,27 +19,27 @@ class GeometryExample extends BaseGame {
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader();
+    renderer = new SpriteBatch.defaultShader(gl);
 
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
 
     nehe = assetManager.get("nehe.gif");
     effect = assetManager.get("effect");
 
-    fbo = new Framebuffer(canvasWidth, canvasHeight, shader: effect);
+    fbo = new Framebuffer(gl, canvasWidth, canvasHeight, shader: effect);
   }
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture("nehe.gif", nearest));
+    assetManager.load("nehe.gif", loadTexture(gl, "nehe.gif", nearest));
     assetManager.load(
-        "effect", loadProgram("effect.vertex", "effect.fragment"));
+        "effect", loadProgram(gl, "effect.vertex", "effect.fragment"));
   }
 
   @override
   render(num delta) {
     fbo.beginCapture();
-    clearScreen(0.0, 0.0, 0.0, 1.0);
+    gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
 
@@ -75,7 +75,7 @@ class GeometryExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override

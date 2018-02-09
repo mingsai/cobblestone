@@ -1,45 +1,5 @@
 part of cobblestone;
 
-WebGL.RenderingContext gl;
-
-/// Loads the shaders used by built in batches
-loadDefaultShaders() {
-  assetManager.load(
-      "packages/cobblestone/shaders/batch",
-      loadProgram("packages/cobblestone/shaders/batch.vertex",
-          "packages/cobblestone/shaders/batch.fragment"));
-  assetManager.load(
-      "packages/cobblestone/shaders/point",
-      loadProgram("packages/cobblestone/shaders/point.vertex",
-          "packages/cobblestone/shaders/point.fragment"));
-  assetManager.load(
-      "packages/cobblestone/shaders/wire",
-      loadProgram("packages/cobblestone/shaders/wire.vertex",
-          "packages/cobblestone/shaders/wire.fragment"));
-}
-
-/// Clears the screen either to [r] as a [Vector4] or [r], [g], [b], [a] as numbers.
-clearScreen(r, [num g, num b, num a]) {
-  if (r is Vector4) {
-    gl.clearColor(r.r, r.g, r.b, r.a);
-  } else {
-    gl.clearColor(r, g, b, a);
-  }
-
-  gl.clear(WebGL.COLOR_BUFFER_BIT | WebGL.DEPTH_BUFFER_BIT);
-}
-
-/// Sets the default WebGL options.
-_setGLOptions() {
-  gl.disable(WebGL.DEPTH_TEST);
-  gl.enable(WebGL.BLEND);
-}
-
-/// Sets the WebGL viewport to the given width and height
-setGLViewport(num width, num height) {
-  gl.viewport(0, 0, width, height);
-}
-
 /// Returns the texture constant for the given id.
 /// E.g. when [id] is 0, this returns [WebGL.TEXTURE0]
 int textureBind(int id) {

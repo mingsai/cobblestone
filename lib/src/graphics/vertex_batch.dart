@@ -2,6 +2,9 @@ part of cobblestone;
 
 /// A generic batch, used as a base for others like [SpriteBatch]
 abstract class VertexBatch {
+  GLWrapper wrapper;
+  WebGL.RenderingContext context;
+  
   int maxSprites = 8000;
 
   int vertexSize = 3;
@@ -26,12 +29,14 @@ abstract class VertexBatch {
   Matrix4 projection;
   Matrix4 transform;
 
-  VertexBatch(this.shaderProgram, {this.maxSprites: 8000}) {
+  VertexBatch(this.wrapper, this.shaderProgram, {this.maxSprites: 8000}) {
+    context = wrapper.context;
+    
     projection = new Matrix4.identity();
     transform = new Matrix4.identity();
 
-    vertexBuffer = gl.createBuffer();
-    indexBuffer = gl.createBuffer();
+    vertexBuffer = context.createBuffer();
+    indexBuffer = context.createBuffer();
 
     rebuildBuffer();
 
@@ -66,24 +71,24 @@ abstract class VertexBatch {
       indices[i] = i;
     }
 
-    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
+    context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    context.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
   }
 
   flush() {
-    gl.bindBuffer(WebGL.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(WebGL.ARRAY_BUFFER, vertices, WebGL.DYNAMIC_DRAW);
-    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    context.bindBuffer(WebGL.ARRAY_BUFFER, vertexBuffer);
+    context.bufferData(WebGL.ARRAY_BUFFER, vertices, WebGL.DYNAMIC_DRAW);
+    context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
     setAttribPointers();
 
-    gl.uniformMatrix4fv(
+    context.uniformMatrix4fv(
         shaderProgram.uniforms[projMatUni], false, projection.storage);
-    gl.uniformMatrix4fv(
+    context.uniformMatrix4fv(
         shaderProgram.uniforms[transMatUni], false, transform.storage);
 
     //The indices are important!
-    gl.drawElements(
+    context.drawElements(
         drawMode, spritesInFlush * indicesPerSprite, WebGL.UNSIGNED_SHORT, 0);
 
     spritesToEnd += spritesInFlush;
