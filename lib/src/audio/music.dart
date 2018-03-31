@@ -7,22 +7,29 @@ Future<Music> loadMusic(AudioWrapper audio, String url) async {
 }
 
 /// A longer sound, streamed from an [AudioElement]
-class Music {
+class Music extends AudioPlayer {
+
   AudioWrapper audio;
+  WebAudio.AudioContext context;
 
-  AudioElement element;
+  var element;
 
-  /// The volume of this music, from 0 to 1
+  double get time => element.currentTime;
+  double get duration => element.duration;
+
+  bool _playing = false;
   double volume = 1.0;
 
-  /// Creates a new sound from an element
-  Music(this.audio, this.element) {}
+  Music(this.audio, this.element) {
+    this.context = audio.context;
+  }
 
   /// Plays this music. If [loop] is true, repeats indefinitely
   play([bool loop = false]) {
     element.loop = loop;
     element.volume = volume;
     element.play();
+    playing = true;
   }
 
   /// Stops this sound
@@ -35,4 +42,17 @@ class Music {
   loop() {
     play(true);
   }
+
+
+  bool get playing => _playing;
+
+  void set playing(bool playing) {
+    _playing = playing;
+    if(playing) {
+      audio.addPlaying(this);
+    } else {
+      audio.removePlaying(this);
+    }
+  }
+
 }
