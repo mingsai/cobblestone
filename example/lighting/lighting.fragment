@@ -1,6 +1,6 @@
 precision highp float;
 
-#define N_LIGHTS 4
+#define N_LIGHTS 10
 
 uniform sampler2D uDiffuse;
 uniform sampler2D uNormal;
@@ -23,7 +23,7 @@ void main(void) {
     vec3 normalColor = texture2D(uNormal,  vTextureCoord).rgb;
 
 	vec3 lightSum = vec3(0.0);
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < N_LIGHTS; i++) {
 		vec3 lightPos = uLightPos[i];
 		vec4 lightColor = uLightColor[i];
 
