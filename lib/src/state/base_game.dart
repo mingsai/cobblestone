@@ -49,6 +49,8 @@ abstract class BaseGame implements State {
   // Mouse input polling
   Mouse mouse;
 
+  BaseGame get game => this;
+
   bool _started;
 
   /// Creates a new game with the first canvas element
