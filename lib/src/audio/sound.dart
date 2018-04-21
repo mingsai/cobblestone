@@ -1,58 +1,103 @@
 part of cobblestone;
 
-WebAudio.AudioContext audioContext = new WebAudio.AudioContext();
-
 /// Loads a sound from a url
-Future<Sound> loadSound(String url) {
+Future<Sound> loadSound(audio, String url) {
   return HttpRequest
       .request(url, responseType: 'arraybuffer')
       .then((HttpRequest request) {
-    return audioContext
+    return audio.context
         .decodeAudioData(request.response)
         .then((WebAudio.AudioBuffer buffer) {
-      return new Sound(buffer);
+      return new Sound(audio, buffer);
     });
   });
 }
 
 /// A playable sound using WebAudio
-class Sound {
-  List<WebAudio.AudioBufferSourceNode> sources;
+class Sound extends AudioPlayer {
 
-  WebAudio.AudioBuffer buffer;
-  WebAudio.GainNode gainNode;
+  AudioWrapper audio;
+  WebAudio.AudioContext context;
+  
+  var buffer;
+
+  var _sources;
+  int _nextID = 0;
+
+  WebAudio.GainNode _gainNode;
+  
+  bool _playing = false;
 
   /// The volume of the sound, from 0 to 1
   double volume = 1.0;
-
+  
   /// Creates a new sound form an audio buffer
-  Sound(this.buffer) {
-    gainNode = audioContext.createGain();
-    sources = [];
+  Sound(this.audio, this.buffer) {
+    this.context = audio.context;
+    _gainNode = context.createGain();
+    _sources = {};
+  }
+  
+  _createSourceNode(bool loop) {
+    WebAudio.AudioBufferSourceNode source = context.createBufferSource();
+    source.buffer = buffer;
+    source.loop = loop;
+    source.start(0);
+    return source;
   }
 
   /// Plays this sound. If [loop] is set, repeats indefinitely
   play([bool loop = false]) {
-    gainNode.gain.value = volume;
-    WebAudio.AudioBufferSourceNode source = audioContext.createBufferSource();
-    source.connectNode(gainNode, 0, 0);
-    gainNode.connectNode(audioContext.destination, 0, 0);
-    source.buffer = buffer;
-    source.loop = loop;
-    source.start(0);
-    sources.add(source);
+    final int id = _nextID;
+
+    var source = _createSourceNode(loop);
+
+    _gainNode.gain.value = volume;
+    source.connectNode(_gainNode, 0, 0);
+    _gainNode.connectNode(context.destination, 0, 0);
+
+    source.onEnded.listen((Event e) => _onEnd(id));
+
+    _sources[id] = source;
+
+    _nextID++;
+    playing = true;
+  }
+
+  /// Play sound only if not already playing
+  playIfNot([bool loop = false]) {
+    if(!playing) {
+      play(loop);
+    }
   }
 
   /// Stops all instances of this sound
   stop() {
-    for (WebAudio.AudioBufferSourceNode source in sources) {
+    for (var source in _sources.values) {
       source.stop(0);
     }
-    sources.clear();
+    _sources.clear();
+    playing = false;
   }
 
-  /// Loops this sound indefinitely
-  loop() {
-    play(true);
+  _onEnd(var id) {
+    // Remove node when it finishes playing
+    if(_sources[id]) {
+      _sources[id].stop(0);
+      _sources.remove(id);
+    }
+    playing = _sources.length != 0;
   }
+
+  bool get playing => _playing;
+
+  void set playing(bool playing) {
+    _playing = playing;
+    if(playing) {
+      audio.addPlaying(this);
+    } else {
+      audio.removePlaying(this);
+    }
+  }
+
 }

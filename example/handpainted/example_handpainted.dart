@@ -10,11 +10,11 @@ class GeometryExample extends BaseGame {
   Camera2D camera;
 
   SpriteBatch renderer;
-  Texture nehe;
-
-  bool get isLoaded => nehe != null;
+  Texture wall;
 
   num rot = 0.0;
+  num scale = 0.0;
+  num scalemod = 1;
 
   @override
   create() {
@@ -23,12 +23,12 @@ class GeometryExample extends BaseGame {
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
-    nehe = assetManager.get("nehe.gif");
+    wall = assetManager.get("largewall.png");
   }
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture(gl, "nehe.gif", nearest));
+    assetManager.load("largewall.png", loadTexture(gl, "largewall.png", mipMap));
   }
 
   @override
@@ -38,27 +38,19 @@ class GeometryExample extends BaseGame {
     camera.update();
 
     renderer.projection = camera.combined;
+    renderer.color = Colors.aliceBlue;
     renderer.begin();
 
-    renderer.color = Colors.indianRed;
-    renderer.draw(nehe, 0.0, 0.0, width: 100.0, height: 100.0);
+    renderer.draw(wall, 0.0, 0.0, width: height, height: height);
 
-    renderer.color = Colors.forestGreen;
-    renderer.draw(nehe, 25.0, 25.0,
-        width: 100.0, height: 100.0, flipX: true, flipY: true);
+    renderer.draw(wall, height, 0, width: height, height: height);
 
-    renderer.color = Colors.saddleBrown;
-    renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
-
-    renderer.color = Colors.lightSkyBlue;
-    renderer.draw(nehe, 0.0, height - 100.0,
-        width: 100.0, height: 100.0, flipY: true);
-
-    renderer.color = Colors.lightGoldenrodYellow;
-    renderer.draw(nehe, width / 2 - 50, height / 2 - 50,
+    renderer.draw(wall, width / 2 - 50, height / 2 - 50,
         width: 100.0,
         height: 100.0,
         flipX: true,
+        scaleX: scale,
+        scaleY: scale,
         angle: rot,
         counterTurn: true);
 
@@ -72,11 +64,15 @@ class GeometryExample extends BaseGame {
   @override
   update(num delta) {
     rot += 0.5 * delta;
+    if(scale > 5 || scale < 0.1) {
+      scalemod = -scalemod;
+    }
+    scale += scalemod * 2 * delta;
   }
 
   @override
   config() {
-    scaleMode = ScaleMode.fit;
+    scaleMode = ScaleMode.resize;
   }
 
 }

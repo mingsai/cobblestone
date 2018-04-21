@@ -15,14 +15,13 @@ class SpriteBatch extends VertexBatch {
   Texture texture;
 
   /// Creates a new sprite batch with a custom shader
-  SpriteBatch(shaderProgram, {this.maxSprites: 2000}) : super(shaderProgram) {
+  SpriteBatch(GLWrapper wrapper, shaderProgram, {this.maxSprites: 2000}) : super(wrapper, shaderProgram) {
     color = new Vector4.all(1.0);
   }
 
   /// Creates a new sprite batch with a simple shader
-  SpriteBatch.defaultShader({int maxSprites: 2000})
-      : this(assetManager.get("packages/cobblestone/shaders/batch"),
-            maxSprites: maxSprites);
+  SpriteBatch.defaultShader(GLWrapper wrapper, {int maxSprites: 2000})
+      : this(wrapper, wrapper.batchShader, maxSprites: maxSprites);
 
   /// Draws the [texture] at ([x], [y]), the bottom left of the sprite. Can optionally draw at a given [height] and [width], scale by [scaleX] and [scaleY],
   /// flip the texture if [flipX] or [flipY], or turn [angle] around the center.
@@ -174,19 +173,19 @@ class SpriteBatch extends VertexBatch {
       indices[i + 5] = j + 1;
     }
 
-    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
+    context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    context.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
   }
 
   @override
   setAttribPointers() {
-    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+    context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
-    gl.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3,
+    context.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
 
-    gl.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind(0));
-    gl.uniform4f(
+    context.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind(0));
+    context.uniform4f(
         shaderProgram.uniforms[colorUni], color.r, color.g, color.b, color.a);
   }
 }

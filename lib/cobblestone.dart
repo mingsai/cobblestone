@@ -48,3 +48,6 @@ part 'package:cobblestone/src/audio/music.dart';
 part 'package:cobblestone/src/state/state.dart';
 part 'package:cobblestone/src/input/keyboard.dart';
 part 'package:cobblestone/src/input/mouse.dart';
+part 'package:cobblestone/src/graphics/builtin_shaders.dart';
+part 'package:cobblestone/src/graphics/gl_wrapper.dart';
+part 'package:cobblestone/src/audio/audio_wrapper.dart';

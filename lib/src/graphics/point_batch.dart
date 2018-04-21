@@ -10,18 +10,17 @@ class PointBatch extends VertexBatch {
   final int verticesPerSprite = 1;
   final int indicesPerSprite = 1;
 
-  PointBatch(ShaderProgram shaderProgram, {this.maxSprites: 8000})
-      : super(shaderProgram);
+  PointBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites: 8000})
+      : super(wrapper, shaderProgram);
 
-  PointBatch.defaultShader({int maxSprites: 8000})
-      : this(assetManager.get("packages/cobblestone/shaders/point"),
-            maxSprites: maxSprites);
+  PointBatch.defaultShader(GLWrapper wrapper, {int maxSprites: 8000})
+      : this(wrapper, wrapper.pointShader, maxSprites: maxSprites);
 
   @override
   setAttribPointers() {
-    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+    context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
-    gl.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
+    context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
         WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
     //print(shaderProgram.attributes);
   }

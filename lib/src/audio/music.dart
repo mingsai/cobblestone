@@ -1,36 +1,58 @@
 part of cobblestone;
 
 /// Loads a sound using an [AudioElement]
-Future<Music> loadMusic(String url) async {
-  AudioElement audio = new AudioElement(url);
-  return new Music(audio);
+Future<Music> loadMusic(AudioWrapper audio, String url) async {
+  AudioElement element = new AudioElement(url);
+  return new Music(audio, element);
 }
 
 /// A longer sound, streamed from an [AudioElement]
-class Music {
-  AudioElement audio;
+class Music extends AudioPlayer {
 
-  /// The volume of this music, from 0 to 1
+  AudioWrapper audio;
+  WebAudio.AudioContext context;
+
+  var element;
+
+  double get time => element.currentTime;
+  double get duration => element.duration;
+
+  bool _playing = false;
   double volume = 1.0;
 
-  /// Creates a new sound from an element
-  Music(this.audio) {}
+  Music(this.audio, this.element) {
+    this.context = audio.context;
+  }
 
   /// Plays this music. If [loop] is true, repeats indefinitely
   play([bool loop = false]) {
-    audio.loop = loop;
-    audio.volume = volume;
-    audio.play();
+    element.loop = loop;
+    element.volume = volume;
+    element.play();
+    playing = true;
   }
 
   /// Stops this sound
   stop() {
-    audio.pause();
-    audio.currentTime = 0;
+    element.pause();
+    element.currentTime = 0;
   }
 
   /// Loops this sound indefinitely
   loop() {
     play(true);
   }
+
+
+  bool get playing => _playing;
+
+  void set playing(bool playing) {
+    _playing = playing;
+    if(playing) {
+      audio.addPlaying(this);
+    } else {
+      audio.removePlaying(this);
+    }
+  }
+
 }

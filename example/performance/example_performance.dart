@@ -14,9 +14,9 @@ class PerformanceExample extends BaseGame {
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(maxSprites: 20000);
+    renderer = new SpriteBatch.defaultShader(gl, maxSprites: 20000);
 
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
 
     Random rand = new Random();
 
@@ -32,12 +32,12 @@ class PerformanceExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("boulders2.png", loadTexture("boulders2.png"));
+    assetManager.load("boulders2.png", loadTexture(gl, "boulders2.png"));
   }
 
   @override
   render(num delta) {
-    clearScreen(0.0, 0.0, 0.0, 1.0);
+    gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     window.console.time("Begin Batch");
     camera.update();
@@ -58,7 +58,7 @@ class PerformanceExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override

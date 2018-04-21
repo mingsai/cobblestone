@@ -15,10 +15,10 @@ class TilemapExample extends BaseGame {
 
   @override
   create() {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
     camera = new Camera2D.originBottomLeft(width, height);
 
-    renderer = new SpriteBatch.defaultShader();
+    renderer = new SpriteBatch.defaultShader(gl);
 
     Map<String, Texture> atlas = assetManager.get("atlas");
     map = assetManager.get("islands2.tmx");
@@ -51,12 +51,12 @@ class TilemapExample extends BaseGame {
   preload() {
     assetManager.load("islands2.tmx", loadTilemap("islands2.tmx"));
     assetManager.load(
-        "atlas", loadAtlas("atlas.json", loadTexture("atlas.png", nearest)));
+        "atlas", loadAtlas("atlas.json", loadTexture(gl, "atlas.png", nearest)));
   }
 
   @override
   render(num delta) {
-    clearScreen(41 / 256, 38 / 256, 52 / 256, 1.0);
+    gl.clearScreen(41 / 256, 38 / 256, 52 / 256, 1.0);
 
     camera.update();
 
@@ -75,7 +75,7 @@ class TilemapExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
     camera = new Camera2D.originBottomLeft(width, height);
   }
 

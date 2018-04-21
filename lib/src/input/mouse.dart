@@ -41,8 +41,8 @@ class Mouse {
   }
 
   void _updatePos(MouseEvent e) {
-    x = e.client.x.toDouble();
-    y = window.innerHeight - e.client.y.toDouble();
+    x = e.client.x;
+    y = window.innerHeight - e.client.y;
   }
 
   update() {

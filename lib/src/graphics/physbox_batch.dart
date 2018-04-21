@@ -12,19 +12,18 @@ class PhysboxBatch extends VertexBatch {
 
   Vector3 point = new Vector3.zero();
 
-  PhysboxBatch(ShaderProgram shaderProgram, {this.maxSprites: 2000})
-      : super(shaderProgram);
+  PhysboxBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites: 2000})
+      : super(wrapper, shaderProgram);
 
-  PhysboxBatch.defaultShader({int maxSprites: 2000})
-      : this(assetManager.get("packages/cobblestone/shaders/wire"),
-            maxSprites: maxSprites);
+  PhysboxBatch.defaultShader(GLWrapper wrapper, {int maxSprites: 2000})
+      : this(wrapper, wrapper.wireShader, maxSprites: maxSprites);
 
   @override
   setAttribPointers() {
-    gl.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+    context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
 
-    gl.uniform4fv(shaderProgram.uniforms[colorUni], Colors.white.storage);
+    context.uniform4fv(shaderProgram.uniforms[colorUni], Colors.white.storage);
     //print(shaderProgram.attributes);
   }
 
@@ -41,8 +40,8 @@ class PhysboxBatch extends VertexBatch {
       indices[i + 7] = j;
     }
 
-    gl.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
+    context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    context.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
   }
 
   draw2D(dynamic box) {

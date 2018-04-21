@@ -16,22 +16,22 @@ class PerformanceExample extends BaseGame {
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch(assetManager.get("water"));
+    renderer = new SpriteBatch(gl, assetManager.get("water"));
 
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
 
     water = assetManager.get("water.png");
   }
 
   @override
   preload() {
-    assetManager.load("water.png", loadTexture("water.png"));
-    assetManager.load("water", loadProgram("water.vertex", "ambient.fragment"));
+    assetManager.load("water.png", loadTexture(gl, "water.png"));
+    assetManager.load("water", loadProgram(gl, "water.vertex", "ambient.fragment"));
   }
 
   @override
   render(num delta) {
-    clearScreen(0.0, 0.0, 0.0, 1.0);
+    gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
 
@@ -48,7 +48,7 @@ class PerformanceExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    setGLViewport(canvasWidth, canvasHeight);
+    gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
