@@ -28,8 +28,8 @@ class Mouse {
     window.onMouseMove.listen((MouseEvent e) => _updatePos(e));
     window.onMouseUp.listen((MouseEvent e) {
       _updatePos(e);
-      if (!buttons.containsKey(e.button))
-        buttons[e.button] = e.timeStamp;
+      if (buttons.containsKey(e.button))
+        buttons.remove(e.button);
 
       // Click doesn't fire until lifted up
       justClicked[e.button] = e.timeStamp;
