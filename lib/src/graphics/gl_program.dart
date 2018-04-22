@@ -77,6 +77,44 @@ class ShaderProgram {
       context.uniform4f(uniforms[name], value.x, value.y, value.z, value.w);
     } else if (value is Matrix4) {
       context.uniformMatrix4fv(uniforms[name], false, value.storage);
+    } else if(value is List) {
+      name = name + '[0]'; //Really weird way an array uniform is distinguished
+      if (value[0] is int) {
+        context.uniform1iv(uniforms[name], value);
+      } else if (value[0] is double) {
+        context.uniform1fv(uniforms[name], value);
+      } else if (value[0] is Vector2) {
+        var array = [];
+        for(var vector in value) {
+          array.add(vector.x);
+          array.add(vector.y);
+        }
+        context.uniform2fv(uniforms[name], array);
+      } else if (value[0] is Vector3) {
+        var array = [];
+        for(var vector in value) {
+          array.add(vector.x);
+          array.add(vector.y);
+          array.add(vector.z);
+        }
+        print(array.length);
+        context.uniform3fv(uniforms[name], array);
+      } else if (value[0] is Vector4) {
+        var array = [];
+        for(var vector in value) {
+          array.add(vector.x);
+          array.add(vector.y);
+          array.add(vector.z);
+          array.add(vector.w);
+        }
+        context.uniform4fv(uniforms[name], array);
+      } else if (value[0] is Matrix4) {
+        var array = [];
+        for(var matrix in value) {
+          array.addAll(matrix.storage);
+        }
+        context.uniformMatrix4fv(uniforms[name], false, array);
+      }
     }
   }
 

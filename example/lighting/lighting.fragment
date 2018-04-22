@@ -1,0 +1,58 @@
+precision highp float;
+
+#define N_LIGHTS 10
+
+uniform sampler2D uDiffuse;
+uniform sampler2D uNormal;
+
+uniform vec3 uLightPos[N_LIGHTS];
+uniform vec4 uLightColor[N_LIGHTS];
+
+uniform vec4 uAmbientLightColor;
+
+uniform vec2 uScreenRes;
+
+//Constant, linear, quadratic coefficients
+uniform vec3 uFalloff;
+
+varying vec2 vTextureCoord;
+
+void main(void) {
+	//Get color using texture coordinates
+    vec4 diffuseColor = texture2D(uDiffuse, vTextureCoord);
+    vec3 normalColor = texture2D(uNormal,  vTextureCoord).rgb;
+
+	vec3 lightSum = vec3(0.0);
+	for(int i = 0; i < N_LIGHTS; i++) {
+		vec3 lightPos = uLightPos[i];
+		vec4 lightColor = uLightColor[i];
+
+		//The direction to the light
+    	vec3 lightDir = vec3(lightPos.xy - (gl_FragCoord.xy / uScreenRes.xy), lightPos.z);
+    	//Correct for aspect ratio
+    	lightDir.x *= uScreenRes.x / uScreenRes.y;
+
+    	//Distance to the light source
+    	float distance = length(lightDir);
+
+    	vec3 light = normalize(lightDir);
+
+		//Decode the normal from the color
+    	vec3 normal = normalize(normalColor * 2.0 - 1.0);
+
+		//Determine attenuation
+    	float attenuation = 1.0 / (uFalloff.x + (uFalloff.y * distance) + (uFalloff.z * distance * distance));
+
+    	//Alpha channel represents intensity
+    	vec3 ambient = uAmbientLightColor.rgb * uAmbientLightColor.a;
+    	vec3 diffuse = lightColor.rgb * max(dot(normal, light), 0.0);
+    	vec3 intensity = ambient + diffuse * attenuation;
+    	vec3 final = diffuseColor.rgb * intensity;
+
+    	lightSum += final;
+    }
+
+    gl_FragColor = vec4(lightSum, diffuseColor.a);
+    if(gl_FragColor.a <= 0.0)
+        discard;
+}

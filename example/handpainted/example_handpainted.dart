@@ -1,57 +1,60 @@
 import 'package:cobblestone/cobblestone.dart';
 
 main() {
-  new HandpaintExample();
+  new GeometryExample();
 }
 
-class HandpaintExample extends BaseGame {
+class GeometryExample extends BaseGame {
+  ShaderProgram shaderProgram;
+
   Camera2D camera;
 
   SpriteBatch renderer;
+  Texture wall;
 
-  List<FlashSprite> boulders = [];
+  num rot = 0.0;
+  num scale = 0.0;
+  num scalemod = 1;
 
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl, maxSprites: 2000);
+    renderer = new SpriteBatch.defaultShader(gl);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
-    Random rand = new Random();
-
-    var atlas = assetManager.get("atlas");
-    for (int i = 0; i < 2000; i++) {
-      boulders.add(new FlashSprite(atlas["m_" + (rand.nextInt(16) + 1).toString()],
-          rand.nextInt(width), rand.nextInt(height)));
-    }
+    wall = assetManager.get("largewall.png");
   }
 
   @override
   preload() {
-    assetManager.load("atlas", loadAtlas("sprites.json", loadTexture(gl, "sprites.png", mipMap)));
+    assetManager.load("largewall.png", loadTexture(gl, "largewall.png", mipMap));
   }
 
   @override
   render(num delta) {
     gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
-    window.console.time("Begin Batch");
     camera.update();
 
     renderer.projection = camera.combined;
+    renderer.color = Colors.aliceBlue;
     renderer.begin();
-    window.console.timeEnd("Begin Batch");
 
-    window.console.time("Build Batch");
-    for (FlashSprite sprite in boulders) {
-      renderer.draw(sprite.texture, sprite.x, sprite.y);
-    }
-    window.console.timeEnd("Build Batch");
+    renderer.draw(wall, 0.0, 0.0, width: height, height: height);
 
-    window.console.time("Flush Batch");
+    renderer.draw(wall, height, 0, width: height, height: height);
+
+    renderer.draw(wall, width / 2 - 50, height / 2 - 50,
+        width: 100.0,
+        height: 100.0,
+        flipX: true,
+        scaleX: scale,
+        scaleY: scale,
+        angle: rot,
+        counterTurn: true);
+
     renderer.end();
-    window.console.timeEnd("Flush Batch");
   }
 
   resize(num width, num height) {
@@ -59,18 +62,17 @@ class HandpaintExample extends BaseGame {
   }
 
   @override
-  update(num delta) {}
+  update(num delta) {
+    rot += 0.5 * delta;
+    if(scale > 5 || scale < 0.1) {
+      scalemod = -scalemod;
+    }
+    scale += scalemod * 2 * delta;
+  }
 
   @override
   config() {
     scaleMode = ScaleMode.resize;
   }
-}
 
-class FlashSprite {
-  Texture texture;
-
-  num x, y;
-
-  FlashSprite(this.texture, this.x, this.y);
 }
