@@ -15,7 +15,7 @@ class Framebuffer {
   int height;
 
   /// Creates a new framebuffer of [width], [height]. Can use [shader] for effects.
-  Framebuffer(this.wrapper, this.width, this.height, {this.shader: null}) {
+  Framebuffer(this.wrapper, this.width, this.height, {this.shader: null, filter: WebGL.NEAREST}) {
     context = wrapper.context;
     
     if (shader == null) {
@@ -23,7 +23,7 @@ class Framebuffer {
     }
     batch = new SpriteBatch(wrapper, shader, maxSprites: 2);
 
-    texture = new Texture.empty(wrapper, width, height);
+    texture = new Texture.empty(wrapper, width, height, filter);
 
     buffer = context.createFramebuffer();
     context.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);
