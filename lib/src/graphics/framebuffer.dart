@@ -47,17 +47,21 @@ class Framebuffer {
   /// Sets a uniform for [shader]
   void setUniform(String name, dynamic value) => shader.setUniform(name, value);
 
-  /// Renders this to the screen
-  void render(Matrix4 projection, [int x = 0, int y = 0, int width = null, int height = null]) {
+  /// Clears the screen and starts the shader program
+  void startRender(Matrix4 projection) {
+    wrapper.clearScreen(0.0, 0.0, 0.0, 1.0);
+    batch.projection = projection;
+    batch.begin();
+  }
+
+  // Finishes rendering the FBO
+  void endRender([int x = 0, int y = 0, int width = null, int height = null]) {
     if(width == null) {
       width = this.width ~/ 2;
     }
     if(height == null) {
       height = this.height ~/ 2;
     }
-    wrapper.clearScreen(0.0, 0.0, 0.0, 1.0);
-    batch.projection = projection;
-    batch.begin();
     batch.draw(texture, x, y, width: width, height: height);
     batch.end();
   }
