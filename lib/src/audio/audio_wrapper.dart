@@ -13,7 +13,6 @@ class AudioWrapper {
   }
 
   addPlaying(AudioPlayer sound) {
-    print(sound);
     if(!sounds.contains(sound)) {
       sounds.add(sound);
     }
