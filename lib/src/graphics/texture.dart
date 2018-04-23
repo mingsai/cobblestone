@@ -94,14 +94,14 @@ class Texture {
   }
 
   /// Creates an empty texture
-  Texture.empty(this.wrapper, this.width, this.height) {
+  Texture.empty(this.wrapper, this.width, this.height, var filter) {
     context = wrapper.context;
 
     texture = context.createTexture();
     context.bindTexture(WebGL.TEXTURE_2D, texture);
     //context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
-    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.NEAREST);
-    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.NEAREST);
+    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, filter);
+    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, filter);
     context.texParameteri(
         WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
     context.texParameteri(

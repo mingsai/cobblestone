@@ -15,7 +15,7 @@ class Framebuffer {
   int height;
 
   /// Creates a new framebuffer of [width], [height]. Can use [shader] for effects.
-  Framebuffer(this.wrapper, this.width, this.height, {this.shader: null}) {
+  Framebuffer(this.wrapper, this.width, this.height, {this.shader: null, filter: WebGL.NEAREST}) {
     context = wrapper.context;
     
     if (shader == null) {
@@ -23,7 +23,7 @@ class Framebuffer {
     }
     batch = new SpriteBatch(wrapper, shader, maxSprites: 2);
 
-    texture = new Texture.empty(wrapper, width, height);
+    texture = new Texture.empty(wrapper, width, height, filter);
 
     buffer = context.createFramebuffer();
     context.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);
@@ -47,17 +47,21 @@ class Framebuffer {
   /// Sets a uniform for [shader]
   void setUniform(String name, dynamic value) => shader.setUniform(name, value);
 
-  /// Renders this to the screen
-  void render(Matrix4 projection, [int x = 0, int y = 0, int width = null, int height = null]) {
+  /// Clears the screen and starts the shader program
+  void startRender(Matrix4 projection) {
+    wrapper.clearScreen(0.0, 0.0, 0.0, 1.0);
+    batch.projection = projection;
+    batch.begin();
+  }
+
+  // Finishes rendering the FBO
+  void endRender([int x = 0, int y = 0, int width = null, int height = null]) {
     if(width == null) {
       width = this.width ~/ 2;
     }
     if(height == null) {
       height = this.height ~/ 2;
     }
-    wrapper.clearScreen(0.0, 0.0, 0.0, 1.0);
-    batch.projection = projection;
-    batch.begin();
     batch.draw(texture, x, y, width: width, height: height);
     batch.end();
   }
