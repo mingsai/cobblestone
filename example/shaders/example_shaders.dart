@@ -17,6 +17,10 @@ class PerformanceExample extends BaseGame {
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
     renderer = new SpriteBatch(gl, assetManager.get("water"));
+    renderer.setAdditionalUniforms = () {
+      renderer.setUniform("waveData", new Vector2(angleWave, 0.9));
+      renderer.setUniform("uLightColor", Colors.navy);
+    };
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
@@ -42,8 +46,6 @@ class PerformanceExample extends BaseGame {
         renderer.draw(water, i * 64, j * 64, width: 64, height: 64);
       }
     }
-    renderer.setUniform("waveData", new Vector2(angleWave, 0.9));
-    renderer.setUniform("uLightColor", Colors.navy);
     renderer.end();
   }
 

@@ -14,6 +14,10 @@ class Framebuffer {
   int width;
   int height;
 
+  /// Called during rendering, use [setUniform] to provide additional data to
+  /// shaders here
+  Function setAdditionalUniforms = null;
+
   /// Creates a new framebuffer of [width], [height]. Can use [shader] for effects.
   Framebuffer(this.wrapper, this.width, this.height, {this.shader: null, filter: WebGL.NEAREST}) {
     context = wrapper.context;
@@ -47,15 +51,16 @@ class Framebuffer {
   /// Sets a uniform for [shader]
   void setUniform(String name, dynamic value) => shader.setUniform(name, value);
 
-  /// Clears the screen and starts the shader program
-  void startRender(Matrix4 projection) {
+  // Renders the FBO to the screen. Calls [setAdditionalUniforms] midway.
+  void render(Matrix4 projection, [int x = 0, int y = 0, int width = null, int height = null]) {
     wrapper.clearScreen(0.0, 0.0, 0.0, 1.0);
     batch.projection = projection;
     batch.begin();
-  }
 
-  // Finishes rendering the FBO
-  void endRender([int x = 0, int y = 0, int width = null, int height = null]) {
+    if(setAdditionalUniforms != null) {
+      setAdditionalUniforms();
+    }
+
     if(width == null) {
       width = this.width ~/ 2;
     }

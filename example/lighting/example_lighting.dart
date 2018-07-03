@@ -29,6 +29,15 @@ class GeometryExample extends BaseGame {
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
     renderer = new SpriteBatch(gl, assetManager.get("lighting"));
+    renderer.setAdditionalUniforms = () {
+      renderer.setUniform('uLightPos', lightPos);
+      renderer.setUniform('uLightColor', lightColor);
+      renderer.setUniform('uAmbientLightColor', ambientColor);
+      renderer.setUniform('uScreenRes', new Vector2(width.toDouble(), height.toDouble()));
+      renderer.setUniform('uFalloff', attenuation);
+      renderer.setUniform('uDiffuse', wall.bind(1));
+      renderer.setUniform('uNormal', wallNorm.bind(2));
+    };
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
@@ -66,14 +75,6 @@ class GeometryExample extends BaseGame {
     renderer.begin();
     renderer.draw(wall, 0.0, 0.0, width: height, height: height);
     renderer.draw(wall, height, 0, width: height, height: height);
-
-    renderer.setUniform('uLightPos', lightPos);
-    renderer.setUniform('uLightColor', lightColor);
-    renderer.setUniform('uAmbientLightColor', ambientColor);
-    renderer.setUniform('uScreenRes', new Vector2(width.toDouble(), height.toDouble()));
-    renderer.setUniform('uFalloff', attenuation);
-    renderer.setUniform('uDiffuse', wall.bind(1));
-    renderer.setUniform('uNormal', wallNorm.bind(2));
     renderer.end();
   }
 
