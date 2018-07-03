@@ -4,6 +4,9 @@ main() {
   new PerformanceExample();
 }
 
+const double gravity = -9.8;
+Random rand = new Random();
+
 class PerformanceExample extends BaseGame {
   Camera2D camera;
 
@@ -18,15 +21,13 @@ class PerformanceExample extends BaseGame {
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
-    Random rand = new Random();
-
     Texture boulderSheet = assetManager.get("boulders2.png");
     int num = 0;
 
     List<Texture> textures = boulderSheet.split(16, 16);
-    for (int i = 0; i < 20000; i++) {
+    for (int i = 0; i < 100000; i++) {
       boulders.add(new BoulderSprite(textures[rand.nextInt(textures.length)],
-          rand.nextInt(width), rand.nextInt(height)));
+          rand.nextInt(width), rand.nextInt(height ~/ 2) + height / 2));
     }
   }
 
@@ -48,6 +49,7 @@ class PerformanceExample extends BaseGame {
 
     window.console.time("Build Batch");
     for (BoulderSprite sprite in boulders) {
+      sprite.update(delta);
       renderer.draw(sprite.texture, sprite.x, sprite.y);
     }
     window.console.timeEnd("Build Batch");
@@ -68,7 +70,34 @@ class PerformanceExample extends BaseGame {
 class BoulderSprite {
   Texture texture;
 
+  num speedX, speedY;
   num x, y;
 
-  BoulderSprite(this.texture, this.x, this.y);
+  BoulderSprite(this.texture, this.x, this.y) {
+    speedX = (rand.nextDouble() * 100) - 50;
+    speedY = (rand.nextDouble() * 100) - 50;
+  }
+
+  update(double delta) {
+    this.x += speedX * delta;
+    this.y += speedY * delta;
+    this.speedY += gravity * delta;
+
+    if (x > 640) {
+      speedX *= -1;
+      x = 640;
+    } else if (x < 0) {
+      speedX *= -1;
+      x = 0;
+    }
+
+    if (y < 0) {
+      speedY *= -0.85;
+      y = 0;
+    } else if (y > 480) {
+      speedY = 0;
+      y = 480;
+    }
+  }
+
 }

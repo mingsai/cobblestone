@@ -127,6 +127,9 @@ abstract class BaseGame implements State {
       double delta = _stopwatch.elapsedMilliseconds / 1000.0;
       _stopwatch.reset();
 
+      // Don't update right after long breaks (e.g. window minimized)
+      delta = delta < 1 ? delta : 0.0;
+
       tweenManager.update(delta);
       update(delta);
       render(delta);

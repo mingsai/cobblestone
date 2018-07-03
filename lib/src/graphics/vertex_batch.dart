@@ -57,11 +57,9 @@ abstract class VertexBatch {
     index = 0;
     elementIndex = 0;
     spritesInFlush = 0;
-    vertices.fillRange(0, vertices.length, 0.0);
   }
 
   begin() {
-    reset();
     shaderProgram.startProgram();
 
     if(setAdditionalUniforms != null) {

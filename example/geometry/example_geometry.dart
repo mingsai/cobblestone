@@ -47,8 +47,11 @@ class GeometryExample extends BaseGame {
     renderer.draw(nehe, 25.0, 25.0,
         width: 100.0, height: 100.0, flipX: true, flipY: true);
 
-    renderer.color = Colors.saddleBrown;
-    renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
+    if (rot < 2 * PI) {
+      renderer.color = Colors.saddleBrown;
+      renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
+      print(rot);
+    }
 
     renderer.color = Colors.lightSkyBlue;
     renderer.draw(nehe, 0.0, height - 100.0,
