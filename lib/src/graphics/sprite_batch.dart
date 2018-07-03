@@ -12,6 +12,8 @@ class SpriteBatch extends VertexBatch {
 
   Vector4 color;
 
+  int vi = 0;
+
   Texture texture;
 
   /// Creates a new sprite batch with a custom shader
@@ -135,29 +137,32 @@ class SpriteBatch extends VertexBatch {
       v = v2;
       v2 = temp;
     }
-    
-    vertices.setAll(spritesInFlush * verticesPerSprite * vertexSize, [
-      x1,
-      y1,
-      0.0,
-      u,
-      v,
-      x2,
-      y2,
-      0.0,
-      u,
-      v2,
-      x3,
-      y3,
-      0.0,
-      u2,
-      v,
-      x4,
-      y4,
-      0.0,
-      u2,
-      v2
-    ]);
+
+    vi = spritesInFlush * verticesPerSprite * vertexSize;
+
+    vertices[vi + 00] = x1;
+    vertices[vi + 01] = y1;
+    vertices[vi + 02] = 0.0;
+    vertices[vi + 03] = u;
+    vertices[vi + 04] = v;
+
+    vertices[vi + 05] = x2;
+    vertices[vi + 06] = y2;
+    vertices[vi + 07] = 0.0;
+    vertices[vi + 08] = u;
+    vertices[vi + 09] = v2;
+
+    vertices[vi + 10] = x3;
+    vertices[vi + 11] = y3;
+    vertices[vi + 12] = 0.0;
+    vertices[vi + 13] = u2;
+    vertices[vi + 14] = v;
+
+    vertices[vi + 15] = x4;
+    vertices[vi + 16] = y4;
+    vertices[vi + 17] = 0.0;
+    vertices[vi + 18] = u2;
+    vertices[vi + 19] = v2;
 
     spritesInFlush++;
   }
