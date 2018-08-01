@@ -21,7 +21,7 @@ abstract class State {
 
   AssetManager get assetManager => game.assetManager;
 
-  Tween.TweenManager get tweenManager => game.tweenManager;
+  TweenManager get tweenManager => game.tweenManager;
 
   AudioWrapper get audio => game.audio;
 

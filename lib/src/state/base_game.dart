@@ -39,7 +39,7 @@ abstract class BaseGame implements State {
   final AssetManager assetManager = new AssetManager();
 
   /// The game tween manager
-  final Tween.TweenManager tweenManager = new Tween.TweenManager();
+  final TweenManager tweenManager = new TweenManager();
 
   // Game audio context
   final AudioWrapper audio = new AudioWrapper();
@@ -87,12 +87,6 @@ abstract class BaseGame implements State {
   _startLoop() {
     keyboard = new Keyboard();
     mouse = new Mouse();
-
-    Tween.Tween.combinedAttributesLimit = 4;
-    Tween.Tween.registerAccessor(num, new NumberAccessor());
-    Tween.Tween.registerAccessor(Vector2, new Vector2Accessor());
-    Tween.Tween.registerAccessor(Vector3, new Vector3Accessor());
-    Tween.Tween.registerAccessor(Vector4, new Vector4Accessor());
 
     preload();
 
