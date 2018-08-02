@@ -20,7 +20,7 @@ before_script:
 pages:
   stage: build
   script:
-    - pub build
+    - pub build example/
     - rm -r -f public
     - mkdir -p public
     - mv -v build/example/* public
