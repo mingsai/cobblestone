@@ -1,10 +1,6 @@
-import 'package:cobblestone/cobblestone.dart';
+part of examples;
 
-main() {
-  new GeometryExample();
-}
-
-class GeometryExample extends BaseGame {
+class LightingExample extends BaseGame {
   ShaderProgram shaderProgram;
 
   Camera2D camera;
@@ -59,9 +55,9 @@ class GeometryExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("lighting", loadProgram(gl, "basic.vertex", "lighting.fragment"));
-    assetManager.load("tileDiffuse", loadTexture(gl, "hp_floor_tiles_02.png", mipMap));
-    assetManager.load("tileNormal", loadTexture(gl, "hp_floor_tiles_02_norm.png", mipMap));
+    assetManager.load("lighting", loadProgram(gl, "lighting/basic.vertex", "lighting/lighting.fragment"));
+    assetManager.load("tileDiffuse", loadTexture(gl, "lighting/hp_floor_tiles_02.png", mipMap));
+    assetManager.load("tileNormal", loadTexture(gl, "lighting/hp_floor_tiles_02_norm.png", mipMap));
   }
 
   @override

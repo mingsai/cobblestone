@@ -52,13 +52,15 @@ abstract class BaseGame implements State {
   BaseGame get game => this;
 
   bool _started;
+  bool _stopped = false;
+
+  StreamSubscription _resizeSub;
 
   /// Creates a new game with the first canvas element
   BaseGame(): this.query("canvas");
 
   /// Creates a new game with the canvas selected by [selector]
   BaseGame.query(String selector): this.withCanvas(querySelector(selector));
-
 
   /// Creates a new game with [canvas]
   BaseGame.withCanvas(this.canvas) {
@@ -110,9 +112,17 @@ abstract class BaseGame implements State {
     _stopwatch.start();
 
     _resizeCanvas();
-    window.onResize.listen((Event e) => _resizeCanvas());
+    _resizeSub = window.onResize.listen((Event e) => _resizeCanvas());
 
     _started = true;
+  }
+
+  /// Stops looping the game
+  stop() {
+    _stopped = true;
+    _resizeSub.cancel();
+    mouse.cancelSubs();
+    keyboard.cancelSubs();
   }
 
   /// A tick in the game loop
@@ -134,7 +144,9 @@ abstract class BaseGame implements State {
       _start();
     }
 
-    window.animationFrame.then(_tick);
+    if(!_stopped) {
+      window.animationFrame.then(_tick);
+    }
   }
 
   /// Updates the game. Called before [render]

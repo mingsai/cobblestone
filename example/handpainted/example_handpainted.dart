@@ -1,10 +1,6 @@
-import 'package:cobblestone/cobblestone.dart';
+part of examples;
 
-main() {
-  new GeometryExample();
-}
-
-class GeometryExample extends BaseGame {
+class HandpaintedExample extends BaseGame {
   ShaderProgram shaderProgram;
 
   Camera2D camera;
@@ -28,7 +24,7 @@ class GeometryExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("largewall.png", loadTexture(gl, "largewall.png", mipMap));
+    assetManager.load("largewall.png", loadTexture(gl, "handpainted/largewall.png", mipMap));
   }
 
   @override

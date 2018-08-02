@@ -19,25 +19,27 @@ class Mouse {
   bool get middleJustClicked => justClicked.containsKey(1);
   bool get rightJustClicked => justClicked.containsKey(2);
 
+  List<StreamSubscription> _subs = [];
+
   Mouse() {
-    window.onMouseDown.listen((MouseEvent e) {
+    _subs.add(window.onMouseDown.listen((MouseEvent e) {
       _updatePos(e);
       if (!buttons.containsKey(e.button))
         buttons[e.button] = e.timeStamp;
-    });
-    window.onMouseMove.listen((MouseEvent e) => _updatePos(e));
-    window.onMouseUp.listen((MouseEvent e) {
+    }));
+    _subs.add(window.onMouseMove.listen((MouseEvent e) => _updatePos(e)));
+    _subs.add(window.onMouseUp.listen((MouseEvent e) {
       _updatePos(e);
       if (buttons.containsKey(e.button))
         buttons.remove(e.button);
 
       // Click doesn't fire until lifted up
       justClicked[e.button] = e.timeStamp;
-    });
+    }));
 
-    window.onContextMenu.listen((MouseEvent e) {
+    _subs.add(window.onContextMenu.listen((MouseEvent e) {
       e.preventDefault();
-    });
+    }));
   }
 
   void _updatePos(MouseEvent e) {
@@ -48,6 +50,12 @@ class Mouse {
   update() {
     // Only be just-clicked for a frame
     justClicked.clear();
+  }
+
+  cancelSubs() {
+    for(var sub in _subs) {
+      sub.cancel();
+    }
   }
 
 }

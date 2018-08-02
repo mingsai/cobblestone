@@ -1,10 +1,6 @@
-import 'package:cobblestone/cobblestone.dart';
+part of examples;
 
-main() {
-  new GeometryExample();
-}
-
-class GeometryExample extends BaseGame {
+class FBOExample extends BaseGame {
   ShaderProgram effect;
 
   Camera2D camera;
@@ -31,9 +27,9 @@ class GeometryExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture(gl, "nehe.gif", nearest));
+    assetManager.load("nehe.gif", loadTexture(gl, "fbo/nehe.gif", nearest));
     assetManager.load(
-        "effect", loadProgram(gl, "effect.vertex", "effect.fragment"));
+        "effect", loadProgram(gl, "fbo/effect.vertex", "fbo/effect.fragment"));
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:cobblestone/cobblestone.dart';
+part of examples;
 
 main() {
   new AudioExample();
@@ -39,10 +39,10 @@ class AudioExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("technogeek.wav", loadMusic(audio, "technogeek.wav"));
-    assetManager.load("spaceship.wav", loadSound(audio, "spaceship.wav"));
+    assetManager.load("technogeek.wav", loadMusic(audio, "audio/technogeek.wav"));
+    assetManager.load("spaceship.wav", loadSound(audio, "audio/spaceship.wav"));
     assetManager.load(
-        "short wind sound.wav", loadSound(audio, "short wind sound.wav"));
+        "short wind sound.wav", loadSound(audio, "audio/short wind sound.wav"));
   }
 
   @override

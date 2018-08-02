@@ -1,8 +1,4 @@
-import 'package:cobblestone/cobblestone.dart';
-
-main() {
-  new GeometryExample();
-}
+part of examples;
 
 class GeometryExample extends BaseGame {
   ShaderProgram shaderProgram;
@@ -28,7 +24,7 @@ class GeometryExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture(gl, "nehe.gif", nearest));
+    assetManager.load("nehe.gif", loadTexture(gl, "geometry/nehe.gif", nearest));
   }
 
   @override

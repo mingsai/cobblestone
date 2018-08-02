@@ -1,8 +1,4 @@
-import 'package:cobblestone/cobblestone.dart';
-
-main() {
-  new PerformanceExample();
-}
+part of examples;
 
 const double gravity = -9.8;
 Random rand = new Random();
@@ -33,7 +29,7 @@ class PerformanceExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("boulders2.png", loadTexture(gl, "boulders2.png"));
+    assetManager.load("boulders2.png", loadTexture(gl, "performance/boulders2.png"));
   }
 
   @override

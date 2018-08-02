@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="scaffolded-by" content="https://github.com/google/stagehand">
+    <title>Cobblestone Example Library</title>
+    <script defer src="packages/browser/dart.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <style>
+        body {
+          color: #DCDCDC;
+          background: #201F1D;
+          font-family: 'Roboto Slab', serif;
+        }
+
+        canvas {
+          position: absolute;
+          left:0; right:0;
+          top:0; bottom:0;
+          margin:auto;
+          max-width:100%;
+          max-height:100%;
+          overflow:auto;
+        }
+
+        div.overlay {
+	        position: absolute;
+            z-index: 1;
+        }
+
+        a {
+          color: #6ABED8;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <h2>Cobblestone Examples</h2>
+        <h3>Feature Demos</h3>
+        <ul id="features"></ul>
+        <h3>Advanced Demos</h3>
+        <ul id="advanced"></ul>
+    </div>
+
+    <canvas id="draw-canvas"></canvas>
+
+    <script defer src="index.dart" type="application/dart"></script>
+</body>
+</html>

@@ -1,10 +1,6 @@
-import 'package:cobblestone/cobblestone.dart';
+part of examples;
 
-main() {
-  new GeometryExample();
-}
-
-class GeometryExample extends BaseGame {
+class AtlasExample extends BaseGame {
   SpriteBatch renderer;
   Camera2D camera;
 
@@ -19,7 +15,7 @@ class GeometryExample extends BaseGame {
   @override
   preload() {
     assetManager.load("atlas",
-        loadAtlas("atlas/atlas.json", loadTexture(gl, "atlas/atlas.png", nearest)));
+        loadAtlas("atlas/atlas/atlas.json", loadTexture(gl, "atlas/atlas/atlas.png", nearest)));
     print(defaultShader);
   }
 

@@ -1,8 +1,4 @@
-import 'package:cobblestone/cobblestone.dart';
-
-main() {
-  new TilemapExample();
-}
+part of examples;
 
 class TilemapExample extends BaseGame {
   Camera2D camera;
@@ -49,9 +45,9 @@ class TilemapExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("islands2.tmx", loadTilemap("islands2.tmx"));
+    assetManager.load("islands2.tmx", loadTilemap("tilemap/islands2.tmx"));
     assetManager.load(
-        "atlas", loadAtlas("atlas.json", loadTexture(gl, "atlas.png", nearest)));
+        "atlas", loadAtlas("tilemap/atlas.json", loadTexture(gl, "tilemap/atlas.png", nearest)));
   }
 
   @override

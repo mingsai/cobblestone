@@ -1,8 +1,9 @@
 # cobblestone
 
-A Dart game framework. UNSTABLE, ALPHA RELEASE, PLS DON'T USE
-Only on GitHub so I can use it for Ludum Dare.
+A Dart game framework inspired by [LibGDX](https://libgdx.badlogicgames.com/).
 
-PRs are welcome though.
+Clone the repo and run `pub serve example` for a demonstration of various engine features and example code.
 
-See examples for usage. There is currently no documentation.
+Other examples can be seen in [my Ludum Dare entries](http://ldjam.com/users/ectucker1/games). Be warned, most of these use older engine versions and no longer work with the latest updates.
+
+Proper tutorials are in the works, check back later for them.

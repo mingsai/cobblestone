@@ -9,28 +9,30 @@ class Keyboard {
   // A map of just-typed keys
   Map<int, num> justTyped = new Map<int, int>();
 
+  List<StreamSubscription> _subs = [];
+
   Keyboard() {
-    window.onKeyDown.listen((KeyboardEvent e) {
+    _subs.add(window.onKeyDown.listen((KeyboardEvent e) {
       // If the key is not set yet, set it with a timestamp.
       if (!keys.containsKey(e.keyCode))
         keys[e.keyCode] = e.timeStamp;
-    });
-    window.onKeyUp.listen((KeyboardEvent e) {
+    }));
+        _subs.add(window.onKeyUp.listen((KeyboardEvent e) {
       // Remove the key, it is no longer pressed
       keys.remove(e.keyCode);
 
       // Typed doesn't fire until key up
       justTyped[e.keyCode] = e.timeStamp;
-    });
+    }));
 
-    window.onFocus.listen((Event e) {
+    _subs.add(window.onFocus.listen((Event e) {
       // Clear all keys, they shouldn't be active when the window is unfocused
       keys.clear();
-    });
-    window.onBlur.listen((Event e) {
+    }));
+    _subs.add(window.onBlur.listen((Event e) {
       // Clear all keys, they shouldn't be active when the window is unfocused
       keys.clear();
-    });
+    }));
   }
 
   update() {
@@ -43,4 +45,11 @@ class Keyboard {
 
   // Checks if a key was just typed. Only true for a frame
   keyJustTyped(int keyCode) => justTyped.containsKey(keyCode);
+
+  cancelSubs() {
+    for(var sub in _subs) {
+      sub.cancel();
+    }
+  }
+
 }

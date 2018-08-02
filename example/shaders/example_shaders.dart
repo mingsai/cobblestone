@@ -1,10 +1,6 @@
-import 'package:cobblestone/cobblestone.dart';
+part of examples;
 
-main() {
-  new PerformanceExample();
-}
-
-class PerformanceExample extends BaseGame {
+class ShaderExample extends BaseGame {
   Camera2D camera;
 
   SpriteBatch renderer;
@@ -29,8 +25,8 @@ class PerformanceExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("water.png", loadTexture(gl, "water.png"));
-    assetManager.load("water", loadProgram(gl, "water.vertex", "ambient.fragment"));
+    assetManager.load("water.png", loadTexture(gl, "shaders/water.png"));
+    assetManager.load("water", loadProgram(gl, "shaders/water.vertex", "shaders/ambient.fragment"));
   }
 
   @override
@@ -58,12 +54,4 @@ class PerformanceExample extends BaseGame {
     angleWave += delta * 5.0;
     while (angleWave > PI * 2) angleWave -= PI * 2;
   }
-}
-
-class BoulderSprite {
-  Texture texture;
-
-  num x, y;
-
-  BoulderSprite(this.texture, this.x, this.y);
 }

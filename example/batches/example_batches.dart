@@ -1,10 +1,6 @@
-import 'package:cobblestone/cobblestone.dart';
+part of examples;
 
-main() {
-  new GeometryExample();
-}
-
-class GeometryExample extends BaseGame {
+class BatchExample extends BaseGame {
   Camera2D camera;
   Matrix4 pMatrix;
 

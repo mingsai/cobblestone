@@ -1,8 +1,4 @@
-import 'package:cobblestone/cobblestone.dart';
-
-main() {
-  new TweenExample();
-}
+part of examples;
 
 class TweenExample extends BaseGame {
   ShaderProgram shaderProgram;
@@ -38,7 +34,7 @@ class TweenExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture(gl, "nehe.gif", nearest));
+    assetManager.load("nehe.gif", loadTexture(gl, "tweens/nehe.gif", nearest));
   }
 
   @override
