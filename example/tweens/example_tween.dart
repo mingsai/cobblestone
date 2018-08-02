@@ -21,14 +21,23 @@ class TweenExample extends BaseGame {
 
     box = new Box(0.0, 0.0);
 
+    var getPos = [() => box.x, () => box.y];
+    var setPos = [(v) => box.x = v, (v) => box.y = v];
+
     new Tween()
-      ..get = [() => box.x, () => box.y]
-      ..set = [(v) => box.x = v, (v) => box.y = v]
+      ..get = getPos
+      ..set = setPos
       ..target = [width - 50, height - 50]
       ..duration = 10.0
       ..delay = 1.0
       ..ease = backInOut
-      ..callback = (() => print("Tween Complete"))
+      ..callback = (() => print("Tween 1 Complete"))
+      ..chain(new Tween()
+        ..get = getPos
+        ..set = setPos
+        ..target = [0.0, 0.0]
+        ..duration = 10.0
+        ..ease = expoInOut)
       ..start(tweenManager);
   }
 
@@ -56,15 +65,12 @@ class TweenExample extends BaseGame {
   }
 
   @override
-  update(num delta) {
-
-  }
+  update(num delta) {}
 
   @override
   config() {
     scaleMode = ScaleMode.fit;
   }
-
 }
 
 class Box {

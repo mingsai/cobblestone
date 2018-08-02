@@ -33,13 +33,26 @@ class Tween {
   // Elapsed time since starting
   double _time = 0.0;
 
+  // Storage for another tween in a chain
+  Tween _next;
+
+  // The manager of this tween
+  TweenManager _manager;
+
   /// Constructs a new tween. Use properties to set behavior.
   Tween();
 
   /// Adds the tween to the manager
   start(TweenManager manager) {
     _initial = get.map((f) => f()).toList();
+
     manager.add(this);
+    _manager = manager;
+  }
+
+  /// Runs this tween, then the next one
+  chain(Tween tween) {
+    _next = tween;
   }
 
   /// Updates the tween to it position after [delta] more seconds
@@ -58,6 +71,9 @@ class Tween {
         set[i](target[i]);
       }
       callback();
+      if(_next != null) {
+        _next.start(_manager);
+      }
     }
   }
 
