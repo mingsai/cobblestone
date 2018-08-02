@@ -1,9 +1,5 @@
 part of examples;
 
-main() {
-  new AudioExample();
-}
-
 class AudioExample extends BaseGame {
   Camera2D camera;
   Matrix4 pMatrix;
