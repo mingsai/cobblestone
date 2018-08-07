@@ -37,6 +37,7 @@ class GLWrapper {
   _setGLOptions() {
     context.disable(WebGL.DEPTH_TEST);
     context.enable(WebGL.BLEND);
+    context.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE_MINUS_SRC_ALPHA);
   }
 
   /// Loads the shaders used by built in batches

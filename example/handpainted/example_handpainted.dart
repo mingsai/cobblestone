@@ -24,7 +24,7 @@ class HandpaintedExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("largewall.png", loadTexture(gl, "handpainted/largewall.png", mipMap));
+    assetManager.load("largewall.png", loadTexture(gl, "handpainted/largewall.png", linear));
   }
 
   @override

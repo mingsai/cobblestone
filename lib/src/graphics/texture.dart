@@ -50,6 +50,24 @@ WebGL.Texture nearest(GLWrapper wrapper, ImageElement element) {
   return texture;
 }
 
+/// Converts an [ImageElement] to a texture with linear scaling
+WebGL.Texture linear(GLWrapper wrapper, ImageElement element) {
+  var context = wrapper.context;
+
+  WebGL.Texture texture = context.createTexture();
+  context.bindTexture(WebGL.TEXTURE_2D, texture);
+  context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
+  context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
+      WebGL.UNSIGNED_BYTE, element);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, WebGL.LINEAR);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, WebGL.LINEAR);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
+  context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
+  context.bindTexture(WebGL.TEXTURE_2D, null);
+  return texture;
+}
+
+
 /// A texture used in the game
 class Texture {
   GLWrapper wrapper;

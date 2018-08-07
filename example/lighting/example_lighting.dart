@@ -56,8 +56,8 @@ class LightingExample extends BaseGame {
   @override
   preload() {
     assetManager.load("lighting", loadProgram(gl, "lighting/basic.vertex", "lighting/lighting.fragment"));
-    assetManager.load("tileDiffuse", loadTexture(gl, "lighting/hp_floor_tiles_02.png", mipMap));
-    assetManager.load("tileNormal", loadTexture(gl, "lighting/hp_floor_tiles_02_norm.png", mipMap));
+    assetManager.load("tileDiffuse", loadTexture(gl, "lighting/hp_floor_tiles_02.png", linear));
+    assetManager.load("tileNormal", loadTexture(gl, "lighting/hp_floor_tiles_02_norm.png", linear));
   }
 
   @override

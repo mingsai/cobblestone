@@ -9,7 +9,7 @@ part of cobblestone;
 
 typedef Easing = double Function(double, double, double, double);
 
-double linear(time, start, change, duration) {
+double linearInOut(time, start, change, duration) {
   return change * time / duration + start;
 }
 

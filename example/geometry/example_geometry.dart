@@ -24,7 +24,7 @@ class GeometryExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture(gl, "geometry/nehe.gif", nearest));
+    assetManager.load("nehe.gif", loadTexture(gl, "geometry/nehe.gif"));
   }
 
   @override
