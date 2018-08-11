@@ -97,7 +97,6 @@ class ShaderProgram {
           array.add(vector.y);
           array.add(vector.z);
         }
-        print(array.length);
         context.uniform3fv(uniforms[name], array);
       } else if (value[0] is Vector4) {
         var array = [];
