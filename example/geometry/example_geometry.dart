@@ -10,7 +10,7 @@ class GeometryExample extends BaseGame {
 
   bool get isLoaded => nehe != null;
 
-  num rot = 0.0;
+  num rot = PI / 4;
 
   @override
   create() {
@@ -43,11 +43,8 @@ class GeometryExample extends BaseGame {
     renderer.draw(nehe, 25.0, 25.0,
         width: 100.0, height: 100.0, flipX: true, flipY: true);
 
-    if (rot < 2 * PI) {
-      renderer.color = Colors.saddleBrown;
-      renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
-      print(rot);
-    }
+    renderer.color = Colors.saddleBrown;
+    renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
 
     renderer.color = Colors.lightSkyBlue;
     renderer.draw(nehe, 0.0, height - 100.0,
@@ -70,7 +67,7 @@ class GeometryExample extends BaseGame {
 
   @override
   update(num delta) {
-    rot += 0.5 * delta;
+    //rot += 0.5 * delta;
   }
 
   @override

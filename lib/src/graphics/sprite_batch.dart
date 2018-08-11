@@ -75,7 +75,7 @@ class SpriteBatch extends VertexBatch {
 
     if (angle != 0) {
       if (counterTurn) {
-        angle = 360 - angle;
+        angle = 2 * PI - angle;
       }
 
       double cx = x + width / 2;
