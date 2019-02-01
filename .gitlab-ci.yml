@@ -20,6 +20,7 @@ before_script:
 pages:
   stage: build
   script:
+    - pub global activate webdev
     - webdev build --output example:build
     - rm -r -f public
     - mkdir -p public
