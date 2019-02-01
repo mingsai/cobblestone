@@ -12,14 +12,14 @@ Future<ShaderProgram> loadProgram(GLWrapper wrapper, String vertex, String fragm
 /// A compiled WebGL shader
 class ShaderProgram {
   GLWrapper wrapper;
-  WebGL.RenderingContext context;
+  GL.RenderingContext context;
 
   Map<String, int> attributes = new Map<String, int>();
-  Map<String, WebGL.UniformLocation> uniforms =
-      new Map<String, WebGL.UniformLocation>();
-  WebGL.Program program;
+  Map<String, GL.UniformLocation> uniforms =
+      new Map<String, GL.UniformLocation>();
+  GL.Program program;
 
-  WebGL.Shader fragShader, vertShader;
+  GL.Shader fragShader, vertShader;
 
   /// Compiles a new shader with the text content of [vertexSource] and [fragmentSource]
   ShaderProgram.compile(this.wrapper, String vertexSource, String fragmentSource) {
@@ -47,13 +47,13 @@ class ShaderProgram {
     int activeUniforms = context.getProgramParameter(program, WebGL.ACTIVE_UNIFORMS);
 
     for (int i = 0; i < activeAttributes; i++) {
-      WebGL.ActiveInfo a = context.getActiveAttrib(program, i);
+      GL.ActiveInfo a = context.getActiveAttrib(program, i);
       int attributeLocation = context.getAttribLocation(program, a.name);
       attributes[a.name] = attributeLocation;
     }
 
     for (int i = 0; i < activeUniforms; i++) {
-      WebGL.ActiveInfo a = context.getActiveUniform(program, i);
+      GL.ActiveInfo a = context.getActiveUniform(program, i);
       uniforms[a.name] = context.getUniformLocation(program, a.name);
     }
   }

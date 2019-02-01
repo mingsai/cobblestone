@@ -52,6 +52,6 @@ class ShaderExample extends BaseGame {
   @override
   update(num delta) {
     angleWave += delta * 5.0;
-    while (angleWave > PI * 2) angleWave -= PI * 2;
+    while (angleWave > pi * 2) angleWave -= pi * 2;
   }
 }

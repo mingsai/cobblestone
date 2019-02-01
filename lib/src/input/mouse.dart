@@ -6,10 +6,10 @@ class Mouse {
   int x, y;
 
   // A map between button numbers and the time the key was pressed
-  Map<int, num> buttons = new Map<int, int>();
+  Map<int, num> buttons = new Map<int, num>();
 
   // A map of just-clicked buttons
-  Map<int, num> justClicked = new Map<int, int>();
+  Map<int, num> justClicked = new Map<int, num>();
 
   bool get leftDown => buttons.containsKey(0);
   bool get middleDown => buttons.containsKey(1);

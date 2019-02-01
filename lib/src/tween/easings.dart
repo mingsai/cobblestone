@@ -66,15 +66,15 @@ double quintInOut(t, b, c, d) {
 }
 
 double sineIn(t, b, c, d) {
-  return -c * cos(t / d * (PI / 2)) + c + b;
+  return -c * cos(t / d * (pi / 2)) + c + b;
 }
 
 double sineOut(t, b, c, d) {
-  return c * sin(t / d * (PI / 2)) + b;
+  return c * sin(t / d * (pi / 2)) + b;
 }
 
 double sineInOut(t, b, c, d) {
-  return -c / 2 * (cos(PI * t / d) - 1) + b;
+  return -c / 2 * (cos(pi * t / d) - 1) + b;
 }
 
 double expoIn(t, b, c, d) {
@@ -116,8 +116,8 @@ double elasticIn(t, b, c, d) {
     a = c;
     s = p / 4;
   } else
-    s = p / (2 * PI) * asin(c / a);
-  return -(a * pow(2, 10 * (t -= 1)) * sin((t * d - s) * (2 * PI) / p)) + b;
+    s = p / (2 * pi) * asin(c / a);
+  return -(a * pow(2, 10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p)) + b;
 }
 
 double elasticOut(t, b, c, d) {
@@ -131,8 +131,8 @@ double elasticOut(t, b, c, d) {
     a = c;
     s = p / 4;
   } else
-    s = p / (2 * PI) * asin(c / a);
-  return a * pow(2, -10 * t) * sin((t * d - s) * (2 * PI) / p) + c + b;
+    s = p / (2 * pi) * asin(c / a);
+  return a * pow(2, -10 * t) * sin((t * d - s) * (2 * pi) / p) + c + b;
 }
 
 double elasticInOut(t, b, c, d) {
@@ -146,11 +146,11 @@ double elasticInOut(t, b, c, d) {
     a = c;
     s = p / 4;
   } else
-    s = p / (2 * PI) * asin(c / a);
+    s = p / (2 * pi) * asin(c / a);
   if (t < 1)
-    return -.5 * (a * pow(2, 10 * (t -= 1)) * sin((t * d - s) * (2 * PI) / p)) +
+    return -.5 * (a * pow(2, 10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p)) +
         b;
-  return a * pow(2, -10 * (t -= 1)) * sin((t * d - s) * (2 * PI) / p) * .5 +
+  return a * pow(2, -10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p) * .5 +
       c +
       b;
 }

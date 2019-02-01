@@ -1,16 +1,10 @@
 part of cobblestone;
 
 /// Loads a sound from a url
-Future<Sound> loadSound(audio, String url) {
-  return HttpRequest
-      .request(url, responseType: 'arraybuffer')
-      .then((HttpRequest request) {
-    return audio.context
-        .decodeAudioData(request.response)
-        .then((WebAudio.AudioBuffer buffer) {
-      return new Sound(audio, buffer);
-    });
-  });
+Future<Sound> loadSound(audio, String url) async {
+  var request = await HttpRequest.request(url, responseType: 'arraybuffer');
+  var buffer = await audio.context.decodeAudioData(request.response);
+  return new Sound(audio, buffer);
 }
 
 /// A playable sound using WebAudio
@@ -82,7 +76,7 @@ class Sound extends AudioPlayer {
 
   _onEnd(var id) {
     // Remove node when it finishes playing
-    if(_sources[id]) {
+    if(_sources[id] != null) {
       _sources[id].stop(0);
       _sources.remove(id);
     }

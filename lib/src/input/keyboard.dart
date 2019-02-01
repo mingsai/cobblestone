@@ -4,10 +4,10 @@ part of cobblestone;
 class Keyboard {
 
   // A map between key codes and the time the key was pressed
-  Map<int, num> keys = new Map<int, int>();
+  Map<int, num> keys = new Map<int, num>();
 
   // A map of just-typed keys
-  Map<int, num> justTyped = new Map<int, int>();
+  Map<int, num> justTyped = new Map<int, num>();
 
   List<StreamSubscription> _subs = [];
 

@@ -7,7 +7,7 @@ class TilemapExample extends BaseGame {
 
   Tilemap map;
 
-  bool north, east, south, west;
+  bool north = false, east = false, south = false, west = false;
 
   @override
   create() {

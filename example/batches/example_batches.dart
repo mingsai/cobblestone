@@ -44,7 +44,7 @@ class BatchExample extends BaseGame {
     physboxBatch.draw2D(box);
 
     Obb3 ob = new Obb3();
-    Matrix3 rotation = new Matrix3.rotationZ(PI / 8);
+    Matrix3 rotation = new Matrix3.rotationZ(pi / 8);
     ob
       ..center.setFrom(new Vector3(100.0, 100.0, 0.0))
       ..halfExtents.setFrom(new Vector3(50.0, 75.0, 0.0))

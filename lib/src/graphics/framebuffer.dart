@@ -3,10 +3,10 @@ part of cobblestone;
 /// An offscreen texture that can be rendered to
 class Framebuffer {
   GLWrapper wrapper;
-  WebGL.RenderingContext context;
+  GL.RenderingContext context;
   
   Texture texture;
-  WebGL.Framebuffer buffer;
+  GL.Framebuffer buffer;
 
   ShaderProgram shader;
   SpriteBatch batch;

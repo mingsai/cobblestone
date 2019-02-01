@@ -20,10 +20,10 @@ before_script:
 pages:
   stage: build
   script:
-    - pub build example/
+    - webdev build --output example:build
     - rm -r -f public
     - mkdir -p public
-    - mv -v build/example/* public
+    - mv -v build/* public
   artifacts:
     paths:
       - public/

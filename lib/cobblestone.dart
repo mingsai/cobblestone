@@ -6,7 +6,8 @@
 /// Includes a rendering engine, audio playing, and asset management
 library cobblestone;
 
-import 'dart:web_gl' as WebGL;
+import 'dart:web_gl' show WebGL;
+import 'dart:web_gl' as GL;
 import 'dart:typed_data';
 import 'dart:html';
 import 'dart:math';

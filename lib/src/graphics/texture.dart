@@ -15,10 +15,10 @@ Future<Texture> loadTexture(GLWrapper wrapper, String url, [handle(GLWrapper wra
 }
 
 /// Converts an [ImageElement] to a mip-mapped texture
-WebGL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
+GL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
   var context = wrapper.context;
   
-  WebGL.Texture texture = context.createTexture();
+  GL.Texture texture = context.createTexture();
   context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   context.bindTexture(WebGL.TEXTURE_2D, texture);
   context.texImage2D(
@@ -34,10 +34,10 @@ WebGL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
 }
 
 /// Converts an [ImageElement] to texture with nearest neighbor scaling
-WebGL.Texture nearest(GLWrapper wrapper, ImageElement element) {
+GL.Texture nearest(GLWrapper wrapper, ImageElement element) {
   var context = wrapper.context;
-  
-  WebGL.Texture texture = context.createTexture();
+
+  GL.Texture texture = context.createTexture();
   context.bindTexture(WebGL.TEXTURE_2D, texture);
   context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
@@ -51,10 +51,10 @@ WebGL.Texture nearest(GLWrapper wrapper, ImageElement element) {
 }
 
 /// Converts an [ImageElement] to a texture with linear scaling
-WebGL.Texture linear(GLWrapper wrapper, ImageElement element) {
+GL.Texture linear(GLWrapper wrapper, ImageElement element) {
   var context = wrapper.context;
 
-  WebGL.Texture texture = context.createTexture();
+  GL.Texture texture = context.createTexture();
   context.bindTexture(WebGL.TEXTURE_2D, texture);
   context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
@@ -71,9 +71,9 @@ WebGL.Texture linear(GLWrapper wrapper, ImageElement element) {
 /// A texture used in the game
 class Texture {
   GLWrapper wrapper;
-  WebGL.RenderingContext context;
+  GL.RenderingContext context;
 
-  WebGL.Texture texture;
+  GL.Texture texture;
 
   num u, v, u2, v2;
 
@@ -85,7 +85,7 @@ class Texture {
   num width;
   num height;
 
-  /// Creates a new texture from a [WebGL.Texture]
+  /// Creates a new texture from a [GL.Texture]
   Texture(this.wrapper, this.texture, this.source, this.sourceWidth, this.sourceHeight) {
     context = wrapper.context;
     setRegion(0, 0, sourceWidth, sourceHeight);

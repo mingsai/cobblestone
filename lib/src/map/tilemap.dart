@@ -43,7 +43,7 @@ class Tilemap {
   /// Gives the tilemap the textures it needs to render
   giveTileset(Map<String, Texture> set) {
     basicTiles = new Map<int, BasicTile>();
-    tileset = new Map<int, BasicTile>();
+    tileset = new Map<int, Tile>();
     file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
       basicTiles[int.parse(tile.getAttribute("id"))] = new BasicTile(
           set[Path.basenameWithoutExtension(tile.findElements("image").first.getAttribute("source"))], tile);
@@ -121,7 +121,7 @@ class TileLayer extends MapLayer {
     if(data.getAttribute("encoding") == "csv") {
       tileIds = parseCsv(data.text);
     } else if(data.getAttribute("encoding") == "base64") {
-      tileIds = BASE64.decode(data.text);
+      tileIds = base64.decode(data.text);
     }
 
     tileWidth = parent.tileWidth;

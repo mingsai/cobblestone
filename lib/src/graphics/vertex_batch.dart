@@ -3,7 +3,7 @@ part of cobblestone;
 /// A generic batch, used as a base for others like [SpriteBatch]
 abstract class VertexBatch {
   GLWrapper wrapper;
-  WebGL.RenderingContext context;
+  GL.RenderingContext context;
   
   int maxSprites = 8000;
 
@@ -21,8 +21,8 @@ abstract class VertexBatch {
   Float32List vertices;
   Int16List indices;
 
-  WebGL.Buffer vertexBuffer;
-  WebGL.Buffer indexBuffer;
+  GL.Buffer vertexBuffer;
+  GL.Buffer indexBuffer;
 
   ShaderProgram shaderProgram;
 

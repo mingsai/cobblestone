@@ -16,8 +16,8 @@ scaleCanvas(CanvasElement element, ScaleMode mode, int requestWidth,
       break;
     case ScaleMode.fit:
       num scale = min(parentWidth / requestWidth, parentHeight / requestHeight);
-      element.width = requestWidth * scale;
-      element.height = requestHeight * scale;
+      element.width = (requestWidth * scale).toInt();
+      element.height = (requestHeight * scale).toInt();
       break;
     case ScaleMode.resize:
       element.width = window.innerWidth;

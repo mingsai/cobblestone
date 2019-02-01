@@ -10,7 +10,7 @@ class GeometryExample extends BaseGame {
 
   bool get isLoaded => nehe != null;
 
-  num rot = PI / 4;
+  num rot = pi / 4;
 
   @override
   create() {
@@ -67,7 +67,7 @@ class GeometryExample extends BaseGame {
 
   @override
   update(num delta) {
-    //rot += 0.5 * delta;
+    rot += 0.5 * delta;
   }
 
   @override

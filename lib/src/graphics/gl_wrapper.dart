@@ -4,7 +4,7 @@ part of cobblestone;
 class GLWrapper {
 
   // The actual rendering context
-  WebGL.RenderingContext context;
+  GL.RenderingContext context;
 
   ShaderProgram batchShader, wireShader, pointShader;
 

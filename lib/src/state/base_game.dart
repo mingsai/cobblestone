@@ -51,7 +51,7 @@ abstract class BaseGame implements State {
 
   BaseGame get game => this;
 
-  bool _started;
+  bool _started = false;
   bool _stopped = false;
 
   StreamSubscription _resizeSub;
