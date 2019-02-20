@@ -4,8 +4,8 @@ cache:
   untracked: true
   key: $CI_BUILD_REF_NAME
   paths:
-    - packages/
-    - web/packages/
+    - build/
+    - build/packages/
     - .pub_cache/
 
 stages:
@@ -20,7 +20,8 @@ before_script:
 pages:
   stage: build
   script:
-    - webdev build --output example:build
+    - pub global activate webdev
+    - pub global run webdev build --output example:build
     - rm -r -f public
     - mkdir -p public
     - mv -v build/* public
