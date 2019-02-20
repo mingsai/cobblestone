@@ -11,6 +11,7 @@ dependencies:
   vector_math: any
   path: any
   xml: any
+  petitparser: ^2.1.1
 
 dev_dependencies:
   build_runner: ^1.0.0

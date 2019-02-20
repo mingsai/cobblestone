@@ -12,7 +12,8 @@ var featureDemoNames = [
   'tilemap',
   'shaders',
   'tweens',
-  'audio'
+  'audio',
+  'font'
 ];
 var featureDemoConstructors = [
   () => new GeometryExample(),
@@ -22,7 +23,8 @@ var featureDemoConstructors = [
   () => new TilemapExample(),
   () => new ShaderExample(),
   () => new TweenExample(),
-  () => new AudioExample()
+  () => new AudioExample(),
+  () => new FontExample()
 ];
 
 var advancedDemoNames = [
