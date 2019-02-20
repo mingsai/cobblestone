@@ -33,7 +33,7 @@ class BitmapFont {
 
   // Parsed list of characters and kernings
   Map<int, _Character> _characters;
-  List<_Kerning> _kernings;
+  Map<int, List<_Kerning>> _kernings;
 
   // The height of a line of text
   int lineHeight;
@@ -66,10 +66,12 @@ class BitmapFont {
           texture);
     });
 
-    this._kernings = [];
+    this._kernings = new Map();
     _data.where((e) => e[0] == "kerning").forEach((e) {
       var props = e[1];
-      _kernings.add(new _Kerning(
+      int second = _getVariable(props, "second");
+      _kernings.putIfAbsent(second, () => []);
+      _kernings[second].add(new _Kerning(
           _getVariable(props, "first"),
           _getVariable(props, "second"),
           _getVariable(props, "amount")));
@@ -93,6 +95,7 @@ class BitmapFont {
     Queue<String> words = Queue.from(text.split(' '));
     while(words.isNotEmpty) {
       String word = words.removeFirst();
+
       int width = measureWord(word);
       if(width > lineWidth) {
         limitedWords(word, lineWidth).forEach((section) => words.addFirst(section));
@@ -127,8 +130,8 @@ class BitmapFont {
 
   /// Calculates the kerning between two characters
   int calcKerning(int last, int next) {
-    if(_kernings.indexWhere((k) => k.char2 == next) != -1) {
-      _kernings.where((k) => k.char2 == next).forEach((k) {
+    if(_kernings.containsKey(next)) {
+      _kernings[next].forEach((k) {
         if (last == k.char1) {
           return k.offset;
         }

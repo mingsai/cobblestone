@@ -24,7 +24,7 @@ class FontExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("font", loadFont("font/bitter.fnt", loadTexture(gl, "font/bitter_0.png", linear)));
+    assetManager.load("font", loadFont("font/lora.fnt", loadTexture(gl, "font/lora_0.png", linear)));
     assetManager.load("lipsum", HttpRequest.getString("font/lipsum.txt"));
     print(defaultShader);
   }
