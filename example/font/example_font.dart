@@ -40,7 +40,7 @@ class FontExample extends BaseGame {
     gl.context.enable(WebGL.BLEND);
     gl.context.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE_MINUS_SRC_ALPHA);
     renderer.begin();
-    font.drawParagraph(renderer, (width - textWidth) ~/ 2, height, text, lineWidth: textWidth, align: TextAlign.right);
+    font.drawParagraph(renderer, (width - textWidth) ~/ 2, height, text, lineWidth: textWidth, align: TextAlign.right, scale: 1.0);
     renderer.end();
   }
 
