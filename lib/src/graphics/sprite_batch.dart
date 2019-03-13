@@ -6,24 +6,33 @@ class SpriteBatch extends VertexBatch {
 
   int drawMode = WebGL.TRIANGLES;
 
-  final int vertexSize = 5;
+  final int vertexSize = 6;
   final int verticesPerSprite = 4;
   final int indicesPerSprite = 6;
 
-  Vector4 color;
+  Vector4 _color = Colors.white;
+  double _packedColor = packColor(Colors.white);
 
   int vi = 0;
 
   Texture texture;
 
   /// Creates a new sprite batch with a custom shader
-  SpriteBatch(GLWrapper wrapper, shaderProgram, {this.maxSprites: 2000}) : super(wrapper, shaderProgram) {
+  SpriteBatch(GLWrapper wrapper, shaderProgram, {this.maxSprites: 2000})
+      : super(wrapper, shaderProgram) {
     color = new Vector4.all(1.0);
   }
 
   /// Creates a new sprite batch with a simple shader
   SpriteBatch.defaultShader(GLWrapper wrapper, {int maxSprites: 2000})
       : this(wrapper, wrapper.batchShader, maxSprites: maxSprites);
+
+  void set color(Vector4 color) {
+    _color = color;
+    _packedColor = packColor(color);
+  }
+
+  Vector4 get color => _color;
 
   /// Draws the [texture] at ([x], [y]), the bottom left of the sprite. Can optionally draw at a given [height] and [width], scale by [scaleX] and [scaleY],
   /// flip the texture if [flipX] or [flipY], or turn [angle] around the center.
@@ -143,26 +152,30 @@ class SpriteBatch extends VertexBatch {
     vertices[vi + 00] = x1;
     vertices[vi + 01] = y1;
     vertices[vi + 02] = 0.0;
-    vertices[vi + 03] = u;
-    vertices[vi + 04] = v;
+    vertices[vi + 03] = _packedColor;
+    vertices[vi + 04] = u;
+    vertices[vi + 05] = v;
 
-    vertices[vi + 05] = x2;
-    vertices[vi + 06] = y2;
-    vertices[vi + 07] = 0.0;
-    vertices[vi + 08] = u;
-    vertices[vi + 09] = v2;
+    vertices[vi + 06] = x2;
+    vertices[vi + 07] = y2;
+    vertices[vi + 08] = 0.0;
+    vertices[vi + 09] = _packedColor;
+    vertices[vi + 10] = u;
+    vertices[vi + 11] = v2;
 
-    vertices[vi + 10] = x3;
-    vertices[vi + 11] = y3;
-    vertices[vi + 12] = 0.0;
-    vertices[vi + 13] = u2;
-    vertices[vi + 14] = v;
+    vertices[vi + 12] = x3;
+    vertices[vi + 13] = y3;
+    vertices[vi + 14] = 0.0;
+    vertices[vi + 15] = _packedColor;
+    vertices[vi + 16] = u2;
+    vertices[vi + 17] = v;
 
-    vertices[vi + 15] = x4;
-    vertices[vi + 16] = y4;
-    vertices[vi + 17] = 0.0;
-    vertices[vi + 18] = u2;
-    vertices[vi + 19] = v2;
+    vertices[vi + 18] = x4;
+    vertices[vi + 19] = y4;
+    vertices[vi + 20] = 0.0;
+    vertices[vi + 21] = _packedColor;
+    vertices[vi + 22] = u2;
+    vertices[vi + 23] = v2;
 
     spritesInFlush++;
   }
@@ -186,11 +199,11 @@ class SpriteBatch extends VertexBatch {
   setAttribPointers() {
     context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
+    context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
+        WebGL.UNSIGNED_BYTE, true, vertexSize * 4, 3 * 4);
     context.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3,
-        WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
+        WebGL.FLOAT, false, vertexSize * 4, 4 * 4);
 
     context.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind(0));
-    context.uniform4f(
-        shaderProgram.uniforms[colorUni], color.r, color.g, color.b, color.a);
   }
 }

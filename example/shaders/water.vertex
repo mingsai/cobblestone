@@ -1,14 +1,17 @@
 attribute vec3 aVertexPosition;
 attribute vec2 aTextureCoord;
+attribute vec4 aColor;
 
 uniform mat4 uPMatrix;
 
 uniform vec2 waveData;
 
 varying vec2 vTextureCoord;
+varying vec4 vColor;
 
 void main() {
     vTextureCoord = aTextureCoord;
+    vColor = aColor;
     vec3 newPos = vec3(aVertexPosition.x + waveData.y * sin(waveData.x + aVertexPosition.x + aVertexPosition.y), aVertexPosition.y + waveData.y * cos(waveData.x+aVertexPosition.x+aVertexPosition.y), aVertexPosition.z);
     gl_Position = uPMatrix * vec4(newPos, 1.0);
 }

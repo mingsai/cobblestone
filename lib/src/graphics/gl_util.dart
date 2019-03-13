@@ -72,3 +72,12 @@ int textureBind(int id) {
       return WebGL.TEXTURE0;
   }
 }
+
+/// Packs a color vector into a
+double packColor(Vector4 color) {
+  int r = (color.r * 255).toInt();
+  int g = (color.g * 255).toInt();
+  int b = (color.b * 255).toInt();
+  int a = (color.a * 255).toInt();
+  return new Float32List.view((new Uint8List.fromList([r, g, b, a])).buffer)[0];
+}
