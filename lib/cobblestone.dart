@@ -53,3 +53,4 @@ part 'package:cobblestone/src/tween/tween.dart';
 part 'package:cobblestone/src/tween/tween_manager.dart';
 part 'package:cobblestone/src/tween/easings.dart';
 part 'package:cobblestone/src/graphics/bitmap_font.dart';
+part 'package:cobblestone/src/graphics/particles.dart';

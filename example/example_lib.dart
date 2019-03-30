@@ -15,3 +15,4 @@ part 'shaders/example_shaders.dart';
 part 'tilemap/example_tilemap.dart';
 part 'tweens/example_tween.dart';
 part 'font/example_font.dart';
+part 'particles/example_particles.dart';

@@ -30,11 +30,13 @@ var featureDemoConstructors = [
 var advancedDemoNames = [
   'performance',
   'handpainted',
+  'particles',
   'lighting'
 ];
 var advancedDemoConstructors = [
       () => new PerformanceExample(),
       () => new HandpaintedExample(),
+() => new ParticlesExample(),
       () => new LightingExample()
 ];
 
@@ -60,7 +62,7 @@ makeDemoLink(String demo) {
 
   AnchorElement sourceLink = new AnchorElement()
     ..href =
-        'https://github.com/specialcode/cobblestone/tree/master/example/${demo}/example_${demo}.dart'
+        'https://gitlab.com/ectucker/cobblestone/blob/master/example/${demo}/example_${demo}.dart'
     ..text = 'source';
 
   Element group = new ParagraphElement()
