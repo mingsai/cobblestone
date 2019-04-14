@@ -68,7 +68,7 @@ class Camera2D {
     transform.update();
 
     combined.setFrom(projection);
-    combined.multiply(transform.combined);
+    combined.multiply(transform.invCombined);
   }
 
   bool get roundInt => transform.roundInt;

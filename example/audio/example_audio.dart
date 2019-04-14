@@ -21,16 +21,6 @@ class AudioExample extends BaseGame {
     music = assetManager.get("technogeek.wav");
     music.volume = 0.1;
     beat = assetManager.get("short wind sound.wav");
-
-    window.onKeyUp.listen((KeyboardEvent e) {
-      if (e.keyCode == KeyCode.ONE) {
-        beat.play();
-      } else if (e.keyCode == KeyCode.TWO) {
-        music.loop();
-      } else if (e.keyCode == KeyCode.ZERO) {
-        audio.stopAll();
-      }
-    });
   }
 
   @override
@@ -53,5 +43,13 @@ class AudioExample extends BaseGame {
   }
 
   @override
-  update(num delta) {}
+  update(num delta) {
+    if (keyboard.keyJustPressed(KeyCode.ONE)) {
+      beat.play();
+    } else if (keyboard.keyJustPressed(KeyCode.TWO)) {
+      music.loop();
+    } else if (keyboard.keyJustReleased(KeyCode.ZERO)) {
+      audio.stopAll();
+    }
+  }
 }

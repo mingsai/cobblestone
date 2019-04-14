@@ -2,6 +2,7 @@ part of cobblestone;
 
 class Transform {
   Matrix4 combined;
+  Matrix4 invCombined;
 
   Vector2 temp;
 
@@ -40,6 +41,7 @@ class Transform {
     temp = new Vector2.zero();
 
     combined = new Matrix4.identity();
+    invCombined = new Matrix4.identity();
   }
 
   void translate(x, [num y]) {
@@ -90,6 +92,7 @@ class Transform {
 
   void update() {
     combined.setIdentity();
+    invCombined.setIdentity();
     if (roundInt) {
       combined.translate(
           translation.x.roundToDouble(), translation.y.roundToDouble(), 0.0);
@@ -100,6 +103,17 @@ class Transform {
       combined.translate(translation.x, translation.y, 0.0);
       combined.rotateZ(rotation);
       combined.scale(currentScale.x, currentScale.y, 0.0);
+    }
+    if (roundInt) {
+      invCombined.rotateZ(-rotation);
+      invCombined.scale(1 / currentScale.x.roundToDouble(),
+          1 / currentScale.y.roundToDouble(), 0.0);
+      invCombined.translate(
+          -translation.x.roundToDouble(), -translation.y.roundToDouble(), 0.0);
+    } else {
+      invCombined.rotateZ(-rotation);
+      invCombined.scale(1 / currentScale.x, 1 / currentScale.y, 0.0);
+      invCombined.translate(-translation.x, -translation.y, 0.0);
     }
   }
 

@@ -66,6 +66,8 @@ abstract class BaseGame implements State {
   BaseGame.withCanvas(this.canvas) {
     config();
     gl = new GLWrapper(canvas.getContext3d());
+    keyboard = new Keyboard();
+    mouse = new Mouse(canvas);
     _resizeCanvas();
     _startLoop();
   }
@@ -82,14 +84,13 @@ abstract class BaseGame implements State {
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
+    mouse.resize(width, height);
+
     if (_started) resize(width, height);
   }
 
   /// Sets some things up, and starts the loop.
   _startLoop() {
-    keyboard = new Keyboard();
-    mouse = new Mouse();
-
     preload();
 
     _tick(0);

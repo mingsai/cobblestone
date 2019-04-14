@@ -10,10 +10,8 @@ class ParticlesExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originCenter(width, height);
+    camera = new Camera2D.originBottomLeft(width, height);
     renderer = new SpriteBatch.defaultShader(gl);
-
-    gl.setGLViewport(canvasWidth, canvasHeight);
 
     ParticleEffect effect = assetManager.get("flame");
     emitter = new ParticleEmitter(effect);
@@ -21,7 +19,7 @@ class ParticlesExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("flame", loadEffect("particles/smoke.json", loadTexture(gl, "particles/smokeparticle.png", linear)));
+    assetManager.load("flame", loadEffect("particles/flame.json", loadTexture(gl, "particles/flame.png", linear)));
   }
 
   @override
@@ -35,7 +33,6 @@ class ParticlesExample extends BaseGame {
     //gl.context.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE_MINUS_SRC_ALPHA);
     renderer.projection = camera.combined;
     renderer.begin();
-    renderer.texture = emitter.effect.texture;
 
     emitter.draw(renderer);
 
@@ -43,17 +40,20 @@ class ParticlesExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    gl.setGLViewport(canvasWidth, canvasHeight);
+    camera = new Camera2D.originBottomLeft(width, height);
   }
 
   @override
   update(num delta) {
+    emitter.pos = mouse.worldCoord(camera);
     emitter.update(delta);
   }
 
   @override
   config() {
     scaleMode = ScaleMode.fit;
+    requestedWidth = 1920;
+    requestedHeight = 1080;
   }
 
 }
