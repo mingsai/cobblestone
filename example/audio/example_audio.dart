@@ -19,7 +19,6 @@ class AudioExample extends BaseGame {
     gl.setGLViewport(canvasWidth, canvasHeight);
 
     music = assetManager.get("technogeek.wav");
-    music.volume = 0.1;
     beat = assetManager.get("short wind sound.wav");
   }
 
@@ -47,9 +46,18 @@ class AudioExample extends BaseGame {
     if (keyboard.keyJustPressed(KeyCode.ONE)) {
       beat.play();
     } else if (keyboard.keyJustPressed(KeyCode.TWO)) {
+      music.volume = 1.0;
       music.loop();
     } else if (keyboard.keyJustReleased(KeyCode.ZERO)) {
       audio.stopAll();
+    } else if (keyboard.keyJustReleased(KeyCode.F)) {
+      new Tween()
+          ..get = [() => music.volume]
+          ..set = [(v) => music.volume = v]
+          ..target = [0.0]
+          ..duration = 5.0
+          ..ease = linearInOut
+          ..start(tweenManager);
     }
   }
 }

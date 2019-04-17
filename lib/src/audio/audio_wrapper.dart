@@ -42,11 +42,11 @@ abstract class AudioPlayer {
   double get volume;
 
   /// Plays the audio. Loops if [loop] is true
-  void play([bool loop = false]);
+  void play({bool loop = false, Function onEnd});
 
   /// Loops this sound indefinitely
   loop() {
-    play(true);
+    play(loop: true);
   }
 
   /// Stops the audio immediately
