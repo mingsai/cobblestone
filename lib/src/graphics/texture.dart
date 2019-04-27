@@ -141,10 +141,11 @@ class Texture {
 
   /// Sets the bounds of the texture, from the bottom left
   setRegion(int x, int y, int width, int height) {
+    print("$x,$y,$width,$height");
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
-    setRegionCoords(x * invTexWidth, y * invTexHeight,
-        (x + width) * invTexWidth, (y + height) * invTexHeight);
+    setRegionCoords((x + 0.5) * invTexWidth, (y + 0.5) * invTexHeight,
+        (x + width - 0.5) * invTexWidth, (y + height - 0.5) * invTexHeight);
 
     this.width = width;
     this.height = height;
@@ -155,16 +156,6 @@ class Texture {
     width = ((u2 - u).abs() * sourceWidth).round();
     height = ((v2 - v).abs() * sourceHeight).round();
 
-    // For a 1x1 region, adjust UVs toward pixel center to avoid filtering artifacts on AMD GPUs when drawing very stretched.
-    if (width == 1 && height == 1) {
-      num adjustX = 0.25 / sourceWidth;
-      u += adjustX;
-      u2 -= adjustX;
-      num adjustY = 0.25 / sourceWidth;
-      v += adjustY;
-      v2 -= adjustY;
-    }
-
     this.u = u;
     this.v = v;
     this.u2 = u2;
@@ -173,8 +164,8 @@ class Texture {
 
   /// Splits this texture into pieces of [tileWidth] by [tileHeight]
   List<Texture> split(int tileWidth, int tileHeight) {
-    int x = u * sourceWidth;
-    int y = v * sourceWidth + height - tileHeight;
+    int x = (u * sourceWidth).floor();
+    int y = (v * sourceWidth + height - tileHeight).floor();
 
     int rows = (height / tileHeight).floor();
     int cols = (width / tileWidth).floor();
