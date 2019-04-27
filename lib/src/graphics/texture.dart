@@ -141,7 +141,6 @@ class Texture {
 
   /// Sets the bounds of the texture, from the bottom left
   setRegion(int x, int y, int width, int height) {
-    print("$x,$y,$width,$height");
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
     setRegionCoords((x + 0.5) * invTexWidth, (y + 0.5) * invTexHeight,
