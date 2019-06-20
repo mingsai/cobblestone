@@ -54,7 +54,6 @@ class SpriteBatch extends VertexBatch {
     }
     if (this.texture != null) {
       if (texture.texture != this.texture.texture) {
-        print("Wrong texture");
         flush();
       }
     }
