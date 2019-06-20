@@ -42,9 +42,9 @@ class GLWrapper {
 
   /// Loads the shaders used by built in batches
   _loadBuiltinShaders() {
-    batchShader = compileShader(batchVertexShaderSrc, batchFragmentShaderSrc);
-    wireShader = compileShader(wireVertexShaderSrc, wireFragmentShaderSrc);
-    pointShader = compileShader(pointVertexShaderSrc, pointFragmentShaderSrc);
+    batchShader = compileShader(_batchVertexShaderSrc, _batchFragmentShaderSrc);
+    wireShader = compileShader(_wireVertexShaderSrc, _wireFragmentShaderSrc);
+    pointShader = compileShader(_pointVertexShaderSrc, _pointFragmentShaderSrc);
   }
 
 }

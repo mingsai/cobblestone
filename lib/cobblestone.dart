@@ -19,9 +19,9 @@ import 'package:path/path.dart' as Path;
 import 'dart:web_audio' as WebAudio;
 import 'package:xml/xml.dart' as XML;
 import 'package:petitparser/petitparser.dart';
-export 'dart:html';
+
+export 'dart:html' show KeyCode, HttpRequest;
 export 'dart:math';
-export 'dart:async';
 export 'package:vector_math/vector_math.dart';
 
 part 'package:cobblestone/src/state/base_game.dart';

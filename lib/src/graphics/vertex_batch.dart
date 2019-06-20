@@ -27,7 +27,6 @@ abstract class VertexBatch {
   ShaderProgram shaderProgram;
 
   Matrix4 projection;
-  Matrix4 transform;
 
   /// Called during rendering, use [setUniform] to provide additional data to
   /// shaders here
@@ -37,7 +36,6 @@ abstract class VertexBatch {
     context = wrapper.context;
     
     projection = new Matrix4.identity();
-    transform = new Matrix4.identity();
 
     vertexBuffer = context.createBuffer();
     indexBuffer = context.createBuffer();
@@ -90,8 +88,6 @@ abstract class VertexBatch {
 
     context.uniformMatrix4fv(
         shaderProgram.uniforms[projMatUni], false, projection.storage);
-    context.uniformMatrix4fv(
-        shaderProgram.uniforms[transMatUni], false, transform.storage);
 
     //The indices are important!
     context.drawElements(

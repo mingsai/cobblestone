@@ -19,23 +19,6 @@ class TilemapExample extends BaseGame {
     Map<String, Texture> atlas = assetManager.get("atlas");
     map = assetManager.get("islands2.tmx");
     map.giveTileset(atlas);
-
-    window.onKeyDown.listen(startMove);
-    window.onKeyUp.listen(endMove);
-  }
-
-  void startMove(KeyboardEvent e) {
-    if (e.keyCode == KeyCode.W) north = true;
-    if (e.keyCode == KeyCode.D) east = true;
-    if (e.keyCode == KeyCode.S) south = true;
-    if (e.keyCode == KeyCode.A) west = true;
-  }
-
-  void endMove(KeyboardEvent e) {
-    if (e.keyCode == KeyCode.W) north = false;
-    if (e.keyCode == KeyCode.D) east = false;
-    if (e.keyCode == KeyCode.S) south = false;
-    if (e.keyCode == KeyCode.A) west = false;
   }
 
   @override
@@ -77,6 +60,16 @@ class TilemapExample extends BaseGame {
 
   @override
   update(num delta) {
+    if (keyboard.keyJustPressed(KeyCode.W)) north = true;
+    if (keyboard.keyJustPressed(KeyCode.D)) east = true;
+    if (keyboard.keyJustPressed(KeyCode.S)) south = true;
+    if (keyboard.keyJustPressed(KeyCode.A)) west = true;
+
+    if (keyboard.keyJustReleased(KeyCode.W)) north = false;
+    if (keyboard.keyJustReleased(KeyCode.D)) east = false;
+    if (keyboard.keyJustReleased(KeyCode.S)) south = false;
+    if (keyboard.keyJustReleased(KeyCode.A)) west = false;
+
     if (north) camera.translate(0.0, -delta * 20);
     if (east) camera.translate(-delta * 20, 0.0);
     if (south) camera.translate(0.0, delta * 20);

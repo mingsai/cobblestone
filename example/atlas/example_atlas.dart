@@ -16,7 +16,6 @@ class AtlasExample extends BaseGame {
   preload() {
     assetManager.load("atlas",
         loadAtlas("atlas/atlas/atlas.json", loadTexture(gl, "atlas/atlas/atlas.png", nearest)));
-    print(defaultShader);
   }
 
   @override

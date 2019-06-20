@@ -1,6 +1,6 @@
 part of cobblestone;
 
-const String batchVertexShaderSrc = '''
+const String _batchVertexShaderSrc = '''
 attribute vec3 aVertexPosition;
 attribute vec2 aTextureCoord;
 attribute vec4 aColor;
@@ -17,7 +17,7 @@ void main(void) {
 }
 ''';
 
-const String batchFragmentShaderSrc = '''
+const String _batchFragmentShaderSrc = '''
 precision highp float;
 
 uniform sampler2D uTexture;
@@ -32,7 +32,7 @@ void main(void) {
 }
 ''';
 
-const String wireVertexShaderSrc = '''
+const String _wireVertexShaderSrc = '''
 attribute vec3 aVertexPosition;
 uniform mat4 uPMatrix;
 
@@ -43,7 +43,7 @@ void main(void) {
 }
 ''';
 
-const String wireFragmentShaderSrc = '''
+const String _wireFragmentShaderSrc = '''
 precision highp float;
 
 uniform vec4 uColor;
@@ -55,7 +55,7 @@ void main(void) {
 }
 ''';
 
-const String pointVertexShaderSrc = '''
+const String _pointVertexShaderSrc = '''
 attribute vec3 aVertexPosition;
 attribute vec4 aColor;
 
@@ -70,7 +70,7 @@ void main(void) {
 }
 ''';
 
-const String pointFragmentShaderSrc = '''
+const String _pointFragmentShaderSrc = '''
 precision highp float;
 
 varying vec4 vColor;

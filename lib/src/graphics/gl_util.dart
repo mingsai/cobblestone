@@ -73,11 +73,11 @@ int textureBind(int id) {
   }
 }
 
-/// Packs a color vector into a
+/// Packs a color vector into a double, to be used in a float list
 double packColor(Vector4 color) {
-  int r = (color.r * 255).toInt();
-  int g = (color.g * 255).toInt();
-  int b = (color.b * 255).toInt();
-  int a = (color.a * 255).toInt();
+  int r = (color.r * 255).floor().clamp(0, 255);
+  int g = (color.g * 255).floor().clamp(0, 255);
+  int b = (color.b * 255).floor().clamp(0, 255);
+  int a = (color.a * 255).floor().clamp(0, 254);
   return new Float32List.view((new Uint8List.fromList([r, g, b, a])).buffer)[0];
 }

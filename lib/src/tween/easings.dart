@@ -9,103 +9,103 @@ part of cobblestone;
 
 typedef Easing = double Function(double, double, double, double);
 
-double linearInOut(time, start, change, duration) {
+double linearInOut(double time, double start, double change, double duration) {
   return change * time / duration + start;
 }
 
-double quadIn(t, b, c, d) {
+double quadIn(double t, double b, double c, double d) {
   return c * (t /= d) * t + b;
 }
 
-double quadOut(t, b, c, d) {
+double quadOut(double t, double b, double c, double d) {
   return -c * (t /= d) * (t - 2) + b;
 }
 
-double quadInOut(t, b, c, d) {
+double quadInOut(double t, double b, double c, double d) {
   if ((t /= d / 2) < 1) return c / 2 * t * t + b;
   return -c / 2 * ((--t) * (t - 2) - 1) + b;
 }
 
-double cubicIn(t, b, c, d) {
+double cubicIn(double t, double b, double c, double d) {
   return c * (t /= d) * t * t + b;
 }
 
-double cubicOut(t, b, c, d) {
+double cubicOut(double t, double b, double c, double d) {
   return c * ((t = t / d - 1) * t * t + 1) + b;
 }
 
-double cubicInOut(t, b, c, d) {
+double cubicInOut(double t, double b, double c, double d) {
   if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
   return c / 2 * ((t -= 2) * t * t + 2) + b;
 }
 
-double quartIn(t, b, c, d) {
+double quartIn(double t, double b, double c, double d) {
   return c * (t /= d) * t * t * t + b;
 }
 
-double quartOut(t, b, c, d) {
+double quartOut(double t, double b, double c, double d) {
   return -c * ((t = t / d - 1) * t * t * t - 1) + b;
 }
 
-double quartInOut(t, b, c, d) {
+double quartInOut(double t, double b, double c, double d) {
   if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
   return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
 }
 
-double quintIn(t, b, c, d) {
+double quintIn(double t, double b, double c, double d) {
   return c * (t /= d) * t * t * t * t + b;
 }
 
-double quintOut(t, b, c, d) {
+double quintOut(double t, double b, double c, double d) {
   return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
 }
 
-double quintInOut(t, b, c, d) {
+double quintInOut(double t, double b, double c, double d) {
   if ((t /= d / 2) < 1) return c / 2 * t * t * t * t * t + b;
   return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
 }
 
-double sineIn(t, b, c, d) {
+double sineIn(double t, double b, double c, double d) {
   return -c * cos(t / d * (pi / 2)) + c + b;
 }
 
-double sineOut(t, b, c, d) {
+double sineOut(double t, double b, double c, double d) {
   return c * sin(t / d * (pi / 2)) + b;
 }
 
-double sineInOut(t, b, c, d) {
+double sineInOut(double t, double b, double c, double d) {
   return -c / 2 * (cos(pi * t / d) - 1) + b;
 }
 
-double expoIn(t, b, c, d) {
+double expoIn(double t, double b, double c, double d) {
   return (t == 0) ? b : c * pow(2, 10 * (t / d - 1)) + b;
 }
 
-double expoOut(t, b, c, d) {
+double expoOut(double t, double b, double c, double d) {
   return (t == d) ? b + c : c * (-pow(2, -10 * t / d) + 1) + b;
 }
 
-double expoInOut(t, b, c, d) {
+double expoInOut(double t, double b, double c, double d) {
   if (t == 0) return b;
   if (t == d) return b + c;
   if ((t /= d / 2) < 1) return c / 2 * pow(2, 10 * (t - 1)) + b;
   return c / 2 * (-pow(2, -10 * --t) + 2) + b;
 }
 
-double circIn(t, b, c, d) {
+double circIn(double t, double b, double c, double d) {
   return -c * (sqrt(1 - (t /= d) * t) - 1) + b;
 }
 
-double circOut(t, b, c, d) {
+double circOut(double t, double b, double c, double d) {
   return c * sqrt(1 - (t = t / d - 1) * t) + b;
 }
 
-double circInOut(t, b, c, d) {
+double circInOut(double t, double b, double c, double d) {
   if ((t /= d / 2) < 1) return -c / 2 * (sqrt(1 - t * t) - 1) + b;
   return c / 2 * (sqrt(1 - (t -= 2) * t) + 1) + b;
 }
 
-double elasticIn(t, b, c, d) {
+double elasticIn(double t, double b, double c, double d) {
   double s = 1.70158;
   double p = 0.0;
   double a = c;
@@ -120,7 +120,7 @@ double elasticIn(t, b, c, d) {
   return -(a * pow(2, 10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p)) + b;
 }
 
-double elasticOut(t, b, c, d) {
+double elasticOut(double t, double b, double c, double d) {
   double s = 1.70158;
   double p = 0.0;
   double a = c;
@@ -135,7 +135,7 @@ double elasticOut(t, b, c, d) {
   return a * pow(2, -10 * t) * sin((t * d - s) * (2 * pi) / p) + c + b;
 }
 
-double elasticInOut(t, b, c, d) {
+double elasticInOut(double t, double b, double c, double d) {
   double s = 1.70158;
   double p = 0.0;
   double a = c;
@@ -148,35 +148,32 @@ double elasticInOut(t, b, c, d) {
   } else
     s = p / (2 * pi) * asin(c / a);
   if (t < 1)
-    return -.5 * (a * pow(2, 10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p)) +
-        b;
-  return a * pow(2, -10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p) * .5 +
-      c +
-      b;
+    return -.5 * (a * pow(2, 10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p)) + b;
+  return a * pow(2, -10 * (t -= 1)) * sin((t * d - s) * (2 * pi) / p) * .5 + c + b;
 }
 
-double backIn(t, b, c, d) {
+double backIn(double t, double b, double c, double d) {
   double s = 1.70158;
   return c * (t /= d) * t * ((s + 1) * t - s) + b;
 }
 
-double backOut(t, b, c, d) {
+double backOut(double t, double b, double c, double d) {
   double s = 1.70158;
   return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
 }
 
-double backInOut(t, b, c, d) {
+double backInOut(double t, double b, double c, double d) {
   double s = 1.70158;
   if ((t /= d / 2) < 1)
     return c / 2 * (t * t * (((s *= (1.525)) + 1) * t - s)) + b;
   return c / 2 * ((t -= 2) * t * (((s *= (1.525)) + 1) * t + s) + 2) + b;
 }
 
-double bounceIn(t, b, c, d) {
+double bounceIn(double t, double b, double c, double d) {
   return c - bounceOut(d - t, 0, c, d) + b;
 }
 
-double bounceOut(t, b, c, d) {
+double bounceOut(double t, double b, double c, double d) {
   if ((t /= d) < (1 / 2.75)) {
     return c * (7.5625 * t * t) + b;
   } else if (t < (2 / 2.75)) {
@@ -188,40 +185,7 @@ double bounceOut(t, b, c, d) {
   }
 }
 
-double bounceInOut(t, b, c, d) {
+double bounceInOut(double t, double b, double c, double d) {
   if (t < d / 2) return bounceIn(t * 2, 0, c, d) * .5 + b;
   return bounceOut(t * 2 - d, 0, c, d) * .5 + c * .5 + b;
 }
-
-/*
- *
- * TERMS OF USE - EASING EQUATIONS
- *
- * Open source under the BSD License.
- *
- * Copyright © 2001 Robert Penner
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list of
- * conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list
- * of conditions and the following disclaimer in the documentation and/or other materials
- * provided with the distribution.
- *
- * Neither the name of the author nor the names of contributors may be used to endorse
- * or promote products derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- */

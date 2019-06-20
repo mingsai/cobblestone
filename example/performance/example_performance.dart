@@ -36,23 +36,15 @@ class PerformanceExample extends BaseGame {
   render(num delta) {
     gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
-    window.console.time("Begin Batch");
     camera.update();
-
     renderer.projection = camera.combined;
-    renderer.begin();
-    window.console.timeEnd("Begin Batch");
 
-    window.console.time("Build Batch");
+    renderer.begin();
     for (BoulderSprite sprite in boulders) {
       sprite.update(delta);
       renderer.draw(sprite.texture, sprite.x, sprite.y);
     }
-    window.console.timeEnd("Build Batch");
-
-    window.console.time("Flush Batch");
     renderer.end();
-    window.console.timeEnd("Flush Batch");
   }
 
   resize(num width, num height) {
