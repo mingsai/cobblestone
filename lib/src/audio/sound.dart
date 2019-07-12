@@ -1,9 +1,9 @@
 part of cobblestone;
 
 /// Loads a sound from a url.
-Future<Sound> loadSound(audio, String url) async {
+Future<Sound> loadSound(AudioWrapper audio, String url) async {
   var request = await HttpRequest.request(url, responseType: 'arraybuffer');
-  var buffer = await audio._context.decodeAudioData(request.response);
+  var buffer = await audio.context.decodeAudioData(request.response);
   return new Sound(audio, buffer);
 }
 
