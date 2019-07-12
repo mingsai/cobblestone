@@ -143,8 +143,8 @@ class Texture {
   setRegion(int x, int y, int width, int height) {
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
-    setRegionCoords((x + 0.5) * invTexWidth, (y + 0.5) * invTexHeight,
-        (x + width - 0.5) * invTexWidth, (y + height - 0.5) * invTexHeight);
+    setRegionCoords((x) * invTexWidth, (y) * invTexHeight,
+        (x + width) * invTexWidth, (y + height) * invTexHeight);
 
     this.width = width;
     this.height = height;
