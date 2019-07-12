@@ -1,6 +1,6 @@
 part of cobblestone;
 
-/// Loads a particle effect exported by https://pixijs.io/pixi-particles-editor/
+/// Loads a particle effect exported by https://pixijs.io/pixi-particles-editor/.
 Future<ParticleEffect> loadEffect(
     String effectUrl, Future<Texture> texture) async {
   var effectData = json.decode(await HttpRequest.getString(effectUrl));
@@ -8,72 +8,145 @@ Future<ParticleEffect> loadEffect(
   return new ParticleEffect.fromJSON(effectData, effectTexture);
 }
 
-enum SpawnType { point, rect, circle, ring, burst }
+/// The type of spawn pattern particles are created in.
+enum SpawnType {
+  /// Spawns all particles at a single point.
+  point,
 
-// All the information needed to emit particles
-// Use with [ParticleEmitter]
+  /// Spawns particles randomly within a rectangle.
+  rect,
+
+  /// Spawns particles randomly within a circle.
+  circle,
+
+  /// Spawns particles randomly inside a ring.
+  ring,
+
+  /// Spawns particles in a burst pattern around a point.
+  burst
+}
+
+/// All the information needed to emit particles.
+/// Use with [ParticleEmitter].
 class ParticleEffect {
   // Particle Properties
 
+  /// The texture used by particles of this effect.
   Texture texture;
 
-  Vector2 spawnOffset;
-
+  /// A particle's color at the start of its lifespan.
   Vector4 colorStart;
+
+  /// A particle's color at the end of its lifespan.
   Vector4 colorEnd;
 
+  /// A particle's speed at the start of its lifespan.
   double speedStart;
+
+  /// A particle's speed at the start of its lifespan.
   double speedEnd;
+
+  /// Randomization multiplier for speed.
+  ///
+  /// A number between 1 and this value is chosen for each particle and used to multiply its [speedStart] and [speedEnd].
   double speedMultiplier;
 
+  /// A particle's scale at the start of its lifespan.
   double scaleStart;
+
+  /// A particle's scale at the start of its lifespan.
   double scaleEnd;
+
+  /// Randomization multiplier for scale.
+  ///
+  /// A number between 1 and this value is chosen for each particle and used to multiply its [scaleStart] and [scaleEnd].
   double scaleMultiplier;
 
+  /// The acceleration vector of particles.
+  ///
+  /// Overrides [endSpeed] if nonzero.
   Vector2 acceleration;
+
+  /// The maximum speed of a particle using [acceleration].
   double maxSpeed;
 
+  /// The minimum angle at which a particle can spawn.
+  ///
+  /// Ignored for [SpawnType.burst].
   double minStartRotation;
+
+  /// The maximum angle at which a particle can spawn.
+  ///
+  /// Ignored for [SpawnType.burst].
   double maxStartRotation;
 
-  bool doRotation;
+  /// Minimum possible rotation speed over time.
   double minRotationSpeed;
+
+  /// Maximum possible rotation speed over time.
   double maxRotationSpeed;
 
+  /// Minimum possible lifetime of a particle.
   double minLifetime;
+
+  /// Maximum possible lifetime of a particle.
   double maxLifetime;
 
   // Emitter properties
 
+  /// Time between each particle spawn.
   double spawnFrequency;
+
+  /// Duration for which an emitter is active.
   double emitterLifetime;
+
+  /// Maximum number of particles stored in an emitter.
   int maxParticles;
 
+  /// The pattern in which particles are spawned.
   SpawnType type;
 
+  /// Offset from emitter position where particles are spawned.
   Vector2 emitterOffset;
 
+  /// Position of the [SpawnType.rect] rectangle relative to an emitter.
   Vector2 rectPos;
+
+  /// Size of the [SpawnType.rect] rectangle.
   Vector2 rectSize;
 
+  /// Position of the [SpawnType.circle] circle relative to an emitter.
   Vector2 circlePos;
+
+  /// Radius of the [SpawnType.circle] circle.
   double circleRadius;
 
+  /// Position of the [SpawnType.ring] area relative to an emitter.
   Vector2 ringPos;
+
+  /// Radius to the inside edge of the [SpawnType.ring] area.
   double minRingRadius;
+
+  /// Radius to the outside edge of the [SpawnType.ring] area.
   double maxRingRadius;
 
+  /// Number of particles in each [SpawnType.burst] burst.
   int burstParticlesPerWave;
+
+  /// Spacing between particles in each [SpawnType.burst] burst.
   double burstParticleSpacing;
+
+  /// First angle for a particle in a [SpawnType.burst] burst.
   double burstStartAngle;
 
-  ParticleEffect(this.texture) {
-    spawnOffset = Vector2(texture.width / 2, texture.height / 2);
-  }
+  /// Creates a particle effect with the given [texture].
+  ///
+  /// Properties must be set manually.
+  ParticleEffect(this.texture);
 
+  /// Creates a particle effect from JSON data.
+  /// See [loadParticle].
   ParticleEffect.fromJSON(var data, this.texture) {
-    spawnOffset = Vector2(texture.width / 2, texture.height / 2);
-
     colorStart = Vector4.zero();
     Colors.fromHexString(data['color']['start'], colorStart);
     colorStart.a = data['alpha']['start'];
@@ -97,7 +170,6 @@ class ParticleEffect {
     minStartRotation = data['startRotation']['min'];
     maxStartRotation = data['startRotation']['max'];
 
-    doRotation = !data['noRotation'];
     minRotationSpeed = data['rotationSpeed']['min'];
     maxRotationSpeed = data['rotationSpeed']['max'];
 
@@ -113,7 +185,7 @@ class ParticleEffect {
     type = SpawnType.values
         .firstWhere((e) => e.toString() == 'SpawnType.' + data['spawnType']);
 
-    switch(type) {
+    switch (type) {
       case SpawnType.point:
         break;
       case SpawnType.burst:
@@ -138,24 +210,30 @@ class ParticleEffect {
   }
 }
 
-// An emitter for particles, with behavoir controlled by a [ParticleEffect]
+/// An emitter for particles, with behavior controlled by a [ParticleEffect].
 class ParticleEmitter {
+  /// The particle effect that determines the emitter's behavior.
   ParticleEffect effect;
 
+  /// Random number generator used by emitter.
   Random rand;
 
+  /// The position of the particle emitter.
+  ///
+  /// New particles will be spawned around here.
   Vector2 pos;
 
   double _time = 0.0;
   double _totalTime = 0.0;
 
+  /// A list of all active particles
   List<Particle> particles;
 
   List<Particle> _toRemove;
 
-  // Creates a particle emitter from the given effect
+  /// Creates a particle emitter using the given effect.
   ParticleEmitter(this.effect, [this.rand]) {
-    if(rand == null) {
+    if (rand == null) {
       rand = new Random();
     }
     pos = Vector2.zero();
@@ -163,16 +241,16 @@ class ParticleEmitter {
     _toRemove = [];
   }
 
-  // Updates all the live particles emitted
+  /// Updates all the live particles emitted.
   update(double delta) {
     _toRemove.clear();
     for (Particle particle in particles) {
       particle.update(delta);
-      if(particle._time > particle.lifetime) {
+      if (particle._time > particle.lifetime) {
         _toRemove.add(particle);
       }
     }
-    for(Particle particle in _toRemove) {
+    for (Particle particle in _toRemove) {
       particles.remove(particle);
     }
 
@@ -181,59 +259,80 @@ class ParticleEmitter {
     if (_totalTime < effect.emitterLifetime ||
         effect.emitterLifetime == 0 ||
         effect.emitterLifetime == -1) {
-      while(_time >= effect.spawnFrequency) {
+      while (_time >= effect.spawnFrequency) {
         spawnWave();
         _time -= effect.spawnFrequency;
       }
     }
   }
 
-  // Draws all emitted particles in the batch
+  /// Draws all emitted particles in the given [batch].
   draw(SpriteBatch batch) {
     for (Particle particle in particles) {
       batch.color = particle.color;
-      batch.draw(particle.texture, particle.position.x - (particle.texture.width * particle.scale * 0.5), particle.position.y - (particle.texture.height * particle.scale * 0.5),
+      batch.draw(
+          particle.texture,
+          particle.position.x - (particle.texture.width * particle.scale * 0.5),
+          particle.position.y -
+              (particle.texture.height * particle.scale * 0.5),
           scaleX: particle.scale,
           scaleY: particle.scale,
           angle: radians(particle.rotation));
     }
   }
 
-  // Spawns a wave of particles, using the effect's spawn type
+  /// Spawns a wave of particles, using the effect's spawn type.
   spawnWave() {
-    switch(effect.type) {
+    switch (effect.type) {
       case SpawnType.point:
-        spawnParticle(pos);
+        spawnParticle(pos + effect.emitterOffset);
         break;
       case SpawnType.burst:
         double angle = 360 - effect.burstStartAngle;
-        for(int i = 0; i < effect.burstParticlesPerWave; i++) {
+        for (int i = 0; i < effect.burstParticlesPerWave; i++) {
           angle += effect.burstParticleSpacing;
-          spawnParticle(pos, angle);
+          if (effect.burstParticleSpacing == 0) {
+            angle = _randBetween(0.0, 360.0);
+          }
+          spawnParticle(pos + effect.emitterOffset, angle);
         }
         break;
       case SpawnType.circle:
         double angle = _randBetween(-pi, pi);
-        spawnParticle(pos + effect.circlePos + (_angleToVec(angle) * effect.circleRadius * rand.nextDouble()));
+        spawnParticle(pos +
+            effect.circlePos +
+            (_angleToVec(angle) * effect.circleRadius * rand.nextDouble()) +
+            effect.emitterOffset);
         break;
       case SpawnType.rect:
-        spawnParticle(pos + effect.rectPos + Vector2(effect.rectSize.x * rand.nextDouble(), effect.rectSize.y * rand.nextDouble()));
+        spawnParticle(pos +
+            effect.rectPos +
+            Vector2(effect.rectSize.x * rand.nextDouble(),
+                effect.rectSize.y * rand.nextDouble()) +
+            effect.emitterOffset);
         break;
       case SpawnType.ring:
         double angle = _randBetween(-pi, pi);
-        spawnParticle(pos + effect.circlePos + (Vector2(cos(angle), sin(angle)) * _randBetween(effect.minRingRadius, effect.maxRingRadius)));
+        spawnParticle(pos +
+            effect.circlePos +
+            (Vector2(cos(angle), sin(angle)) *
+                _randBetween(effect.minRingRadius, effect.maxRingRadius)) +
+            effect.emitterOffset);
         break;
     }
   }
 
-  // Spawns a single particle at [pos] moving in direction [angle]
+  /// Spawns a single particle at [pos] moving in direction [angle].
   spawnParticle(Vector2 pos, [double angle]) {
-    if(particles.length < effect.maxParticles) {
+    if (particles.length < effect.maxParticles) {
       Particle particle = new Particle(effect);
       particle.texture = effect.texture;
       particle.color = effect.colorStart.clone();
-      particle.rotation = -(angle != null ? angle : _randBetween(effect.minStartRotation, effect.maxStartRotation));
-      particle.rotationSpeed = _randBetween(effect.minRotationSpeed, effect.maxRotationSpeed);
+      particle.rotation = -(angle != null
+          ? angle
+          : _randBetween(effect.minStartRotation, effect.maxStartRotation));
+      particle.rotationSpeed =
+          _randBetween(effect.minRotationSpeed, effect.maxRotationSpeed);
       particle.scaleMod = _randBetween(1.0, effect.scaleMultiplier);
       particle.scale = effect.scaleStart * particle.scaleMod;
       particle.speedMod = _randBetween(1.0, effect.speedMultiplier);
@@ -245,38 +344,66 @@ class ParticleEmitter {
     }
   }
 
-  double _randBetween(double min, double max) {
-    return min + rand.nextDouble() * (max - min);
+  double _randBetween(double a, double b) {
+    double low = min(a, b);
+    double high = max(a, b);
+    return low + rand.nextDouble() * (high - low);
   }
-
 }
 
-// A single particle. Should generally not be used alone.
+/// A single particle.
+///
+/// Should generally be created using a [ParticleEmitter].
 class Particle {
+  /// The effect that determines the particle's behavior.
   ParticleEffect effect;
 
+  /// The texture of the particle.
   Texture texture;
 
+  /// The current color of the particle.
   Vector4 color;
 
+  /// The position of the particle.
   Vector2 position;
+
+  /// The velocity of the particle.
   Vector2 velocity;
 
+  /// The current scale of the particle.
   double scale;
+
+  /// The scale multiplier for this particle.
+  ///
+  /// The normal start and end speed are multiplied by this value.
   double scaleMod;
 
+  /// The current speed of the particle.
   double speed;
+
+  /// The speed multiplier for this particle.
+  ///
+  /// The normal start and end speed are multiplied by this value.
   double speedMod;
 
+  /// The current rotation of this particle, in degrees.
   double rotation;
+
+  /// The rotation speed of this particle, in degrees.
   double rotationSpeed;
 
+  /// The lifetime of this particle.
   double lifetime;
 
+  // The time this particle has been alive.
   double _time = 0;
 
+  /// Creates a particle of the given effect.
+  ///
+  /// Most values are set manually, typically by a [ParticleEmitter]
   Particle(this.effect);
 
+  /// Updates the individual particle over time.
   void update(double delta) {
     _time += delta;
 
@@ -284,15 +411,17 @@ class Particle {
 
     rotation -= rotationSpeed * delta;
 
-    scale += (effect.scaleEnd - effect.scaleStart) * scaleMod * (delta / lifetime);
+    scale +=
+        (effect.scaleEnd - effect.scaleStart) * scaleMod * (delta / lifetime);
 
-    speed += (effect.speedEnd - effect.speedStart) * speedMod * (delta / lifetime);
+    speed +=
+        (effect.speedEnd - effect.speedStart) * speedMod * (delta / lifetime);
 
-    if(effect.acceleration != Vector2.zero()) {
-     velocity += effect.acceleration * delta;
-     if(velocity.length > effect.maxSpeed) {
-       velocity.length = effect.maxSpeed;
-     }
+    if (effect.acceleration != Vector2.zero()) {
+      velocity += effect.acceleration * delta;
+      if (velocity.length > effect.maxSpeed) {
+        velocity.length = effect.maxSpeed;
+      }
     } else {
       velocity = velocity.normalized() * speed;
     }
@@ -303,10 +432,10 @@ class Particle {
 // Converts an angle in radians to a vector of length 1
 Vector2 _angleToVec(double angle) {
   Vector2 result = Vector2(cos(angle), sin(angle));
-  if(result.x.abs() < 0.0001) {
+  if (result.x.abs() < 0.0001) {
     result.x = 0;
   }
-  if(result.y.abs() < 0.0001) {
+  if (result.y.abs() < 0.0001) {
     result.y = 0;
   }
   return result;
