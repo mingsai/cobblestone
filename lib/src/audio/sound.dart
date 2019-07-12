@@ -1,17 +1,20 @@
 part of cobblestone;
 
-/// Loads a sound from a url
+/// Loads a sound from a url.
 Future<Sound> loadSound(audio, String url) async {
   var request = await HttpRequest.request(url, responseType: 'arraybuffer');
-  var buffer = await audio.context.decodeAudioData(request.response);
+  var buffer = await audio._context.decodeAudioData(request.response);
   return new Sound(audio, buffer);
 }
 
-/// A playable sound using WebAudio
+/// A playable sound using WebAudio.
+///
+/// Sounds are typically short files, use [Music] for longer tracks or narration.
 class Sound extends AudioPlayer {
-  AudioWrapper audio;
-  WebAudio.AudioContext context;
+  AudioWrapper _audio;
+  WebAudio.AudioContext _context;
 
+  /// The raw audio data used to play this sound.
   var buffer;
 
   var _sources;
@@ -24,21 +27,16 @@ class Sound extends AudioPlayer {
   double _volume = 1.0;
 
   /// Creates a new sound form an audio buffer
-  Sound(this.audio, this.buffer) {
-    this.context = audio.context;
-    _gainNode = context.createGain();
+  Sound(this._audio, this.buffer) {
+    this._context = _audio.context;
+    _gainNode = _context.createGain();
     _sources = {};
   }
 
-  _createSourceNode(bool loop) {
-    WebAudio.AudioBufferSourceNode source = context.createBufferSource();
-    source.buffer = buffer;
-    source.loop = loop;
-    source.start(0);
-    return source;
-  }
-
-  /// Plays this sound. If [loop] is set, repeats indefinitely
+  /// Plays this sound.
+  ///
+  /// If [loop] is set true, repeats indefinitely.
+  /// Calls [onEnd] after the sound is finished.
   play({bool loop = false, Function onEnd}) {
     final int id = _nextID;
 
@@ -46,7 +44,7 @@ class Sound extends AudioPlayer {
 
     _gainNode.gain.value = volume;
     source.connectNode(_gainNode, 0, 0);
-    _gainNode.connectNode(context.destination, 0, 0);
+    _gainNode.connectNode(_context.destination, 0, 0);
 
     source.onEnded.listen((Event e) {
       onEnd?.call();
@@ -59,14 +57,22 @@ class Sound extends AudioPlayer {
     playing = true;
   }
 
-  /// Play sound only if not already playing
+  _createSourceNode(bool loop) {
+    WebAudio.AudioBufferSourceNode source = _context.createBufferSource();
+    source.buffer = buffer;
+    source.loop = loop;
+    source.start(0);
+    return source;
+  }
+
+  /// Play sound only if it's not already playing.
   playIfNot({bool loop = false, Function onEnd}) {
     if (!playing) {
       play(loop: loop, onEnd: onEnd);
     }
   }
 
-  /// Stops all instances of this sound
+  /// Stops all instances of this sound.
   stop() {
     for (var source in _sources.values) {
       source.stop(0);
@@ -84,20 +90,20 @@ class Sound extends AudioPlayer {
     playing = _sources.length != 0;
   }
 
+  /// True of any instance of this sound is currently playing.
   bool get playing => _playing;
-
-  void set playing(bool playing) {
+  set playing(bool playing) {
     _playing = playing;
     if (playing) {
-      audio.addPlaying(this);
+      _audio.addPlaying(this);
     } else {
-      audio.removePlaying(this);
+      _audio.removePlaying(this);
     }
   }
 
+  /// The volume of this sound.
   double get volume => _volume;
-
-  void set volume(double volume) {
+  set volume(double volume) {
     _volume = volume;
     if (_volume < 0) {
       _volume = 0;

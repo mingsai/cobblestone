@@ -1,9 +1,9 @@
 part of cobblestone;
 
-// A wrapper around the WebAudio context, will have extra features later
+/// A wrapper around the WebAudio context, will have extra features later
 class AudioWrapper {
 
-  // The actual WebAudio context
+  /// The actual WebAudio context
   WebAudio.AudioContext context;
 
   var sounds = [];
@@ -32,7 +32,7 @@ class AudioWrapper {
 
 }
 
-// Generic audio element, implemented by [Sound] or [Music]
+/// Generic audio element, implemented by [Sound] or [Music]
 abstract class AudioPlayer {
 
   /// True if the sound is playing, false if not

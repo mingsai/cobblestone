@@ -47,7 +47,7 @@ class Music extends AudioPlayer {
 
   bool get playing => _playing;
 
-  void set playing(bool playing) {
+  set playing(bool playing) {
     _playing = playing;
     if (playing) {
       audio.addPlaying(this);
@@ -58,7 +58,7 @@ class Music extends AudioPlayer {
 
   double get volume => _volume;
 
-  void set volume(double volume) {
+  set volume(double volume) {
     _volume = volume;
     if (_volume < 0) {
       _volume = 0;

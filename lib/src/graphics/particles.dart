@@ -275,7 +275,7 @@ class Particle {
 
   double _time = 0;
 
-  Particle(this.effect) {}
+  Particle(this.effect);
 
   void update(double delta) {
     _time += delta;

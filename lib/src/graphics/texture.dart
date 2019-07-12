@@ -1,7 +1,13 @@
 part of cobblestone;
 
-/// Loads a texture from a url
-Future<Texture> loadTexture(GLWrapper wrapper, String url, [handle(GLWrapper wrapper, ImageElement ele) = nearest]) {
+/// A function type used to convert an [ImageElement] into a WebGL texture
+typedef TextureHandler = GL.Texture Function(GLWrapper, ImageElement);
+
+/// Loads a texture from a url.
+///
+/// Provide [handle] (probably one of [nearest], [linear], or [mipMap]) to control texture filtering.
+Future<Texture> loadTexture(GLWrapper wrapper, String url,
+    [TextureHandler handle = nearest]) {
   var completer = new Completer<Texture>();
   var element = new ImageElement();
   element.onLoad.listen((e) {
@@ -14,7 +20,7 @@ Future<Texture> loadTexture(GLWrapper wrapper, String url, [handle(GLWrapper wra
   return completer.future;
 }
 
-/// Converts an [ImageElement] to a mip-mapped texture
+/// Converts an [ImageElement] to a mip-mapped texture.
 GL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
   var context = wrapper.context;
   
@@ -33,7 +39,7 @@ GL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
   return texture;
 }
 
-/// Converts an [ImageElement] to texture with nearest neighbor scaling
+/// Converts an [ImageElement] to texture with nearest neighbor scaling.
 GL.Texture nearest(GLWrapper wrapper, ImageElement element) {
   var context = wrapper.context;
 
@@ -50,7 +56,7 @@ GL.Texture nearest(GLWrapper wrapper, ImageElement element) {
   return texture;
 }
 
-/// Converts an [ImageElement] to a texture with linear scaling
+/// Converts an [ImageElement] to a texture with linear scaling.
 GL.Texture linear(GLWrapper wrapper, ImageElement element) {
   var context = wrapper.context;
 
@@ -67,34 +73,45 @@ GL.Texture linear(GLWrapper wrapper, ImageElement element) {
   return texture;
 }
 
-
-/// A texture used in the game
+/// A region of a WebGL texture used for drawing images.
+///
+/// Should typically be created by calling [loadTexture].
+/// See [SpriteBatch] for rendering usage.
 class Texture {
+  /// Reference to the game's [GLWrapper]
   GLWrapper wrapper;
-  GL.RenderingContext context;
+  GL.RenderingContext _context;
 
+  /// The actual
   GL.Texture texture;
 
+  /// WebGL texture coordinate used for drawing this texture
   num u, v, u2, v2;
 
+  /// A string representing the original source of this texture, probably a filename or URL
   String source;
 
+  /// The width of the full texture image.
   num sourceWidth;
+  /// The height of the full texture image.
   num sourceHeight;
 
+  /// The width of this texture region.
   num width;
+  /// The height of this texture region.
   num height;
 
-  /// Creates a new texture from a [GL.Texture]
+  /// Creates a new texture from a [GL.Texture].
+  /// [loadTexture] should typically be used in place of directly calling this constructor.
   Texture(this.wrapper, this.texture, this.source, this.sourceWidth, this.sourceHeight) {
-    context = wrapper.context;
+    _context = wrapper.context;
     setRegion(0, 0, sourceWidth, sourceHeight);
   }
 
-  /// Creates a clone of another texture
+  /// Creates a clone of another texture. Both reference the same WebGL texture, but can have independent texture coordinates.
   Texture.clone(Texture other) {
     this.wrapper = other.wrapper;
-    this.context = other.context;
+    this._context = other._context;
 
     this.texture = other.texture;
 
@@ -111,22 +128,22 @@ class Texture {
     this.v2 = other.v2;
   }
 
-  /// Creates an empty texture
+  /// Creates an empty texture. Should later be filled with data using WebGL functions.
   Texture.empty(this.wrapper, this.width, this.height, var filter) {
-    context = wrapper.context;
+    _context = wrapper.context;
 
-    texture = context.createTexture();
-    context.bindTexture(WebGL.TEXTURE_2D, texture);
+    texture = _context.createTexture();
+    _context.bindTexture(WebGL.TEXTURE_2D, texture);
     //context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
-    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, filter);
-    context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, filter);
-    context.texParameteri(
+    _context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MAG_FILTER, filter);
+    _context.texParameteri(WebGL.TEXTURE_2D, WebGL.TEXTURE_MIN_FILTER, filter);
+    _context.texParameteri(
         WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_S, WebGL.CLAMP_TO_EDGE);
-    context.texParameteri(
+    _context.texParameteri(
         WebGL.TEXTURE_2D, WebGL.TEXTURE_WRAP_T, WebGL.CLAMP_TO_EDGE);
-    context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, width, height, 0, WebGL.RGBA,
+    _context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, width, height, 0, WebGL.RGBA,
         WebGL.UNSIGNED_BYTE, null);
-    context.bindTexture(WebGL.TEXTURE_2D, null);
+    _context.bindTexture(WebGL.TEXTURE_2D, null);
 
     this.source = "None";
 
@@ -139,7 +156,7 @@ class Texture {
     this.v2 = 1;
   }
 
-  /// Sets the bounds of the texture, from the bottom left
+  /// Sets the bounds of the texture, using y-up coordinates from the bottom left.
   setRegion(int x, int y, int width, int height) {
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
@@ -150,7 +167,7 @@ class Texture {
     this.height = height;
   }
 
-  /// Sets the uv coordinates of the texture manually
+  /// Sets the uv coordinates of the texture manually.
   setRegionCoords(double u, double v, double u2, double v2) {
     width = ((u2 - u).abs() * sourceWidth).round();
     height = ((v2 - v).abs() * sourceHeight).round();
@@ -161,7 +178,7 @@ class Texture {
     this.v2 = v2;
   }
 
-  /// Splits this texture into pieces of [tileWidth] by [tileHeight]
+  /// Splits this texture into pieces of [tileWidth] by [tileHeight].
   List<Texture> split(int tileWidth, int tileHeight) {
     int x = (u * sourceWidth).floor();
     int y = (v * sourceWidth + height - tileHeight).floor();
@@ -183,10 +200,10 @@ class Texture {
     return tiles;
   }
 
-  /// Binds this texture to a given location, or [WebGL.TEXTURE0]
+  /// Binds this texture to a given location, or else location 0
   int bind([int location = 0]) {
-    context.activeTexture(textureBind(location));
-    context.bindTexture(WebGL.TEXTURE_2D, texture);
+    _context.activeTexture(textureBind(location));
+    _context.bindTexture(WebGL.TEXTURE_2D, texture);
     return location;
   }
 }

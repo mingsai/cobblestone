@@ -78,7 +78,7 @@ makeDemoLink(String demo) {
 
 switchTo(String demo) {
   example.stop();
-  if(featureDemoNames.indexOf(demo) != -1) {
+  if(featureDemoNames.contains(demo)) {
     example = featureDemoConstructors[featureDemoNames.indexOf(demo)]();
   } else {
     example = advancedDemoConstructors[advancedDemoNames.indexOf(demo)]();

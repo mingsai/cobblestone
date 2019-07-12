@@ -120,14 +120,14 @@ class Transform {
   num get x => translation.x;
   num get y => translation.y;
 
-  void set x(num x) => translation.setValues(x.toDouble(), y.toDouble());
-  void set y(num y) => translation.setValues(x.toDouble(), y.toDouble());
+  set x(num x) => translation.setValues(x.toDouble(), y.toDouble());
+  set y(num y) => translation.setValues(x.toDouble(), y.toDouble());
 
   num get scaleX => currentScale.x;
   num get scaleY => currentScale.y;
 
-  void set scaleX(num scaleX) =>
+  set scaleX(num scaleX) =>
       translation.setValues(scaleX.toDouble(), scaleY.toDouble());
-  void set scaleY(num scaleY) =>
+  set scaleY(num scaleY) =>
       translation.setValues(scaleX.toDouble(), scaleY.toDouble());
 }

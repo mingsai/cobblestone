@@ -1,9 +1,5 @@
 part of cobblestone;
 
-/// Global WedAudio context
-// TODO THE LAST GLOBAL
-
-
 /// A base class for programming games
 ///
 /// This is the starting point for most development with the engine
@@ -84,7 +80,7 @@ abstract class BaseGame implements State {
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
-    mouse.resize(width, height);
+    mouse._resize(width, height);
 
     if (_started) resize(width, height);
   }
@@ -122,8 +118,8 @@ abstract class BaseGame implements State {
   stop() {
     _stopped = true;
     _resizeSub.cancel();
-    mouse.cancelSubs();
-    keyboard.cancelSubs();
+    mouse._cancelSubs();
+    keyboard._cancelSubs();
   }
 
   /// A tick in the game loop

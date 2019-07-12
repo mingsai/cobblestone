@@ -72,26 +72,26 @@ class Camera2D {
   }
 
   bool get roundInt => transform.roundInt;
-  void set roundInt(bool round) {
+  set roundInt(bool round) {
     transform.roundInt = round;
   }
 
   num get x => transform.x;
   num get y => transform.y;
 
-  void set x(num x) {
+  set x(num x) {
     transform.x = x;
   }
 
-  void set y(num y) {
+  set y(num y) {
     transform.y = y;
   }
 
   num get scaleX => transform.scaleX;
   num get scaleY => transform.scaleY;
 
-  void set scaleX(num scaleX) =>
+  set scaleX(num scaleX) =>
       transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
-  void set scaleY(num scaleY) =>
+  set scaleY(num scaleY) =>
       transform.setTranslation(scaleX.toDouble(), scaleY.toDouble());
 }

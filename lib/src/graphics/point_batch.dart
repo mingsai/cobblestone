@@ -10,10 +10,10 @@ class PointBatch extends VertexBatch {
   final int verticesPerSprite = 1;
   final int indicesPerSprite = 1;
 
-  PointBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites: 8000})
+  PointBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites = 8000})
       : super(wrapper, shaderProgram);
 
-  PointBatch.defaultShader(GLWrapper wrapper, {int maxSprites: 8000})
+  PointBatch.defaultShader(GLWrapper wrapper, {int maxSprites = 8000})
       : this(wrapper, wrapper.pointShader, maxSprites: maxSprites);
 
   @override

@@ -12,10 +12,10 @@ class PhysboxBatch extends VertexBatch {
 
   Vector3 point = new Vector3.zero();
 
-  PhysboxBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites: 2000})
+  PhysboxBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites = 2000})
       : super(wrapper, shaderProgram);
 
-  PhysboxBatch.defaultShader(GLWrapper wrapper, {int maxSprites: 2000})
+  PhysboxBatch.defaultShader(GLWrapper wrapper, {int maxSprites = 2000})
       : this(wrapper, wrapper.wireShader, maxSprites: maxSprites);
 
   @override

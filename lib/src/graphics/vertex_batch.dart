@@ -30,9 +30,9 @@ abstract class VertexBatch {
 
   /// Called during rendering, use [setUniform] to provide additional data to
   /// shaders here
-  Function setAdditionalUniforms = null;
+  Function setAdditionalUniforms = () {};
 
-  VertexBatch(this.wrapper, this.shaderProgram, {this.maxSprites: 8000}) {
+  VertexBatch(this.wrapper, this.shaderProgram, {this.maxSprites = 8000}) {
     context = wrapper.context;
     
     projection = new Matrix4.identity();
@@ -60,9 +60,7 @@ abstract class VertexBatch {
   begin() {
     shaderProgram.startProgram();
 
-    if(setAdditionalUniforms != null) {
-      setAdditionalUniforms();
-    }
+    setAdditionalUniforms();
   }
 
   appendAttrib(num value) {

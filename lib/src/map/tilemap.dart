@@ -50,7 +50,7 @@ class Tilemap {
     });
 
     file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
-      if (tile.findElements("animation").length > 0) {
+      if (tile.findElements("animation").isNotEmpty) {
         tileset[int.parse(tile.getAttribute("id"))] = new AnimatedTile(tile, basicTiles);
       } else {
         tileset[int.parse(tile.getAttribute("id"))] = basicTiles[int.parse(tile.getAttribute("id"))];
@@ -68,7 +68,7 @@ class Tilemap {
   }
 
   /// Renders the tilemap layers. If [filter] is set, only renders the layers with names selected by the it.
-  render(SpriteBatch batch, num x, num y, {Pattern filter: null}) {
+  render(SpriteBatch batch, num x, num y, {Pattern filter}) {
     if (filter == null) {
       for (MapLayer layer in layers) {
         layer.render(batch, x, y);
@@ -140,9 +140,10 @@ class TileLayer extends MapLayer {
   render(SpriteBatch batch, num x, num y) {
     for (int row = 0; row < height; row++) {
       for (int col = 0; col < width; col++) {
-        if (getTile(col, row) != null)
+        if (getTile(col, row) != null) {
           getTile(col, row).render(batch, col * tileWidth + x,
               row * tileHeight + y, tileWidth, tileHeight);
+        }
       }
     }
   }

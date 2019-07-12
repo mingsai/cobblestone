@@ -18,7 +18,6 @@ class PerformanceExample extends BaseGame {
     gl.setGLViewport(canvasWidth, canvasHeight);
 
     Texture boulderSheet = assetManager.get("boulders2.png");
-    int num = 0;
 
     List<Texture> textures = boulderSheet.split(16, 16);
     for (int i = 0; i < 100000; i++) {

@@ -1,18 +1,21 @@
 part of cobblestone;
 
-// A wrapper containing several useful WebGL functions
+/// A wrapper containing several useful WebGL functions.
 class GLWrapper {
 
-  // The actual rendering context
+  /// The actual WebGL rendering context.
   GL.RenderingContext context;
 
+  /// A default shader program used by a batch.
   ShaderProgram batchShader, wireShader, pointShader;
 
+  /// Creates a WebGL wrapper, setting default options and compiling default shaders.
   GLWrapper(this.context) {
     _setGLOptions();
     _loadBuiltinShaders();
   }
 
+  /// Compiles a new shader program given the vertex and fragment source codes.
   ShaderProgram compileShader(String vertexSource, String fragmentSource) {
     return new ShaderProgram.compile(this, vertexSource, fragmentSource);
   }

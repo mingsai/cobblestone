@@ -1,37 +1,37 @@
 part of cobblestone;
 
-/// A manager for loading assets
+/// A manager that loads assets in the background while the main loop continues.
 class AssetManager {
-  Map<String, dynamic> assets;
+  Map<String, dynamic> _assets;
 
-  List<String> toLoad;
+  List<String> _toLoad;
 
-  /// Creates an empty asset manager
+  /// Creates an empty asset manager.
   AssetManager() {
-    assets = new Map<String, dynamic>();
-    toLoad = [];
+    _assets = new Map<String, dynamic>();
+    _toLoad = [];
   }
 
-  /// Returns true if all assets are loaded
+  /// Returns true if all assets are loaded.
   bool allLoaded() {
-    for (String asset in toLoad) {
-      if (!assets.containsKey(asset)) {
+    for (String asset in _toLoad) {
+      if (!_assets.containsKey(asset)) {
         return false;
       }
     }
     return true;
   }
 
-  /// Begins loading an asset
+  /// Begins loading an asset. Assets can later be retrieved by [get]
   void load(String source, Future asset) {
-    toLoad.add(source);
+    _toLoad.add(source);
     asset.then((data) {
-      assets[source] = data;
+      _assets[source] = data;
     });
   }
 
-  /// Gets an asset by its source
+  /// Gets an asset by its source.
   get(String asset) {
-    return assets[asset];
+    return _assets[asset];
   }
 }

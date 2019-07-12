@@ -3,7 +3,7 @@ part of cobblestone;
 /// A tile on the map
 abstract class Tile {
   /// Data from the map file describing it
-  XML.XmlElement data = null;
+  XML.XmlElement data;
 
   /// The image currently used by the tile
   String image = "";

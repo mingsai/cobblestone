@@ -1,8 +1,9 @@
 part of cobblestone;
 
-/// A state (screen) of a game
+/// A state/screen of a game
 abstract class State {
 
+  /// The base game this state is a part of.
   BaseGame get game;
 
   GLWrapper get gl => game.gl;
@@ -28,25 +29,25 @@ abstract class State {
   Keyboard get keyboard => game.keyboard;
   Mouse get mouse => game.mouse;
 
-  /// Loads assets here using [assetManager]
+  /// Loads assets using [assetManager].
   preload();
 
-  /// Creates new game elements with loaded assets here.
+  /// Creates new game elements with loaded assets.
   create();
 
-  /// Resumes the state. Subscribe to input here.
+  /// Resumes the state.
   resume();
 
-  /// Pauses the state. Unsubscribe from input here.
+  /// Pauses the state.
   pause();
 
-  /// Updates the state. Called before [render]
+  /// Updates the state. Called before [render].
   update(num delta);
 
-  /// Renders the state. Called before [render]
+  /// Renders the state. Called after [update].
   render(num delta);
 
-  /// Called after canvas changes size
+  /// Called after canvas changes size. May cause internal size to change depending on [scaleMode]
   resize(num width, num height);
 
 }
