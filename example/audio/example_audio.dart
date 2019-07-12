@@ -56,7 +56,7 @@ class AudioExample extends BaseGame {
           ..set = [(v) => music.volume = v]
           ..target = [0.0]
           ..duration = 5.0
-          ..ease = linearInOut
+          ..ease = Ease.linearInOut
           ..start(tweenManager);
     }
   }

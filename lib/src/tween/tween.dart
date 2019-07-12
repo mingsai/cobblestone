@@ -22,7 +22,7 @@ class Tween {
   double duration = 0.0;
 
   /// Easing function used, usually from [tween.dart]
-  Easing ease = linearInOut;
+  Easing ease = Ease.linearInOut;
 
   /// Void function called when the tween is complete
   Function callback = () => {};

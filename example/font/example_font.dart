@@ -58,7 +58,7 @@ class FontExample extends BaseGame {
         ..get = [() => textWidth]
         ..target = [200]
         ..duration = 10
-        ..ease = quartOut
+        ..ease = Ease.quartOut
         ..callback = startTween
         ..start(tweenManager);
     } else {
@@ -67,7 +67,7 @@ class FontExample extends BaseGame {
         ..get = [() => textWidth]
         ..target = [640]
         ..duration = 10
-        ..ease = quartOut
+        ..ease = Ease.quartOut
         ..callback = startTween
         ..start(tweenManager);
     }

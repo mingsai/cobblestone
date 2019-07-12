@@ -30,14 +30,14 @@ class TweenExample extends BaseGame {
       ..target = [width - 50, height - 50]
       ..duration = 10.0
       ..delay = 1.0
-      ..ease = backInOut
+      ..ease = Ease.backInOut
       ..callback = (() => print("Tween 1 Complete"))
       ..chain(new Tween()
         ..get = getPos
         ..set = setPos
         ..target = [0.0, 0.0]
         ..duration = 10.0
-        ..ease = expoInOut)
+        ..ease = Ease.expoInOut)
       ..start(tweenManager);
   }
 
