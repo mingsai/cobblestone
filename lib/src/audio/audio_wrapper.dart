@@ -6,18 +6,26 @@ class AudioWrapper {
   /// The actual WebAudio context
   WebAudio.AudioContext context;
 
-  var sounds = [];
+  /// A list of all audio currently playing.
+  ///
+  /// This list is automatically modified when playing and stopping [AudioPlayer]
+  List<AudioPlayer> sounds = [];
 
+  /// Creates a new Audio Wrapper.
+  ///
+  /// The wrapper provided in BaseGame should typically be used instead.
   AudioWrapper() {
     this.context = new WebAudio.AudioContext();
   }
 
+  /// Adds a sound to the list of sounds currently playing.
   addPlaying(AudioPlayer sound) {
     if(!sounds.contains(sound)) {
       sounds.add(sound);
     }
   }
 
+  /// Removes a sound from this list of sounds currently playing.
   removePlaying(AudioPlayer sound) {
     sounds.remove(sound);
   }
@@ -32,7 +40,7 @@ class AudioWrapper {
 
 }
 
-/// Generic audio element, implemented by [Sound] or [Music]
+/// Generic audio element, implemented by [Sound] and [Music]
 abstract class AudioPlayer {
 
   /// True if the sound is playing, false if not
