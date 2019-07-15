@@ -1,27 +1,28 @@
 part of cobblestone;
 
-/// A base class for programming games
+/// A base class for programming games.
 ///
-/// This is the starting point for most development with the engine
+/// This is the starting point for most development with the engine.
 abstract class BaseGame implements State {
 
-  /// A stopwatch, used to calculate delta time
+  // A stopwatch, used to calculate delta time
   Stopwatch _stopwatch;
 
-  /// Wrapper around common WebGL functions
+  /// Wrapper around common WebGL functions.
   GLWrapper gl;
 
-  /// The requested width of the game window. Used for [ScaleMode.fit] or [ScaleMode.fill]
+  /// The requested width of the game window. Used for [ScaleMode.fit] or [ScaleMode.fill].
   int requestedWidth = 640;
-  /// The requested width of the game window. Used for [ScaleMode.fit] or [ScaleMode.fill]
+  /// The requested width of the game window. Used for [ScaleMode.fit] or [ScaleMode.fill].
   int requestedHeight = 480;
-  /// The method used to scale the game canvas
+  /// The method used to scale the game canvas.
   ScaleMode scaleMode = ScaleMode.fit;
 
+  /// HTML canvas element the game is drawn on.
   CanvasElement canvas;
-  /// The actual width of the canvas
+  /// The actual width of the canvas.
   int canvasWidth;
-  /// The actual height of the canvas
+  /// The actual height of the canvas.
   int canvasHeight;
 
   /// The effective width of the game. Use this for most calculations.
@@ -31,18 +32,18 @@ abstract class BaseGame implements State {
   /// Varies based on actual canvas size, and [scaleMode]
   int height;
 
-  /// Game asset manager to the asset manager
+  /// Game asset manager. Used to wait for asynchronously loaded assets.
   final AssetManager assetManager = new AssetManager();
 
-  /// The game tween manager
+  /// The game tween manager. Lists and updates [Tween]s added to it.
   final TweenManager tweenManager = new TweenManager();
 
-  // Game audio context
+  /// The game audio context. Can be used for some global control of various sounds.
   final AudioWrapper audio = new AudioWrapper();
 
-  // Keyboard input polling
+  /// Storage of current state of keyboard input.
   Keyboard keyboard;
-  // Mouse input polling
+  /// Storage of current state of mouse input.
   Mouse mouse;
 
   BaseGame get game => this;
@@ -52,13 +53,13 @@ abstract class BaseGame implements State {
 
   StreamSubscription _resizeSub;
 
-  /// Creates a new game with the first canvas element
+  /// Creates a new game with the first canvas element on the page.
   BaseGame(): this.query("canvas");
 
-  /// Creates a new game with the canvas selected by [selector]
+  /// Creates a new game with the canvas selected by [selector].
   BaseGame.query(String selector): this.withCanvas(querySelector(selector));
 
-  /// Creates a new game with [canvas]
+  /// Creates a new game with the given [canvas].
   BaseGame.withCanvas(this.canvas) {
     config();
     gl = new GLWrapper(canvas.getContext3d());
@@ -68,7 +69,7 @@ abstract class BaseGame implements State {
     _startLoop();
   }
 
-  /// Resizes the canvas upon resize events
+  // Resizes the canvas upon resize events.
   _resizeCanvas() {
     scaleCanvas(canvas, scaleMode, requestedWidth, requestedHeight,
         window.innerWidth, window.innerHeight);
@@ -85,7 +86,7 @@ abstract class BaseGame implements State {
     if (_started) resize(width, height);
   }
 
-  /// Sets some things up, and starts the loop.
+  // Sets some things up, and starts the loop.
   _startLoop() {
     preload();
 
@@ -146,19 +147,23 @@ abstract class BaseGame implements State {
     }
   }
 
-  /// Updates the game. Called before [render]
+  /// Updates the state. Called each frame before [render].
+  ///
+  /// [delta] is the time in seconds since last frame.
   update(num delta);
 
-  /// Renders the game. Called after [update]
+  /// Renders the state. Called each frame after [update].
+  ///
+  /// [delta] is the time in seconds since last frame.
   render(num delta);
 
   /// Called after canvas changes size
   resize(num width, num height) {}
 
-  /// Pauses the game. Unsubscribe from input here.
+  /// Pauses the game.
   pause() {}
 
-  /// Resumes the game. Subscribe to input here.
+  /// Resumes the game.
   resume() {}
 
 }
