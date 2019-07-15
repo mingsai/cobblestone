@@ -26,7 +26,15 @@ Parser _line = word().plus().flatten().trim() & _variable.plus().trim();
 
 Parser _font = _line.star();
 
-enum TextAlign { left, center, right }
+/// Enum representing the alignment of text for [BitmapFont].
+enum TextAlign {
+  /// Aligns text to the left side of the given area.
+  left,
+  /// Aligns text to the center of the given area.
+  center,
+  /// Aligns text to the right side of the given area.
+  right
+}
 
 /// A set of data and a texture used for rendering text.
 class BitmapFont {
@@ -150,14 +158,15 @@ class BitmapFont {
 
   /// Calculates the kerning between two characters
   int calcKerning(int last, int next) {
+    int kerning = 0;
     if (_kernings.containsKey(next)) {
       _kernings[next].forEach((k) {
         if (last == k.char1) {
-          return k.offset;
+          kerning = k.offset;
         }
       });
     }
-    return 0;
+    return kerning;
   }
 
   /// Calculates the length in pixels of a string rendered with this font

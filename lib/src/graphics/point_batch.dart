@@ -1,6 +1,6 @@
 part of cobblestone;
 
-/// A batch of points
+/// A batch of single points.
 class PointBatch extends VertexBatch {
   int maxSprites = 8000;
 
@@ -10,21 +10,24 @@ class PointBatch extends VertexBatch {
   final int verticesPerSprite = 1;
   final int indicesPerSprite = 1;
 
+  /// Creates a new point batch with a custom shader.
   PointBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites = 8000})
       : super(wrapper, shaderProgram);
 
+  /// Creates a new point batch with a basic internal shader.
   PointBatch.defaultShader(GLWrapper wrapper, {int maxSprites = 8000})
       : this(wrapper, wrapper.pointShader, maxSprites: maxSprites);
 
   @override
   setAttribPointers() {
-    context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+    _context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
-    context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
+    _context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
         WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
     //print(shaderProgram.attributes);
   }
 
+  /// Draws a point to the batch, with the given position and color.
   draw(Vector3 pos, Vector4 color) {
     appendAttrib(pos.x);
     appendAttrib(pos.y);

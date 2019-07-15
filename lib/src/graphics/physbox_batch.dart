@@ -10,20 +10,22 @@ class PhysboxBatch extends VertexBatch {
   final int verticesPerSprite = 4;
   final int indicesPerSprite = 8;
 
-  Vector3 point = new Vector3.zero();
+  Vector3 _point = new Vector3.zero();
 
+  /// Creates a new physbox batch with a custom shader.
   PhysboxBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites = 2000})
       : super(wrapper, shaderProgram);
 
+  /// Creates a new physbox batch with a basic internal shader.
   PhysboxBatch.defaultShader(GLWrapper wrapper, {int maxSprites = 2000})
       : this(wrapper, wrapper.wireShader, maxSprites: maxSprites);
 
   @override
   setAttribPointers() {
-    context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+    _context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
 
-    context.uniform4fv(shaderProgram.uniforms[colorUni], Colors.white.storage);
+    _context.uniform4fv(shaderProgram.uniforms[colorUni], Colors.white.storage);
     //print(shaderProgram.attributes);
   }
 
@@ -40,10 +42,11 @@ class PhysboxBatch extends VertexBatch {
       indices[i + 7] = j;
     }
 
-    context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    context.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
+    _context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    _context.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
   }
 
+  /// Draws an [Aabb2] or [Obb3], flattened on the z-axis.
   draw2D(dynamic box) {
     if (box is Aabb2) {
       appendAttrib(box.max.x);
@@ -64,24 +67,24 @@ class PhysboxBatch extends VertexBatch {
 
       spritesInFlush++;
     } else if (box is Obb3) {
-      box.copyCorner(0, point);
-      appendAttrib(point.x);
-      appendAttrib(point.y);
+      box.copyCorner(0, _point);
+      appendAttrib(_point.x);
+      appendAttrib(_point.y);
       appendAttrib(0);
 
-      box.copyCorner(2, point);
-      appendAttrib(point.x);
-      appendAttrib(point.y);
+      box.copyCorner(2, _point);
+      appendAttrib(_point.x);
+      appendAttrib(_point.y);
       appendAttrib(0);
 
-      box.copyCorner(6, point);
-      appendAttrib(point.x);
-      appendAttrib(point.y);
+      box.copyCorner(6, _point);
+      appendAttrib(_point.x);
+      appendAttrib(_point.y);
       appendAttrib(0);
 
-      box.copyCorner(4, point);
-      appendAttrib(point.x);
-      appendAttrib(point.y);
+      box.copyCorner(4, _point);
+      appendAttrib(_point.x);
+      appendAttrib(_point.y);
       appendAttrib(0);
 
       spritesInFlush++;

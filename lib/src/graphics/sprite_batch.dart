@@ -13,8 +13,11 @@ class SpriteBatch extends VertexBatch {
   Vector4 _color = Colors.white;
   double _packedColor = packColor(Colors.white);
 
-  int vi = 0;
+  int _vi = 0;
 
+  /// The texture currently being used by the batch.
+  ///
+  /// Changing the texture will force a call to flush, and thus texture changes should be minimized.
   Texture texture;
 
   /// Creates a new sprite batch with a custom shader
@@ -27,12 +30,14 @@ class SpriteBatch extends VertexBatch {
   SpriteBatch.defaultShader(GLWrapper wrapper, {int maxSprites = 2000})
       : this(wrapper, wrapper.batchShader, maxSprites: maxSprites);
 
+  /// The color the next sprites in the batch will be drawn with.
+  ///
+  /// The default shader multiplies texture colors by this color.
+  Vector4 get color => _color;
   set color(Vector4 color) {
     _color = color;
     _packedColor = packColor(color);
   }
-
-  Vector4 get color => _color;
 
   /// Draws the [texture] at ([x], [y]), the bottom left of the sprite. Can optionally draw at a given [height] and [width], scale by [scaleX] and [scaleY],
   /// flip the texture if [flipX] or [flipY], or turn [angle] around the center.
@@ -142,35 +147,35 @@ class SpriteBatch extends VertexBatch {
       v2 = temp;
     }
 
-    vi = spritesInFlush * verticesPerSprite * vertexSize;
+    _vi = spritesInFlush * verticesPerSprite * vertexSize;
 
-    vertices[vi + 00] = x1;
-    vertices[vi + 01] = y1;
-    vertices[vi + 02] = 0.0;
-    vertices[vi + 03] = _packedColor;
-    vertices[vi + 04] = u;
-    vertices[vi + 05] = v;
+    vertices[_vi + 00] = x1;
+    vertices[_vi + 01] = y1;
+    vertices[_vi + 02] = 0.0;
+    vertices[_vi + 03] = _packedColor;
+    vertices[_vi + 04] = u;
+    vertices[_vi + 05] = v;
 
-    vertices[vi + 06] = x2;
-    vertices[vi + 07] = y2;
-    vertices[vi + 08] = 0.0;
-    vertices[vi + 09] = _packedColor;
-    vertices[vi + 10] = u;
-    vertices[vi + 11] = v2;
+    vertices[_vi + 06] = x2;
+    vertices[_vi + 07] = y2;
+    vertices[_vi + 08] = 0.0;
+    vertices[_vi + 09] = _packedColor;
+    vertices[_vi + 10] = u;
+    vertices[_vi + 11] = v2;
 
-    vertices[vi + 12] = x3;
-    vertices[vi + 13] = y3;
-    vertices[vi + 14] = 0.0;
-    vertices[vi + 15] = _packedColor;
-    vertices[vi + 16] = u2;
-    vertices[vi + 17] = v;
+    vertices[_vi + 12] = x3;
+    vertices[_vi + 13] = y3;
+    vertices[_vi + 14] = 0.0;
+    vertices[_vi + 15] = _packedColor;
+    vertices[_vi + 16] = u2;
+    vertices[_vi + 17] = v;
 
-    vertices[vi + 18] = x4;
-    vertices[vi + 19] = y4;
-    vertices[vi + 20] = 0.0;
-    vertices[vi + 21] = _packedColor;
-    vertices[vi + 22] = u2;
-    vertices[vi + 23] = v2;
+    vertices[_vi + 18] = x4;
+    vertices[_vi + 19] = y4;
+    vertices[_vi + 20] = 0.0;
+    vertices[_vi + 21] = _packedColor;
+    vertices[_vi + 22] = u2;
+    vertices[_vi + 23] = v2;
 
     spritesInFlush++;
   }
@@ -186,19 +191,19 @@ class SpriteBatch extends VertexBatch {
       indices[i + 5] = j + 1;
     }
 
-    context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    context.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
+    _context.bindBuffer(WebGL.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    _context.bufferData(WebGL.ELEMENT_ARRAY_BUFFER, indices, WebGL.STATIC_DRAW);
   }
 
   @override
   setAttribPointers() {
-    context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
+    _context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
-    context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
+    _context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
         WebGL.UNSIGNED_BYTE, true, vertexSize * 4, 3 * 4);
-    context.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3,
+    _context.vertexAttribPointer(shaderProgram.attributes[textureCoordAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 4 * 4);
 
-    context.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind(0));
+    _context.uniform1i(shaderProgram.uniforms[samplerUni], texture.bind(0));
   }
 }
