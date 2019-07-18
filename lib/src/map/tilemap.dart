@@ -68,14 +68,14 @@ class Tilemap {
   }
 
   /// Renders the tilemap layers. If [filter] is set, only renders the layers with names selected by the it.
-  render(SpriteBatch batch, num x, num y, {Pattern filter}) {
+  render(SpriteBatch batch, num x, num y, Camera2D camera, {Pattern filter}) {
     if (filter == null) {
       for (MapLayer layer in layers) {
-        layer.render(batch, x, y);
+        layer.render(batch, x, y, camera);
       }
     } else {
       for (MapLayer layer in getLayersContaining(filter)) {
-        layer.render(batch, x, y);
+        layer.render(batch, x, y, camera);
       }
     }
   }
@@ -90,7 +90,7 @@ class Tilemap {
 abstract class MapLayer {
   String name;
 
-  render(SpriteBatch batch, num x, num y);
+  render(SpriteBatch batch, num x, num y, Camera2D camera);
 
   giveTileset(Map<int, Tile> tileset);
 }
@@ -137,9 +137,17 @@ class TileLayer extends MapLayer {
 
   /// Renders this to batch
   @override
-  render(SpriteBatch batch, num x, num y) {
-    for (int row = 0; row < height; row++) {
-      for (int col = 0; col < width; col++) {
+  render(SpriteBatch batch, num x, num y, Camera2D camera) {
+    double startX = min(min(camera.view.point0.x, camera.view.point1.x), min(camera.view.point2.x, camera.view.point3.x)) - x;
+    double startY = min(min(camera.view.point0.y, camera.view.point1.y), min(camera.view.point2.y, camera.view.point3.y)) - y;
+
+    double endX = max(max(camera.view.point0.x, camera.view.point1.x), max(camera.view.point2.x, camera.view.point3.x)) - x;
+    double endY = max(max(camera.view.point0.y, camera.view.point1.y), max(camera.view.point2.y, camera.view.point3.y)) - y;
+
+    print("($startX,$endX),($startY,$endY)");
+    
+    for (int row = max(startY ~/ tileHeight, 0); row < min(endY ~/ tileHeight + 1, height - 1); row++) {
+      for (int col = max(startX ~/ tileWidth, 0); col < min(endX ~/ tileWidth + 1, width - 1); col++) {
         if (getTile(col, row) != null) {
           getTile(col, row).render(batch, col * tileWidth + x,
               row * tileHeight + y, tileWidth, tileHeight);
@@ -150,7 +158,6 @@ class TileLayer extends MapLayer {
 
   /// Returns the tile at ([x], [y]) from the bottom-left
   Tile getTile(x, y) {
-    //I know this function makes little sense to us mere mortals, but it works (I think)!
     return tiles[width * (height - y - 1) + x];
   }
 
