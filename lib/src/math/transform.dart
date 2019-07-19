@@ -1,67 +1,72 @@
 part of cobblestone;
 
+/// A set of independently tracked transformations, grouped together into a [Matrix4].
 class Transform {
+
+  /// Updated to contain composition of all transformations.
   Matrix4 combined;
+  /// Updated to be the inverse of [combined] matrix.
   Matrix4 invCombined;
 
-  Vector2 temp;
-
+  /// Translation vector of this transform.
   Vector2 translation;
+  /// Clockwise rotation of this transform, in radians.
   num rotation;
-  Vector2 currentScale;
+  /// Scale multipliers in each dimension for this transform.
+  Vector2 scale;
 
+  /// If true, [translation] and [scale] are rounded to integers when creating the [combined] and [invCombined] matrices.
   bool roundInt;
 
+  Vector2 _temp = Vector2.zero();
+
+  /// Creates a new transform that applies no change.
   Transform.identity() {
-    setDefaults();
+    setIdentity();
     update();
   }
 
+  /// Creates a new transform with all the values given.
   Transform.all(num x, num y, num angle, bool counter, num scaleX, num scaleY) {
-    setDefaults();
+    setIdentity();
     translate(x, y);
     rotate(angle, counter);
-    scale(scaleX, scaleY);
+    multiplyScale(scaleX, scaleY);
     update();
   }
 
+  /// Creates a new transform with values identical to [other].
   Transform.copy(Transform other) {
-    setDefaults();
-    translation = new Vector2.copy(other.translation);
+    setIdentity();
+    translation = Vector2.copy(other.translation);
     rotation = other.rotation;
-    currentScale = new Vector2.copy(other.currentScale);
+    scale = Vector2.copy(other.scale);
     update();
   }
 
-  void setDefaults() {
-    translation = new Vector2.zero();
+  /// Sets this transform to identity, i.e. no change when applying it.
+  void setIdentity() {
+    translation = Vector2.zero();
     rotation = 0;
-    currentScale = new Vector2.all(1.0);
+    scale = Vector2.all(1.0);
     roundInt = false;
-    temp = new Vector2.zero();
 
-    combined = new Matrix4.identity();
-    invCombined = new Matrix4.identity();
+    combined = Matrix4.identity();
+    invCombined = Matrix4.identity();
   }
 
+  /// Translates the vector by [x] if it is a [Vector2] or by [x],[y] if they are numbers.
   void translate(x, [num y]) {
     if (x is Vector2) {
       translation.add(x);
-    } else {
-      temp.setValues(x, y);
-      translation.add(temp);
+    } else if (x is num && y is num) {
+      _temp.setValues(x, y);
+      translation.add(_temp);
     }
   }
 
-  void setTranslation(x, [num y]) {
-    if (x is Vector2) {
-      translation.setFrom(x);
-    } else {
-      translation.setValues(x.toDouble(), y.toDouble());
-    }
-  }
-
-  void rotate(num amount, bool counter) {
+  /// Increments rotation by [amount] in radians, -[amount] if [counter] is true.
+  void rotate(num amount, [bool counter = false]) {
     if (!counter) {
       rotation += amount;
     } else {
@@ -69,27 +74,35 @@ class Transform {
     }
   }
 
-  void setRotation(num angle) {
-    rotation = angle;
-  }
-
-  void scale(x, [num y]) {
+  /// Multiplies the scale components by [x] if it is a [Vector2] or by [x],[y] if they are numbers.
+  void multiplyScale(x, [num y]) {
     if (x is Vector2) {
-      currentScale.multiply(x);
-    } else {
-      temp.setValues(x, y);
-      currentScale.multiply(temp);
+      scale.multiply(x);
+    } else if (x is num && y is num) {
+      _temp.setValues(x, y);
+      scale.multiply(_temp);
     }
   }
 
-  void setScale(x, [num y]) {
-    if (x is Vector2) {
-      currentScale.setFrom(x);
-    } else {
-      currentScale.setValues(x.toDouble(), y.toDouble());
-    }
-  }
+  /// X-component of translation.
+  num get x => translation.x;
+  set x(num x) => translation.setValues(x.toDouble(), y.toDouble());
 
+  /// Y-component of translation.
+  num get y => translation.y;
+  set y(num y) => translation.setValues(x.toDouble(), y.toDouble());
+
+  /// X-component of scale.
+  num get scaleX => scale.x;
+  set scaleX(num scaleX) =>
+      translation.setValues(scaleX.toDouble(), scaleY.toDouble());
+
+  /// Y-component of scale.
+  num get scaleY => scale.y;
+  set scaleY(num scaleY) =>
+      translation.setValues(scaleX.toDouble(), scaleY.toDouble());
+
+  /// Updates the [combined] and [invCombined] matrices for the current
   void update() {
     combined.setIdentity();
     invCombined.setIdentity();
@@ -98,36 +111,22 @@ class Transform {
           translation.x.roundToDouble(), translation.y.roundToDouble(), 0.0);
       combined.rotateZ(rotation);
       combined.scale(
-          currentScale.x.roundToDouble(), currentScale.y.roundToDouble(), 0.0);
-    } else {
-      combined.translate(translation.x, translation.y, 0.0);
-      combined.rotateZ(rotation);
-      combined.scale(currentScale.x, currentScale.y, 0.0);
-    }
-    if (roundInt) {
+          scale.x.roundToDouble(), scale.y.roundToDouble(), 0.0);
+
       invCombined.rotateZ(-rotation);
-      invCombined.scale(1 / currentScale.x.roundToDouble(),
-          1 / currentScale.y.roundToDouble(), 0.0);
+      invCombined.scale(1 / scale.x.roundToDouble(),
+          1 / scale.y.roundToDouble(), 0.0);
       invCombined.translate(
           -translation.x.roundToDouble(), -translation.y.roundToDouble(), 0.0);
     } else {
+      combined.translate(translation.x, translation.y, 0.0);
+      combined.rotateZ(rotation);
+      combined.scale(scale.x, scale.y, 0.0);
+
       invCombined.rotateZ(-rotation);
-      invCombined.scale(1 / currentScale.x, 1 / currentScale.y, 0.0);
+      invCombined.scale(1 / scale.x, 1 / scale.y, 0.0);
       invCombined.translate(-translation.x, -translation.y, 0.0);
     }
   }
 
-  num get x => translation.x;
-  num get y => translation.y;
-
-  set x(num x) => translation.setValues(x.toDouble(), y.toDouble());
-  set y(num y) => translation.setValues(x.toDouble(), y.toDouble());
-
-  num get scaleX => currentScale.x;
-  num get scaleY => currentScale.y;
-
-  set scaleX(num scaleX) =>
-      translation.setValues(scaleX.toDouble(), scaleY.toDouble());
-  set scaleY(num scaleY) =>
-      translation.setValues(scaleX.toDouble(), scaleY.toDouble());
 }

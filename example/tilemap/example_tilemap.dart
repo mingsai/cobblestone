@@ -70,11 +70,11 @@ class TilemapExample extends BaseGame {
     if (keyboard.keyJustReleased(KeyCode.S)) south = false;
     if (keyboard.keyJustReleased(KeyCode.A)) west = false;
 
-    if (north) camera.translate(0.0, -delta * 20);
-    if (east) camera.translate(-delta * 20, 0.0);
-    if (south) camera.translate(0.0, delta * 20);
-    if (west) camera.translate(delta * 20, 0.0);
-    camera.roundInt = true;
+    if (north) camera.transform.translate(0.0, -delta * 20);
+    if (east) camera.transform.translate(-delta * 20, 0.0);
+    if (south) camera.transform.translate(0.0, delta * 20);
+    if (west) camera.transform.translate(delta * 20, 0.0);
+    camera.transform.roundInt = true;
     map.update(delta);
   }
 }
