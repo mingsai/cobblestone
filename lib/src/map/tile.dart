@@ -1,6 +1,6 @@
 part of cobblestone;
 
-/// A tile on the map
+/// A tile on the map.
 abstract class Tile {
   /// Data from the map file describing it
   XML.XmlElement data;

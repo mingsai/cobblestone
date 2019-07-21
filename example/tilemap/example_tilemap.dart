@@ -4,6 +4,7 @@ class TilemapExample extends BaseGame {
   Camera2D camera;
 
   SpriteBatch renderer;
+  DebugBatch debug;
 
   Tilemap map;
 
@@ -15,6 +16,7 @@ class TilemapExample extends BaseGame {
     camera = new Camera2D.originBottomLeft(width, height);
 
     renderer = new SpriteBatch.defaultShader(gl);
+    debug = new DebugBatch.defaultShader(gl);
 
     Map<String, Texture> atlas = assetManager.get("atlas");
     map = assetManager.get("islands2.tmx");
@@ -51,6 +53,13 @@ class TilemapExample extends BaseGame {
     }
 
     renderer.end();
+
+    debug.projection = camera.combined;
+    debug.begin();
+    for (MapObject object in map.objectGroups.first.objects) {
+      debug.drawMap(object);
+    }
+    debug.end();
   }
 
   resize(num width, num height) {

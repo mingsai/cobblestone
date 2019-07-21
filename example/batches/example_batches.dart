@@ -5,14 +5,14 @@ class BatchExample extends BaseGame {
   Matrix4 pMatrix;
 
   PointBatch pointBatch;
-  PhysboxBatch physboxBatch;
+  DebugBatch debugBatch;
 
   @override
   create() {
     camera = new Camera2D.originBottomLeft(width, height);
     pointBatch = new PointBatch.defaultShader(gl, maxSprites: 2);
 
-    physboxBatch = new PhysboxBatch.defaultShader(gl, maxSprites: 2);
+    debugBatch = new DebugBatch.defaultShader(gl, maxSprites: 8);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
@@ -36,12 +36,12 @@ class BatchExample extends BaseGame {
 
     pointBatch.end();
 
-    physboxBatch.projection = camera.combined;
-    physboxBatch.begin();
+    debugBatch.projection = camera.combined;
+    debugBatch.begin();
 
     Aabb2 box = new Aabb2.centerAndHalfExtents(
         new Vector2(10.0, 10.0), new Vector2(10.0, 100.0));
-    physboxBatch.draw2D(box);
+    debugBatch.drawBox(box);
 
     Obb3 ob = new Obb3();
     Matrix3 rotation = new Matrix3.rotationZ(pi / 8);
@@ -49,9 +49,9 @@ class BatchExample extends BaseGame {
       ..center.setFrom(new Vector3(100.0, 100.0, 0.0))
       ..halfExtents.setFrom(new Vector3(50.0, 75.0, 0.0))
       ..rotate(rotation);
-    physboxBatch.draw2D(ob);
+    debugBatch.drawBox(ob);
 
-    physboxBatch.end();
+    debugBatch.end();
   }
 
   resize(num width, num height) {
