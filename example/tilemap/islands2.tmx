@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="left-up" width="20" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="12">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="20" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="12">
+ <properties>
+  <property name="B" type="float" value="0"/>
+ </properties>
  <tileset firstgid="1" name="Islands" tilewidth="16" tileheight="16" tilecount="185" columns="0">
   <tile id="0">
    <image source="tileset/floating_islands (7).png"/>
@@ -430,6 +433,9 @@
     <frame tileid="141" duration="700"/>
     <frame tileid="164" duration="700"/>
    </animation>
+   <properties>
+      <property name="solid" type="bool" value="true"/>
+   </properties>
   </tile>
   <tile id="142">
    <image source="tileset/floating_islands (142).png"/>
@@ -590,6 +596,17 @@
 </data>
  </layer>
  <objectgroup id="3" name="Object Layer 1">
+  <properties>
+   <property name="c" type="int" value="0"/>
+   <property name="example_bool" type="bool" value="true"/>
+   <property name="example_bool2" type="bool" value="false"/>
+   <property name="example_color" type="color" value="#ff25dbff"/>
+   <property name="example_float" type="float" value="6.5"/>
+   <property name="example_int" type="int" value="8"/>
+   <property name="example_str" value="Test String"/>
+   <property name="example_unset" type="color" value=""/>
+   <property name="n" type="float" value="0"/>
+  </properties>
   <object id="1" x="56" y="56" width="164" height="40">
    <ellipse/>
   </object>

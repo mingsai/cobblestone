@@ -34,6 +34,9 @@ class Tilemap {
   /// Set of all tiles used in the map.
   Map<int, Tile> tileset;
 
+  /// A set of custom properties on this Tilemap.
+  MapProperties properties;
+
   /// Creates a new tilemap from a TMX map
   Tilemap(this.file) {
     this.width = int.parse(file.rootElement.getAttribute("width"));
@@ -55,19 +58,23 @@ class Tilemap {
     basicTiles = Map<int, BasicTile>();
     tileset = Map<int, Tile>();
     file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
-      basicTiles[int.parse(tile.getAttribute("id"))] = BasicTile(
-          set[Path.basenameWithoutExtension(tile.findElements("image").first.getAttribute("source"))], tile);
+      int id = int.parse(tile.getAttribute("id"));
+      String source = Path.basenameWithoutExtension(tile.findElements("image").first.getAttribute("source"));
+      basicTiles[id] = BasicTile(id, set[source], tile);
     });
 
     file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
+      int id = int.parse(tile.getAttribute("id"));
       if (tile.findElements("animation").isNotEmpty) {
-        tileset[int.parse(tile.getAttribute("id"))] = AnimatedTile(tile, basicTiles);
+        tileset[id] = AnimatedTile(id, tile, basicTiles);
       } else {
-        tileset[int.parse(tile.getAttribute("id"))] = basicTiles[int.parse(tile.getAttribute("id"))];
+        tileset[id] = basicTiles[id];
       }
     });
 
     layers.forEach((TileLayer layer) => layer.giveTileset(tileset));
+
+    properties = MapProperties.fromChild(file.rootElement);
   }
 
   /// Updates the tilemap, for animations
@@ -118,6 +125,9 @@ class TileLayer {
   /// The height of this layer, in pixels.
   int height;
 
+  /// A set of custom properties for this map layer.
+  MapProperties properties;
+
   /// Creates a new tile layer from TMX data.
   TileLayer(this.parent, XML.XmlElement layer) {
     width = int.parse(layer.getAttribute("width"));
@@ -134,6 +144,8 @@ class TileLayer {
 
     tileWidth = parent.tileWidth;
     tileHeight = parent.tileHeight;
+
+    properties = MapProperties.fromChild(layer);
   }
 
   /// Updates the layer with the new tileset.
@@ -183,6 +195,9 @@ class ObjectGroup {
   /// A list of objects in this group.
   List<MapObject> objects = [];
 
+  /// A set of custom properties for this object group.
+  MapProperties properties;
+
   /// Creates a new object group from TMX data.
   ObjectGroup(this.map, XML.XmlElement group) {
     name = group.getAttribute("name");
@@ -190,6 +205,8 @@ class ObjectGroup {
     for (XML.XmlElement object in group.findElements("object")) {
       objects.add(MapObject.load(this, object));
     }
+
+    properties = MapProperties.fromChild(group);
   }
 
 }

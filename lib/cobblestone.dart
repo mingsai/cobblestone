@@ -56,3 +56,4 @@ part 'package:cobblestone/src/graphics/bitmap_font.dart';
 part 'package:cobblestone/src/graphics/particles.dart';
 part 'package:cobblestone/src/map/objects.dart';
 part 'package:cobblestone/src/map/xml.dart';
+part 'package:cobblestone/src/map/properties.dart';
