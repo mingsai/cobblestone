@@ -49,4 +49,12 @@ class MapProperties {
     return _properties[name];
   }
 
+  /// A list of all the properties in this set.
+  Iterable<String> get properties => _properties.keys;
+
+  /// Returns true if this set contains a property with the given [name].
+  bool hasProp(String name) {
+    return _properties.containsKey(name);
+  }
+
 }

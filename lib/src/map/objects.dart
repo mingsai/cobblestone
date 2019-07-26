@@ -7,6 +7,7 @@ abstract class MapObject {
 
   /// The name of this map object.
   String name;
+
   /// The type of this map object.
   String type;
 
@@ -18,6 +19,9 @@ abstract class MapObject {
 
   /// The visibility of this map object.
   bool visible;
+
+  /// Custom user properties for this map object.
+  MapProperties properties;
 
   /// Creates a new map object from TMX data.
   ///
@@ -37,34 +41,37 @@ abstract class MapObject {
 
     y = parent.map.height * parent.map.tileHeight - y;
 
+    MapProperties props = MapProperties.fromChild(object);
+
     if (object.findElements("point").isNotEmpty) {
       // Points need to be raised 20 to compensate for assumed default height.
-      return MapPoint(parent, name, type, Vector2(x, y), visible);
+      return MapPoint(parent, name, type, Vector2(x, y), visible, props);
     } else if (object.findElements("ellipse").isNotEmpty) {
       y -= height;
-      return MapEllipse(
-          parent, name, type, Vector2(x, y), width, height, rotation, visible);
+      return MapEllipse(parent, name, type, Vector2(x, y), width, height,
+          rotation, visible, props);
     } else if (object.findElements("polygon").isNotEmpty) {
-      String pointData = object.findElements("polygon").first.getAttribute("points");
+      String pointData =
+          object.findElements("polygon").first.getAttribute("points");
       List<Vector2> parsedPoints = pointData.split(" ").map((String pair) {
         List<String> coord = pair.split(",");
         return Vector2(double.parse(coord.first), -double.parse(coord.last));
       }).toList();
 
-      return MapPolygon(
-          parent, name, type, Vector2(x, y), parsedPoints, rotation, visible);
+      return MapPolygon(parent, name, type, Vector2(x, y), parsedPoints,
+          rotation, visible, props);
     } else if (object.findElements("text").isNotEmpty) {
       String text = object.findElements("text").first.text;
 
       // TODO more text properties
       return MapText(
-          parent, name, type, Vector2(x, y), text, rotation, visible);
+          parent, name, type, Vector2(x, y), text, rotation, visible, props);
     } else {
       // Tiled objects default to rectangle (or maybe tile)
       // TODO support Tile objects
       y -= height;
-      return MapRect(
-          parent, name, type, Vector2(x, y), width, height, rotation, visible);
+      return MapRect(parent, name, type, Vector2(x, y), width, height, rotation,
+          visible, props);
     }
   }
 }
@@ -82,8 +89,11 @@ class MapPoint extends MapObject {
 
   final double rotation = 0.0;
 
+  MapProperties properties;
+
   /// Creates a new MapPoint from the given data.
-  MapPoint(this.parent, this.name, this.type, this.pos, this.visible);
+  MapPoint(this.parent, this.name, this.type, this.pos, this.visible,
+      this.properties);
 }
 
 /// A map object consisting of a rectangle.
@@ -97,6 +107,7 @@ class MapRect extends MapObject {
 
   /// The width of the rectangle, in pixels.
   double width;
+
   /// The height of the rectangle, in pixels.
   double height;
 
@@ -104,9 +115,11 @@ class MapRect extends MapObject {
 
   bool visible;
 
+  MapProperties properties;
+
   /// Creates a new MapRect from the given data.
   MapRect(this.parent, this.name, this.type, this.pos, this.width, this.height,
-      this.rotation, this.visible);
+      this.rotation, this.visible, this.properties);
 }
 
 /// A map object consisting of an ellipse.
@@ -120,6 +133,7 @@ class MapEllipse extends MapObject {
 
   /// The width of the ellipse, in pixels.
   double width;
+
   /// The height of the ellipse, in pixels.
   double height;
 
@@ -127,9 +141,11 @@ class MapEllipse extends MapObject {
 
   bool visible;
 
+  MapProperties properties;
+
   /// Creates a new MapEllipse from the given data.
   MapEllipse(this.parent, this.name, this.type, this.pos, this.width,
-      this.height, this.rotation, this.visible);
+      this.height, this.rotation, this.visible, this.properties);
 }
 
 /// A map object consisting of a polygon.
@@ -148,9 +164,11 @@ class MapPolygon extends MapObject {
 
   bool visible;
 
+  MapProperties properties;
+
   /// Creates a new MapPolygon from the given data.
   MapPolygon(this.parent, this.name, this.type, this.pos, this.points,
-      this.rotation, this.visible);
+      this.rotation, this.visible, this.properties);
 }
 
 /// A map object consisting of a string of text.
@@ -169,7 +187,9 @@ class MapText extends MapObject {
 
   bool visible;
 
+  MapProperties properties;
+
   /// Creates a new MapText from the given data.
   MapText(this.parent, this.name, this.type, this.pos, this.text, this.rotation,
-      this.visible);
+      this.visible, this.properties);
 }

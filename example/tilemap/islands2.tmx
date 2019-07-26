@@ -428,14 +428,14 @@
    <image source="tileset/floating_islands (140).png"/>
   </tile>
   <tile id="141">
+   <properties>
+    <property name="solid" type="bool" value="true"/>
+   </properties>
    <image source="tileset/floating_islands (141).png"/>
    <animation>
     <frame tileid="141" duration="700"/>
     <frame tileid="164" duration="700"/>
    </animation>
-   <properties>
-      <property name="solid" type="bool" value="true"/>
-   </properties>
   </tile>
   <tile id="142">
    <image source="tileset/floating_islands (142).png"/>
@@ -608,6 +608,9 @@
    <property name="n" type="float" value="0"/>
   </properties>
   <object id="1" x="56" y="56" width="164" height="40">
+   <properties>
+    <property name="example_object" type="float" value="58.8"/>
+   </properties>
    <ellipse/>
   </object>
   <object id="2" x="64" y="48" width="156" height="12"/>
