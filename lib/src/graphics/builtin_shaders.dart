@@ -34,11 +34,14 @@ void main(void) {
 
 const String _wireVertexShaderSrc = '''
 attribute vec3 aVertexPosition;
+attribute vec4 aColor;
+
 uniform mat4 uPMatrix;
 
-uniform vec4 uColor;
+varying vec4 vColor;
 
 void main(void) {
+    vColor = aColor;
     gl_Position = uPMatrix * vec4(aVertexPosition, 1.0);
 }
 ''';
@@ -46,10 +49,10 @@ void main(void) {
 const String _wireFragmentShaderSrc = '''
 precision highp float;
 
-uniform vec4 uColor;
+varying vec4 vColor;
 
 void main(void) {
-    gl_FragColor = uColor;
+    gl_FragColor = vColor;
     if(gl_FragColor.a <= 0.0)
         discard;
 }

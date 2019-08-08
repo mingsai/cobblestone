@@ -57,6 +57,7 @@ class TilemapExample extends BaseGame {
     debug.projection = camera.combined;
     debug.begin();
     for (MapObject object in map.objectGroups.first.objects) {
+      debug.color = object.properties["color"];
       debug.drawMap(object);
     }
     debug.end();

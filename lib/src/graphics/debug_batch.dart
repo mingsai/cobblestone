@@ -6,7 +6,7 @@ class DebugBatch extends VertexBatch {
 
   final int drawMode = WebGL.LINES;
 
-  final int vertexSize = 3;
+  final int vertexSize = 4;
   final int verticesPerSprite = 2;
   final int indicesPerSprite = 2;
 
@@ -16,6 +16,9 @@ class DebugBatch extends VertexBatch {
   Vector3 _point = Vector3.zero();
   Vector3 _point2 = Vector3.zero();
 
+  Vector4 _color = Colors.white;
+  double _packedColor = packColor(Colors.white);
+
   /// Creates a new debug batch with a custom shader.
   DebugBatch(GLWrapper wrapper, ShaderProgram shaderProgram, {this.maxSprites = 2000})
       : super(wrapper, shaderProgram);
@@ -24,12 +27,19 @@ class DebugBatch extends VertexBatch {
   DebugBatch.defaultShader(GLWrapper wrapper, {int maxSprites = 2000})
       : this(wrapper, wrapper.wireShader, maxSprites: maxSprites);
 
+  /// The color the next objects in the batch will be drawn with.
+  Vector4 get color => _color;
+  set color(Vector4 color) {
+    _color = color;
+    _packedColor = packColor(color);
+  }
+
   @override
   setAttribPointers() {
     _context.vertexAttribPointer(shaderProgram.attributes[vertPosAttrib], 3,
         WebGL.FLOAT, false, vertexSize * 4, 0);
-
-    _context.uniform4fv(shaderProgram.uniforms[colorUni], Colors.white.storage);
+    _context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
+        WebGL.UNSIGNED_BYTE, true, vertexSize * 4, 3 * 4);
   }
 
   @override
@@ -52,10 +62,12 @@ class DebugBatch extends VertexBatch {
     appendAttrib(start.x);
     appendAttrib(start.y);
     appendAttrib(0);
+    appendAttrib(_packedColor);
 
     appendAttrib(end.x);
     appendAttrib(end.y);
     appendAttrib(0);
+    appendAttrib(_packedColor);
 
     spritesInFlush++;
   }

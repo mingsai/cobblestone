@@ -567,7 +567,7 @@
    <image source="tileset/floating_islands (184).png"/>
   </tile>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="20" height="10">
+ <layer id="1" name="Tile Layer 1" width="20" height="10" visible="0">
   <data encoding="csv">
 44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,
 44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,
@@ -581,7 +581,7 @@
 44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44
 </data>
  </layer>
- <layer id="2" name="Tile Layer 2" width="20" height="10">
+ <layer id="2" name="Tile Layer 2" width="20" height="10" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 142,142,142,142,142,142,142,142,142,0,0,0,0,0,0,0,0,0,0,0,
@@ -609,24 +609,43 @@
   </properties>
   <object id="1" x="56" y="56" width="164" height="40">
    <properties>
+    <property name="color" type="color" value="#ff00aaff"/>
     <property name="example_object" type="float" value="58.8"/>
    </properties>
    <ellipse/>
   </object>
-  <object id="2" x="64" y="48" width="156" height="12"/>
+  <object id="2" x="64" y="48" width="156" height="12">
+   <properties>
+    <property name="color" type="color" value="#ffff557f"/>
+   </properties>
+  </object>
   <object id="3" x="56" y="76">
+   <properties>
+    <property name="color" type="color" value="#ffaaff00"/>
+   </properties>
    <point/>
   </object>
   <object id="5" x="136" y="96">
+   <properties>
+    <property name="color" type="color" value="#ffaa00ff"/>
+   </properties>
    <point/>
   </object>
   <object id="6" x="80" y="32">
+   <properties>
+    <property name="color" type="color" value="#ffaa5500"/>
+   </properties>
    <polygon points="0,0 16,-16 112,0"/>
   </object>
-  <object id="7" x="0" y="112" width="48" height="48"/>
-  <object id="8" x="0" y="0" width="48" height="48"/>
-  <object id="11" x="220" y="32" width="83" height="19">
-   <text wrap="1">Hello World</text>
+  <object id="7" x="0" y="112" width="48" height="48">
+   <properties>
+    <property name="color" type="color" value="#ff5500ff"/>
+   </properties>
+  </object>
+  <object id="8" x="0" y="0" width="48" height="48">
+   <properties>
+    <property name="color" type="color" value="#ffffaaff"/>
+   </properties>
   </object>
  </objectgroup>
 </map>
