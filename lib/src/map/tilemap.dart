@@ -164,8 +164,8 @@ class TileLayer {
     double endX = max(max(camera.view.point0.x, camera.view.point1.x), max(camera.view.point2.x, camera.view.point3.x)) - x;
     double endY = max(max(camera.view.point0.y, camera.view.point1.y), max(camera.view.point2.y, camera.view.point3.y)) - y;
     
-    for (int row = max(startY ~/ tileHeight, 0); row < min(endY ~/ tileHeight + 1, height - 1); row++) {
-      for (int col = max(startX ~/ tileWidth, 0); col < min(endX ~/ tileWidth + 1, width - 1); col++) {
+    for (int row = max(startY ~/ tileHeight, 0); row < min(endY ~/ tileHeight + 1, height); row++) {
+      for (int col = max(startX ~/ tileWidth, 0); col < min(endX ~/ tileWidth + 1, width); col++) {
         if (getTile(col, row) != null) {
           getTile(col, row).render(batch, col * tileWidth + x,
               row * tileHeight + y, tileWidth, tileHeight);

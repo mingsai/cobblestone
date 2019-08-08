@@ -5,6 +5,7 @@ build/
 .dart-tool/
 packages
 pubspec.lock
+.dart_tool/pub/bin/sdk-version
 
 # Files created by dart2js
 *.dart.js
@@ -12,6 +13,7 @@ pubspec.lock
 *.js.deps
 *.js.map
 *.info.json
+*.dart2
 
 # Directory created by dartdoc
 doc/api/
