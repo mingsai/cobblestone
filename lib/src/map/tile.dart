@@ -28,9 +28,13 @@ class BasicTile extends Tile {
 
   MapProperties properties;
 
-  /// Creates a new basic tile with the given [id], [texture] and TMX data.
-  BasicTile(this.id, this.texture, XML.XmlElement data) {
-    properties =  MapProperties.fromChild(data);
+  /// Creates a new basic tile with the given [id], [texture] and optionally TMX data.
+  BasicTile(this.id, this.texture, [XML.XmlElement data]) {
+    if(data != null) {
+      properties = MapProperties.fromChild(data);
+    } else {
+      properties = MapProperties.empty();
+    }
   }
 
   @override

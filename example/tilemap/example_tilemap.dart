@@ -13,14 +13,14 @@ class TilemapExample extends BaseGame {
   @override
   create() {
     gl.setGLViewport(canvasWidth, canvasHeight);
-    camera = new Camera2D.originBottomLeft(width, height);
+    camera = Camera2D.originBottomLeft(width, height);
 
-    renderer = new SpriteBatch.defaultShader(gl);
-    debug = new DebugBatch.defaultShader(gl);
+    renderer = SpriteBatch.defaultShader(gl);
+    debug = DebugBatch.defaultShader(gl);
 
-    Map<String, Texture> atlas = assetManager.get("atlas");
+    Texture tileset = assetManager.get("tileset");
     map = assetManager.get("islands2.tmx");
-    map.giveTileset(atlas);
+    map.giveTileset(tileset);
   }
 
   @override
@@ -30,9 +30,9 @@ class TilemapExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("islands2.tmx", loadTilemap("tilemap/islands2.tmx"));
+    assetManager.load("islands2.tmx", loadTilemap("tilemap/islands.tmx"));
     assetManager.load(
-        "atlas", loadAtlas("tilemap/atlas.json", loadTexture(gl, "tilemap/atlas.png", nearest)));
+        "tileset", loadTexture(gl, "tilemap/floating_islands.png", nearest));
   }
 
   @override
@@ -54,18 +54,19 @@ class TilemapExample extends BaseGame {
 
     renderer.end();
 
+    /*
     debug.projection = camera.combined;
     debug.begin();
     for (MapObject object in map.objectGroups.first.objects) {
       debug.color = object.properties["color"];
       debug.drawMap(object);
     }
-    debug.end();
+    debug.end();*/
   }
 
   resize(num width, num height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
-    camera = new Camera2D.originBottomLeft(width, height);
+    camera = Camera2D.originBottomLeft(30, height);
   }
 
   @override

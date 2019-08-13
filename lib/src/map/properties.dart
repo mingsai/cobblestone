@@ -20,6 +20,9 @@ class MapProperties {
     }
   }
 
+  /// Creates a property set with no actual properties.
+  MapProperties.empty();
+
   /// Parses properties from the properties tag into this set.
   void _loadProperties(XML.XmlElement properties) {
     for(XML.XmlElement prop in properties.findElements("property")) {

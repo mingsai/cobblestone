@@ -53,22 +53,40 @@ class Tilemap {
     }
   }
 
-  /// Gives the tilemap the textures it needs to render
-  giveTileset(Map<String, Texture> set) {
+  /// Gives the tilemap the textures it needs to render.
+  ///
+  /// [set] should be a texture for maps made in the "Tileset Image" mode.
+  /// [set] should be a texture atlas for maps made in the "Collection of Images" mode.
+  giveTileset(dynamic set) {
     basicTiles = Map<int, BasicTile>();
     tileset = Map<int, Tile>();
-    file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
-      int id = int.parse(tile.getAttribute("id"));
-      String source = Path.basenameWithoutExtension(tile.findElements("image").first.getAttribute("source"));
-      basicTiles[id] = BasicTile(id, set[source], tile);
-    });
 
-    file.rootElement.findElements("tileset").first.findElements("tile").forEach((tile) {
+    XML.XmlElement setData = file.rootElement.findElements("tileset").first;
+
+    // Split texture for tileset mode
+    if(set is Texture) {
+      List<Texture> textures = set.split(tileWidth, tileHeight);
+      for (int i = 0; i < textures.length; i++) {
+        basicTiles[i] = BasicTile(i, textures[i]);
+      }
+    } else if(set is Map<String, Texture>) {
+      setData.findElements("tile").forEach((tile) {
+        int id = int.parse(tile.getAttribute("id"));
+        String source = Path.basenameWithoutExtension(tile.findElements("image").first.getAttribute("source"));
+        basicTiles[id] = BasicTile(id, set[source], tile);
+      });
+    } else {
+      throw ArgumentError("Tilset must be a Texture or a Texture Atlas");
+    }
+
+    tileset.addAll(basicTiles);
+
+    setData.findElements("tile").forEach((tile) {
       int id = int.parse(tile.getAttribute("id"));
       if (tile.findElements("animation").isNotEmpty) {
         tileset[id] = AnimatedTile(id, tile, basicTiles);
       } else {
-        tileset[id] = basicTiles[id];
+        tileset[id] = BasicTile(id, basicTiles[id].texture, tile);
       }
     });
 
