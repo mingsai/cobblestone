@@ -6,8 +6,8 @@ class AtlasExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl);
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch.defaultShader(gl);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
@@ -15,7 +15,7 @@ class AtlasExample extends BaseGame {
   @override
   preload() {
     assetManager.load("atlas",
-        loadAtlas("atlas/atlas/atlas.json", loadTexture(gl, "atlas/atlas/atlas.png", nearest)));
+        loadAtlas("atlas/atlas.atlas", loadTexture(gl, "atlas/atlas.png", nearest)));
   }
 
   @override

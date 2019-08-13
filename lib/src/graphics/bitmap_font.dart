@@ -4,27 +4,8 @@ part of cobblestone;
 Future<BitmapFont> loadFont(String fontUrl, Future<Texture> texture) async {
   String fontData = await HttpRequest.getString(fontUrl);
   Texture atlasTexture = await texture;
-  return new BitmapFont.parse(fontData, atlasTexture);
+  return BitmapFont.parse(fontData, atlasTexture);
 }
-
-// Parsers for loading .fnt file
-Parser _number =
-    (char('-').optional() & digit().plus()).flatten().trim().map(int.parse);
-Parser _list = (_number & char(','))
-    .and()
-    .seq(_number.separatedBy(char(','), includeSeparators: false))
-    .pick(1);
-Parser _string = (char('"') &
-        (word() | whitespace() | char('.') | char('/')).star().flatten() &
-        char('"'))
-    .pick(1);
-
-Parser _variable = word().plus().flatten().trim() &
-    char('=').trim() &
-    (_string | _list | _number);
-Parser _line = word().plus().flatten().trim() & _variable.plus().trim();
-
-Parser _font = _line.star();
 
 /// Enum representing the alignment of text for [BitmapFont].
 enum TextAlign {
@@ -62,7 +43,7 @@ class BitmapFont {
 
   /// Creates a font from the contents of a .fnt file and a texture.
   BitmapFont.parse(String description, this.texture) {
-    this._data = _font.parse(description).value;
+    this._data = _fontParser.parse(description).value;
 
     var info = _data.firstWhere((e) => e[0] == "info")[1];
     size = _getVariable(info, "size");
