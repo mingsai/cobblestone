@@ -29,6 +29,11 @@ class Tilemap {
   /// The height of tiles in this map, in pixels.
   int tileHeight;
 
+  /// Offset to the first tile, in pixels
+  int tileMargin;
+  /// Spacing between tiles, in pixels.
+  int tileSpacing;
+
   /// Set of all static tiles, i.e. not animated.
   Map<int, BasicTile> basicTiles;
   /// Set of all tiles used in the map.
@@ -45,6 +50,10 @@ class Tilemap {
     this.tileWidth = int.parse(file.rootElement.getAttribute("tilewidth"));
     this.tileHeight = int.parse(file.rootElement.getAttribute("tileheight"));
 
+    XML.XmlElement tileset = file.rootElement.findElements("tileset").first;
+    tileMargin = _parseAttrib(tileset, "margin", int.parse, 0);
+    tileSpacing = _parseAttrib(tileset, "spacing", int.parse, 0);
+
     for (XML.XmlElement layer in file.rootElement.findElements("layer")) {
       layers.add(TileLayer(this, layer));
     }
@@ -57,15 +66,21 @@ class Tilemap {
   ///
   /// [set] should be a texture for maps made in the "Tileset Image" mode.
   /// [set] should be a texture atlas for maps made in the "Collection of Images" mode.
-  giveTileset(dynamic set) {
+  ///
+  /// [extraSpacing] and [extraMargin] should be set when using the Phaser Tile Extruder (https://github.com/sporadic-labs/tile-extruder) after creating a map.
+  giveTileset(dynamic set, [int extraSpacing = 0, int extraMargin = 0]) {
     basicTiles = Map<int, BasicTile>();
     tileset = Map<int, Tile>();
 
     XML.XmlElement setData = file.rootElement.findElements("tileset").first;
 
+    tileMargin += extraMargin;
+    tileSpacing += extraSpacing;
+
     // Split texture for tileset mode
     if(set is Texture) {
-      List<Texture> textures = set.split(tileWidth, tileHeight);
+      List<Texture> textures = set.split(tileWidth, tileHeight,
+          tileMargin, tileSpacing);
       for (int i = 0; i < textures.length; i++) {
         basicTiles[i] = BasicTile(i, textures[i]);
       }

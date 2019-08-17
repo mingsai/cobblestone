@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="35" height="21" tilewidth="16" tileheight="16" nextobjectid="1">
- <tileset firstgid="1" name="floating_islands" tilewidth="16" tileheight="16">
-  <image source="../floating_islands.png" width="368" height="128"/>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="left-up" width="35" height="21" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" name="floating_islands" tilewidth="16" tileheight="16" tilecount="184" columns="23">
+  <image source="floating_islands.png" width="368" height="128"/>
   <tile id="148">
    <animation>
     <frame tileid="148" duration="500"/>
@@ -15,7 +15,7 @@
    </animation>
   </tile>
  </tileset>
- <layer name="Tile Layer 1" width="35" height="21">
+ <layer id="1" name="Tile Layer 1" width="35" height="21">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -40,7 +40,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer name="Tile Layer 2" width="35" height="21">
+ <layer id="2" name="Tile Layer 2" width="35" height="21">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,13,14,15,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

@@ -21,7 +21,5 @@ Future<Map<String, Texture>> loadAtlas(
     return regionTexture;
   });
 
-  print(atlas);
-
   return atlas;
 }

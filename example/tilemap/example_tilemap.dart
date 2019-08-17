@@ -10,29 +10,46 @@ class TilemapExample extends BaseGame {
 
   bool north = false, east = false, south = false, west = false;
 
+  // TODO demo both tilemap modes at once
+  bool useAtlas = true;
+
   @override
   create() {
     gl.setGLViewport(canvasWidth, canvasHeight);
-    camera = Camera2D.originBottomLeft(width, height);
+    camera = Camera2D.originBottomLeft(32 * 16, 18 * 16);
+    camera.transform.roundInt = true;
 
     renderer = SpriteBatch.defaultShader(gl);
     debug = DebugBatch.defaultShader(gl);
 
-    Texture tileset = assetManager.get("tileset");
-    map = assetManager.get("islands2.tmx");
-    map.giveTileset(tileset);
+    var tileset = assetManager.get("tileset");
+    map = assetManager.get("map.tmx");
+    if(useAtlas) {
+      map.giveTileset(tileset);
+    } else {
+      map.giveTileset(tileset, 2, 1);
+    }
   }
 
   @override
   config() {
-    scaleMode = ScaleMode.resize;
+    scaleMode = ScaleMode.fit;
+    requestedWidth = 32 * 16;
+    requestedHeight = 18 * 16;
   }
 
   @override
   preload() {
-    assetManager.load("islands2.tmx", loadTilemap("tilemap/islands.tmx"));
-    assetManager.load(
-        "tileset", loadTexture(gl, "tilemap/floating_islands.png", nearest));
+    if(useAtlas) {
+      assetManager.load("map.tmx", loadTilemap("tilemap/islands3.tmx"));
+      assetManager.load(
+          "tileset", loadAtlas(
+          "tilemap/atlas.atlas", loadTexture(gl, "tilemap/atlas.png")));
+    } else {
+      assetManager.load("map.tmx", loadTilemap("tilemap/islands.tmx"));
+      assetManager.load(
+          "tileset", loadTexture(gl, "tilemap/floating_islands_extruded.png"));
+    }
   }
 
   @override
@@ -46,9 +63,9 @@ class TilemapExample extends BaseGame {
 
     map.render(renderer, 0, 0, camera);
 
-    int offset = 0;
+    double offset = camera.transform.x;
     for (BasicTile texture in map.basicTiles.values) {
-      renderer.draw(texture.texture, offset, height - 16);
+      renderer.draw(texture.texture, offset, height - 16 + camera.transform.y);
       offset += 16;
     }
 
@@ -66,7 +83,7 @@ class TilemapExample extends BaseGame {
 
   resize(num width, num height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
-    camera = Camera2D.originBottomLeft(30, height);
+    camera = Camera2D.originBottomLeft(32 * 16, 18 * 16);
   }
 
   @override

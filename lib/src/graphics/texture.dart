@@ -8,12 +8,12 @@ typedef TextureHandler = GL.Texture Function(GLWrapper, ImageElement);
 /// Provide [handle] (probably one of [nearest], [linear], or [mipMap]) to control texture filtering.
 Future<Texture> loadTexture(GLWrapper wrapper, String url,
     [TextureHandler handle = nearest]) {
-  var completer = new Completer<Texture>();
-  var element = new ImageElement();
+  var completer = Completer<Texture>();
+  var element = ImageElement();
   element.onLoad.listen((e) {
     var texture = handle(wrapper, element);
     Texture gameTexture =
-        new Texture(wrapper, texture, url, element.width, element.height);
+        Texture(wrapper, texture, url, element.width, element.height);
     completer.complete(gameTexture);
   });
   element.src = url;
@@ -160,8 +160,8 @@ class Texture {
   setRegion(int x, int y, int width, int height) {
     double invTexWidth = 1.0 / sourceWidth;
     double invTexHeight = 1.0 / sourceHeight;
-    setRegionCoords((x + 0.01) * invTexWidth, (y + 0.01) * invTexHeight,
-        (x + width - 0.01) * invTexWidth, (y + height - 0.01) * invTexHeight);
+    setRegionCoords(x * invTexWidth, y * invTexHeight,
+        (x + width) * invTexWidth, (y + height) * invTexHeight);
 
     this.width = width;
     this.height = height;
@@ -179,19 +179,20 @@ class Texture {
   }
 
   /// Splits this texture into pieces of [tileWidth] by [tileHeight].
-  List<Texture> split(int tileWidth, int tileHeight) {
+  List<Texture> split(int tileWidth, int tileHeight, [int margin = 0, int spacing = 0]) {
     int x = (u * sourceWidth).floor();
     int y = (v * sourceWidth + height - tileHeight).floor();
 
-    int rows = (height / tileHeight).floor();
-    int cols = (width / tileWidth).floor();
+    int rows = ((height + 2 * margin) / (tileHeight + spacing)).floor();
+    int cols = ((width + 2 * margin) / (tileWidth + spacing)).floor();
 
-    int startX = x;
+    int startX = x + margin;
+    y = y - margin;
     List<Texture> tiles = [];
-    for (int row = 0; row < rows; row++, y -= tileHeight) {
+    for (int row = 0; row < rows; row++, y -= tileHeight + spacing) {
       x = startX;
-      for (int col = 0; col < cols; col++, x += tileWidth) {
-        Texture tile = new Texture.clone(this);
+      for (int col = 0; col < cols; col++, x += tileWidth + spacing) {
+        Texture tile = Texture.clone(this);
         tile.setRegion(x, y, tileWidth, tileHeight);
         tiles.add(tile);
       }
