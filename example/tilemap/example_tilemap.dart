@@ -6,7 +6,8 @@ class TilemapExample extends BaseGame {
   SpriteBatch renderer;
   DebugBatch debug;
 
-  Tilemap map;
+  Tilemap extrudedMap;
+  Tilemap atlasMap;
 
   bool north = false, east = false, south = false, west = false;
 
@@ -22,7 +23,8 @@ class TilemapExample extends BaseGame {
     renderer = SpriteBatch.defaultShader(gl);
     debug = DebugBatch.defaultShader(gl);
 
-    map = assetManager.get("map.tmx");
+    extrudedMap = assetManager.get("extruded.tmx");
+    atlasMap = assetManager.get("atlased.tmx");
   }
 
   @override
@@ -34,22 +36,20 @@ class TilemapExample extends BaseGame {
 
   @override
   preload() {
-    if(useAtlas) {
-      assetManager.load("atlas.png",
-          loadTexture(gl, "tilemap/atlas.png", nearest));
-      assetManager.load("atlas.atlas", loadAtlas("tilemap/atlas.atlas",
-          assetManager.getLoading("atlas.png")));
-      assetManager.load("tiles.tsx", loadTileset("tilemap/tiles.tsx",
-          assetManager.getLoading("atlas.atlas")));
-      assetManager.load("map.tmx", loadTilemap("tilemap/islands3.tmx",
-          tileset: assetManager.getLoading("tiles.tsx")));
-    } else {
-      assetManager.load(
-          "tileset", loadTexture(gl, "tilemap/floating_islands_extruded.png"));
-      assetManager.load("map.tmx", loadTilemap("tilemap/islands.tmx",
-          atlas: assetManager.getLoading("tileset"),
-          extraMargin: 1, extraSpacing: 2));
-    }
+    assetManager.load("atlas.png",
+        loadTexture(gl, "tilemap/atlas.png", nearest));
+    assetManager.load("atlas.atlas", loadAtlas("tilemap/atlas.atlas",
+        assetManager.getLoading("atlas.png")));
+    assetManager.load("tiles.tsx", loadTileset("tilemap/tiles.tsx",
+        assetManager.getLoading("atlas.atlas")));
+    assetManager.load("atlased.tmx", loadTilemap("tilemap/islands3.tmx",
+        tileset: assetManager.getLoading("tiles.tsx")));
+
+    assetManager.load(
+        "tileset", loadTexture(gl, "tilemap/floating_islands_extruded.png"));
+    assetManager.load("extruded.tmx", loadTilemap("tilemap/islands.tmx",
+        atlas: assetManager.getLoading("tileset"),
+        extraMargin: 1, extraSpacing: 2));
   }
 
   @override
@@ -61,24 +61,39 @@ class TilemapExample extends BaseGame {
     renderer.projection = camera.combined;
     renderer.begin();
 
-    map.render(renderer, 0, 0, camera);
+   
 
-    double offset = camera.transform.x;
-    for (BasicTile texture in map.tileset.basicTiles.values) {
-      renderer.draw(texture.texture, offset, height - 16 + camera.transform.y);
-      offset += 16;
+    if(keyboard.keyPressed(KeyCode.B)) {
+      atlasMap.render(renderer, 0, 0, camera);
+      
+      double offset = camera.transform.x;
+      for (BasicTile texture in atlasMap.tileset.basicTiles.values) {
+        renderer.draw(
+            texture.texture, offset, height - 16 + camera.transform.y);
+        offset += 16;
+      }
+    } else {
+      extrudedMap.render(renderer, 0, 0, camera);
+      
+      double offset = camera.transform.x;
+      for (BasicTile texture in extrudedMap.tileset.basicTiles.values) {
+        renderer.draw(
+            texture.texture, offset, height - 16 + camera.transform.y);
+        offset += 16;
+      }
     }
 
     renderer.end();
-
-    /*
-    debug.projection = camera.combined;
-    debug.begin();
-    for (MapObject object in map.objectGroups.first.objects) {
-      debug.color = object.properties["color"];
-      debug.drawMap(object);
+    
+    if(keyboard.keyPressed(KeyCode.B)) {
+      debug.projection = camera.combined;
+      debug.begin();
+      for (MapObject object in atlasMap.objectGroups.first.objects) {
+        debug.color = object.properties["color"];
+        debug.drawMap(object);
+      }
+      debug.end();
     }
-    debug.end();*/
   }
 
   resize(num width, num height) {
@@ -103,6 +118,6 @@ class TilemapExample extends BaseGame {
     if (south) camera.transform.translate(0.0, delta * 20);
     if (west) camera.transform.translate(delta * 20, 0.0);
     camera.transform.roundInt = true;
-    map.update(delta);
+    extrudedMap.update(delta);
   }
 }

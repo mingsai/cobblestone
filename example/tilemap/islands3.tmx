@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="7">
  <tileset firstgid="1" source="tiles.tsx"/>
  <layer id="1" name="Tile Layer 1" width="30" height="20">
   <data encoding="csv">
@@ -49,4 +49,34 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="3" name="Object Layer 1">
+  <object id="2" name="BigIsland" x="32" y="80" width="96" height="112">
+   <properties>
+    <property name="color" type="color" value="#ffaaff00"/>
+   </properties>
+  </object>
+  <object id="3" name="SmallIsland" x="208" y="112" width="16" height="16">
+   <properties>
+    <property name="color" type="color" value="#ffaaff00"/>
+   </properties>
+  </object>
+  <object id="4" name="Triangle" x="32" y="80">
+   <properties>
+    <property name="color" type="color" value="#ffffaaff"/>
+   </properties>
+   <polygon points="0,0 48,-48 96,0"/>
+  </object>
+  <object id="5" name="Bridge" x="128" y="112" width="80" height="16">
+   <properties>
+    <property name="color" type="color" value="#ffffaa00"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object id="6" x="240" y="80">
+   <properties>
+    <property name="color" type="color" value="#ff5555ff"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
 </map>
