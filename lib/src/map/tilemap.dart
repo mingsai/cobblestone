@@ -2,11 +2,17 @@ part of cobblestone;
 
 /// Loads a TMX tilemap from a URL.
 ///
-/// Use Tiled to create these. (http://www.mapeditor.org/)
-Future<Tilemap> loadTilemap(String url) {
-  return HttpRequest
-      .getString(url)
-      .then((String file) => Tilemap(XML.parse(file)));
+/// [tileset] should be set when using an external tileset; [atlas] when using an internal one.
+/// [atlas] should be a [Texture] or a texture atlas.
+///
+/// [extraSpacing] and [extraMargin] should be set when using the Phaser Tile Extruder (https://github.com/sporadic-labs/tile-extruder) after creating a map.
+Future<Tilemap> loadTilemap(String url,
+    {FutureOr<Tileset> tileset, FutureOr<dynamic> atlas,
+    int extraSpacing = 0, int extraMargin = 0}) async {
+  String file = await HttpRequest.getString(url);
+  XML.XmlDocument doc = XML.parse(file);
+  return Tilemap(doc, tileset: await tileset, atlas: await atlas,
+      extraSpacing: extraSpacing, extraMargin: extraMargin);
 }
 
 /// A 2D orthographic tilemap.
@@ -16,43 +22,53 @@ class Tilemap {
 
   /// List of tile map layers in the map.
   List<TileLayer> layers = [];
+
   /// List of object groups in the map.
   List<ObjectGroup> objectGroups = [];
 
   /// The width of the tilemap, in tiles.
   int width;
+
   /// The height of the tilemap, in tiles.
   int height;
 
   /// The width of tiles in this map, in pixels.
   int tileWidth;
+
   /// The height of tiles in this map, in pixels.
   int tileHeight;
 
-  /// Offset to the first tile, in pixels
-  int tileMargin;
-  /// Spacing between tiles, in pixels.
-  int tileSpacing;
-
-  /// Set of all static tiles, i.e. not animated.
-  Map<int, BasicTile> basicTiles;
-  /// Set of all tiles used in the map.
-  Map<int, Tile> tileset;
+  /// The set of tiles used to render this map.
+  ///
+  /// Must be set before drawing.
+  Tileset tileset;
 
   /// A set of custom properties on this Tilemap.
   MapProperties properties;
 
-  /// Creates a new tilemap from a TMX map
-  Tilemap(this.file) {
+  /// Creates a new tilemap from a TMX map and an optional external tileset.
+  ///
+  /// [tileset] should be set when using an external tileset; [atlas] when using an internal one.
+  /// [atlas] should be a [Texture] or a texture atlas.
+  ///
+  /// [extraSpacing] and [extraMargin] should be set when using the Phaser Tile Extruder (https://github.com/sporadic-labs/tile-extruder) after creating a map.
+  Tilemap(this.file, {this.tileset, dynamic atlas,
+    int extraSpacing = 0, int extraMargin = 0}) {
+    if (tileset == null && atlas == null) {
+      throw ArgumentError("Either a tileset or an atlas must be provided");
+    }
+
     this.width = int.parse(file.rootElement.getAttribute("width"));
     this.height = int.parse(file.rootElement.getAttribute("height"));
 
     this.tileWidth = int.parse(file.rootElement.getAttribute("tilewidth"));
     this.tileHeight = int.parse(file.rootElement.getAttribute("tileheight"));
 
-    XML.XmlElement tileset = file.rootElement.findElements("tileset").first;
-    tileMargin = _parseAttrib(tileset, "margin", int.parse, 0);
-    tileSpacing = _parseAttrib(tileset, "spacing", int.parse, 0);
+    if (tileset == null) {
+      tileset = Tileset.fromElement(
+          file.rootElement.findElements("tileset").first, atlas,
+          extraSpacing, extraMargin);
+    }
 
     for (XML.XmlElement layer in file.rootElement.findElements("layer")) {
       layers.add(TileLayer(this, layer));
@@ -60,61 +76,13 @@ class Tilemap {
     for (XML.XmlElement group in file.rootElement.findElements("objectgroup")) {
       objectGroups.add(ObjectGroup(this, group));
     }
-  }
-
-  /// Gives the tilemap the textures it needs to render.
-  ///
-  /// [set] should be a texture for maps made in the "Tileset Image" mode.
-  /// [set] should be a texture atlas for maps made in the "Collection of Images" mode.
-  ///
-  /// [extraSpacing] and [extraMargin] should be set when using the Phaser Tile Extruder (https://github.com/sporadic-labs/tile-extruder) after creating a map.
-  giveTileset(dynamic set, [int extraSpacing = 0, int extraMargin = 0]) {
-    basicTiles = Map<int, BasicTile>();
-    tileset = Map<int, Tile>();
-
-    XML.XmlElement setData = file.rootElement.findElements("tileset").first;
-
-    tileMargin += extraMargin;
-    tileSpacing += extraSpacing;
-
-    // Split texture for tileset mode
-    if(set is Texture) {
-      List<Texture> textures = set.split(tileWidth, tileHeight,
-          tileMargin, tileSpacing);
-      for (int i = 0; i < textures.length; i++) {
-        basicTiles[i] = BasicTile(i, textures[i]);
-      }
-    } else if(set is Map<String, Texture>) {
-      setData.findElements("tile").forEach((tile) {
-        int id = int.parse(tile.getAttribute("id"));
-        String source = Path.basenameWithoutExtension(tile.findElements("image").first.getAttribute("source"));
-        basicTiles[id] = BasicTile(id, set[source], tile);
-      });
-    } else {
-      throw ArgumentError("Tilset must be a Texture or a Texture Atlas");
-    }
-
-    tileset.addAll(basicTiles);
-
-    setData.findElements("tile").forEach((tile) {
-      int id = int.parse(tile.getAttribute("id"));
-      if (tile.findElements("animation").isNotEmpty) {
-        tileset[id] = AnimatedTile(id, tile, basicTiles);
-      } else {
-        tileset[id] = BasicTile(id, basicTiles[id].texture, tile);
-      }
-    });
-
-    layers.forEach((TileLayer layer) => layer.giveTileset(tileset));
 
     properties = MapProperties.fromChild(file.rootElement);
   }
 
-  /// Updates the tilemap, for animations
+  /// Updates the tilemap, for animations.
   update(double delta) {
-    for (Tile tile in tileset.values) {
-      tile.update(delta);
-    }
+    tileset.update(delta);
   }
 
   /// Renders the tilemap layers. If [filter] is set, only renders the layers with names selected by the it.
@@ -130,13 +98,13 @@ class Tilemap {
     }
   }
 
-  /// Returns a list of map layers with names satisfying [filter]
+  /// Returns a list of map layers with names satisfying [filter].
   List<TileLayer> getLayersContaining(Pattern filter) {
     return layers.where((TileLayer layer) => layer.name.contains(filter));
   }
 }
 
-/// A tilemap layer filed with tiles
+/// A tilemap layer filed with tiles.
 class TileLayer {
   /// The map this layer is a part of.
   Tilemap parent;
@@ -150,11 +118,13 @@ class TileLayer {
 
   /// The width of tiles in this layer, in pixels.
   int tileWidth;
+
   /// The height of tiles in this layer, in pixels.
   int tileHeight;
 
   /// The width of this layer, in tiles.
   int width;
+
   /// The height of this layer, in pixels.
   int height;
 
@@ -169,11 +139,14 @@ class TileLayer {
     name = layer.getAttribute("name");
 
     XML.XmlElement data = layer.findElements("data").first;
-    if(data.getAttribute("encoding") == "csv") {
+    if (data.getAttribute("encoding") == "csv") {
       _tileIds = _parseCsv(data.text, int.parse);
-    } else if(data.getAttribute("encoding") == "base64") {
+    } else if (data.getAttribute("encoding") == "base64") {
       _tileIds = base64.decode(data.text);
     }
+
+    _tiles = [];
+    _tileIds.forEach((int id) => _tiles.add(parent.tileset.getTile(id)));
 
     tileWidth = parent.tileWidth;
     tileHeight = parent.tileHeight;
@@ -181,24 +154,28 @@ class TileLayer {
     properties = MapProperties.fromChild(layer);
   }
 
-  /// Updates the layer with the new tileset.
-  giveTileset(Map<int, Tile> tileset) {
-    _tiles = [];
-    _tileIds.forEach((int id) => _tiles.add(parent.tileset[id - 1]));
-  }
-
   /// Renders this tile layer to given [batch].
-  ///
-  /// [giveTileset] must be called before this function will work.
   render(SpriteBatch batch, num x, num y, Camera2D camera) {
-    double startX = min(min(camera.view.point0.x, camera.view.point1.x), min(camera.view.point2.x, camera.view.point3.x)) - x;
-    double startY = min(min(camera.view.point0.y, camera.view.point1.y), min(camera.view.point2.y, camera.view.point3.y)) - y;
+    double startX = min(min(camera.view.point0.x, camera.view.point1.x),
+            min(camera.view.point2.x, camera.view.point3.x)) -
+        x;
+    double startY = min(min(camera.view.point0.y, camera.view.point1.y),
+            min(camera.view.point2.y, camera.view.point3.y)) -
+        y;
 
-    double endX = max(max(camera.view.point0.x, camera.view.point1.x), max(camera.view.point2.x, camera.view.point3.x)) - x;
-    double endY = max(max(camera.view.point0.y, camera.view.point1.y), max(camera.view.point2.y, camera.view.point3.y)) - y;
-    
-    for (int row = max(startY ~/ tileHeight, 0); row < min(endY ~/ tileHeight + 1, height); row++) {
-      for (int col = max(startX ~/ tileWidth, 0); col < min(endX ~/ tileWidth + 1, width); col++) {
+    double endX = max(max(camera.view.point0.x, camera.view.point1.x),
+            max(camera.view.point2.x, camera.view.point3.x)) -
+        x;
+    double endY = max(max(camera.view.point0.y, camera.view.point1.y),
+            max(camera.view.point2.y, camera.view.point3.y)) -
+        y;
+
+    for (int row = max(startY ~/ tileHeight, 0);
+        row < min(endY ~/ tileHeight + 1, height);
+        row++) {
+      for (int col = max(startX ~/ tileWidth, 0);
+          col < min(endX ~/ tileWidth + 1, width);
+          col++) {
         if (getTile(col, row) != null) {
           getTile(col, row).render(batch, col * tileWidth + x,
               row * tileHeight + y, tileWidth, tileHeight);
@@ -208,17 +185,13 @@ class TileLayer {
   }
 
   /// Returns the tile at ([x], [y]) from the bottom-left.
-  ///
-  /// [giveTileset] must be called for this function to work.
   Tile getTile(x, y) {
     return _tiles[width * (height - y - 1) + x];
   }
-
 }
 
 /// A group of objects in the map.
 class ObjectGroup {
-
   /// The map this ObjectGroup is a part of.
   Tilemap map;
 
@@ -241,5 +214,4 @@ class ObjectGroup {
 
     properties = MapProperties.fromChild(group);
   }
-
 }

@@ -11,7 +11,7 @@ class TilemapExample extends BaseGame {
   bool north = false, east = false, south = false, west = false;
 
   // TODO demo both tilemap modes at once
-  bool useAtlas = true;
+  bool useAtlas = false;
 
   @override
   create() {
@@ -22,13 +22,7 @@ class TilemapExample extends BaseGame {
     renderer = SpriteBatch.defaultShader(gl);
     debug = DebugBatch.defaultShader(gl);
 
-    var tileset = assetManager.get("tileset");
     map = assetManager.get("map.tmx");
-    if(useAtlas) {
-      map.giveTileset(tileset);
-    } else {
-      map.giveTileset(tileset, 2, 1);
-    }
   }
 
   @override
@@ -41,14 +35,20 @@ class TilemapExample extends BaseGame {
   @override
   preload() {
     if(useAtlas) {
-      assetManager.load("map.tmx", loadTilemap("tilemap/islands3.tmx"));
-      assetManager.load(
-          "tileset", loadAtlas(
-          "tilemap/atlas.atlas", loadTexture(gl, "tilemap/atlas.png")));
+      assetManager.load("atlas.png",
+          loadTexture(gl, "tilemap/atlas.png", nearest));
+      assetManager.load("atlas.atlas", loadAtlas("tilemap/atlas.atlas",
+          assetManager.getLoading("atlas.png")));
+      assetManager.load("tiles.tsx", loadTileset("tilemap/tiles.tsx",
+          assetManager.getLoading("atlas.atlas")));
+      assetManager.load("map.tmx", loadTilemap("tilemap/islands3.tmx",
+          tileset: assetManager.getLoading("tiles.tsx")));
     } else {
-      assetManager.load("map.tmx", loadTilemap("tilemap/islands.tmx"));
       assetManager.load(
           "tileset", loadTexture(gl, "tilemap/floating_islands_extruded.png"));
+      assetManager.load("map.tmx", loadTilemap("tilemap/islands.tmx",
+          atlas: assetManager.getLoading("tileset"),
+          extraMargin: 1, extraSpacing: 2));
     }
   }
 
@@ -64,7 +64,7 @@ class TilemapExample extends BaseGame {
     map.render(renderer, 0, 0, camera);
 
     double offset = camera.transform.x;
-    for (BasicTile texture in map.basicTiles.values) {
+    for (BasicTile texture in map.tileset.basicTiles.values) {
       renderer.draw(texture.texture, offset, height - 16 + camera.transform.y);
       offset += 16;
     }

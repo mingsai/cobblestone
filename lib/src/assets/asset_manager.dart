@@ -4,34 +4,50 @@ part of cobblestone;
 class AssetManager {
   Map<String, dynamic> _assets;
 
-  List<String> _toLoad;
+  Map<String, Future<dynamic>> _toLoad;
 
   /// Creates an empty asset manager.
   AssetManager() {
-    _assets = new Map<String, dynamic>();
-    _toLoad = [];
+    _assets = {};
+    _toLoad = {};
   }
 
   /// Returns true if all assets are loaded.
   bool allLoaded() {
-    for (String asset in _toLoad) {
-      if (!_assets.containsKey(asset)) {
+    for (String source in _toLoad.keys) {
+      if (!_assets.containsKey(source)) {
         return false;
       }
     }
     return true;
   }
 
-  /// Begins loading an asset. Assets can later be retrieved by [get]
+  /// Begins loading an asset. Assets can later be retrieved by [get].
   void load(String source, Future asset) {
-    _toLoad.add(source);
+    if(_toLoad.containsKey(source)) {
+      throw ArgumentError("Source must be unique for every asset.");
+    }
+    _toLoad[source] = asset;
     asset.then((data) {
       _assets[source] = data;
     });
   }
 
-  /// Gets an asset by its source.
-  get(String asset) {
-    return _assets[asset];
+  /// Gets an asset by its [source].
+  dynamic get(String source) {
+    return _assets[source];
+  }
+
+  /// Returns true if an asset with the given [source] has finished loading.
+  bool hasLoaded(String source) {
+    return _assets.containsKey(source);
+  }
+
+  /// Returns a future for an asset with the given [source].
+  FutureOr<dynamic> getLoading(String source) {
+    if(hasLoaded(source)) {
+      return get(source);
+    }
+    return _toLoad[source];
   }
 }

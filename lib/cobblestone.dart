@@ -58,3 +58,4 @@ part 'package:cobblestone/src/map/objects.dart';
 part 'package:cobblestone/src/map/xml.dart';
 part 'package:cobblestone/src/map/properties.dart';
 part 'package:cobblestone/src/assets/parsers.dart';
+part 'package:cobblestone/src/map/tileset.dart';

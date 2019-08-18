@@ -61,9 +61,9 @@ class AnimatedTile extends Tile {
   double currentTime = 0.0;
 
   /// Creates a new animated tile, with frames from the given set of basic tiles.
-  AnimatedTile(this.id, XML.XmlElement data, Map<int, BasicTile> basicTiles) {
+  AnimatedTile(this.id, XML.XmlElement data, int firstGID, Map<int, BasicTile> basicTiles) {
     for (XML.XmlElement frame in data.findElements("animation").first.findElements("frame")) {
-      frames.add(basicTiles[int.parse(frame.getAttribute("tileid"))].texture);
+      frames.add(basicTiles[int.parse(frame.getAttribute("tileid")) + firstGID].texture);
       timings.add(double.parse(frame.getAttribute("duration")) / 1000);
     }
 
