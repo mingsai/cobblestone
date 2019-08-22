@@ -18,18 +18,19 @@ class LightingExample extends BaseGame {
   List<Vector3> lightPos = [];
   List<Vector4> lightColor = [];
 
-  Vector4 ambientColor = new Vector4(0.6, 0.6, 1.0, 0.001);
-  Vector3 attenuation = new Vector3(0.4, 3.0, 20.0);
+  Vector4 ambientColor = Vector4(0.6, 0.6, 1.0, 0.001);
+  Vector3 attenuation = Vector3(0.4, 3.0, 20.0);
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch(gl, assetManager.get("lighting"));
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch(gl, assetManager.get("lighting"));
     renderer.setAdditionalUniforms = () {
       renderer.setUniform('uLightPos', lightPos);
       renderer.setUniform('uLightColor', lightColor);
       renderer.setUniform('uAmbientLightColor', ambientColor);
-      renderer.setUniform('uScreenRes', new Vector2(width.toDouble(), height.toDouble()));
+      renderer.setUniform('uScreenRes',
+          Vector2(width.toDouble(), height.toDouble()));
       renderer.setUniform('uFalloff', attenuation);
       renderer.setUniform('uDiffuse', wall.bind(1));
       renderer.setUniform('uNormal', wallNorm.bind(2));
@@ -38,15 +39,15 @@ class LightingExample extends BaseGame {
     gl.setGLViewport(canvasWidth, canvasHeight);
 
     for(int i = 0; i < numLights; i++) {
-      var newPos = new Vector3.random();
+      var newPos = Vector3.random();
       newPos.scale(2.0);
-      newPos.sub(new Vector3.all(2.0));
+      newPos.sub(Vector3.all(2.0));
       lightPosData.add(newPos);
-      lightColorInit.add(new Vector4.random());
+      lightColorInit.add(Vector4.random());
 
-      lightPos.add(new Vector3.random());
+      lightPos.add(Vector3.random());
       lightPos[i].z = 0.075;
-      lightColor.add(new Vector4.zero());
+      lightColor.add(Vector4.zero());
     }
 
     wall = assetManager.get("tileDiffuse");

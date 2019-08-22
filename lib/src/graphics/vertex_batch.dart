@@ -57,7 +57,7 @@ abstract class VertexBatch {
   VertexBatch(this.wrapper, this.shaderProgram, {this.maxSprites = 8000}) {
     _context = wrapper.context;
     
-    projection = new Matrix4.identity();
+    projection = Matrix4.identity();
 
     vertexBuffer = _context.createBuffer();
     indexBuffer = _context.createBuffer();
@@ -69,8 +69,8 @@ abstract class VertexBatch {
 
   /// Allocates new typed lists for the vertex and index data.
   rebuildBuffer() {
-    vertices = new Float32List(maxSprites * vertexSize * verticesPerSprite);
-    indices = new Int16List(maxSprites * indicesPerSprite);
+    vertices = Float32List(maxSprites * vertexSize * verticesPerSprite);
+    indices = Int16List(maxSprites * indicesPerSprite);
     createIndices();
   }
 
@@ -90,8 +90,8 @@ abstract class VertexBatch {
   /// Appends a double value to the vertex buffer, and increments [index].
   ///
   /// Typically used within draw methods in subclasses.
-  appendAttrib(num value) {
-    vertices[index] = value.toDouble();
+  appendAttrib(double value) {
+    vertices[index] = value;
     index++;
   }
 

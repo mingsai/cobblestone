@@ -32,9 +32,9 @@ class Framebuffer {
     if (shader == null) {
       shader = wrapper.batchShader;
     }
-    _batch = new SpriteBatch(wrapper, shader, maxSprites: 2);
+    _batch = SpriteBatch(wrapper, shader, maxSprites: 2);
 
-    texture = new Texture.empty(wrapper, width, height, filter);
+    texture = Texture.empty(wrapper, width, height, filter);
 
     buffer = _context.createFramebuffer();
     _context.bindFramebuffer(WebGL.FRAMEBUFFER, buffer);

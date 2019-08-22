@@ -33,13 +33,13 @@ abstract class BaseGame implements State {
   int height;
 
   /// Game asset manager. Used to wait for asynchronously loaded assets.
-  final AssetManager assetManager = new AssetManager();
+  final AssetManager assetManager = AssetManager();
 
   /// The game tween manager. Lists and updates [Tween]s added to it.
-  final TweenManager tweenManager = new TweenManager();
+  final TweenManager tweenManager = TweenManager();
 
   /// The game audio context. Can be used for some global control of various sounds.
-  final AudioWrapper audio = new AudioWrapper();
+  final AudioWrapper audio = AudioWrapper();
 
   /// Storage of current state of keyboard input.
   Keyboard keyboard;
@@ -62,9 +62,9 @@ abstract class BaseGame implements State {
   /// Creates a new game with the given [canvas].
   BaseGame.withCanvas(this.canvas) {
     config();
-    gl = new GLWrapper(canvas.getContext3d());
-    keyboard = new Keyboard();
-    mouse = new Mouse(canvas);
+    gl = GLWrapper(canvas.getContext3d());
+    keyboard = Keyboard();
+    mouse = Mouse(canvas);
     _resizeCanvas();
     _startLoop();
   }
@@ -106,7 +106,7 @@ abstract class BaseGame implements State {
   _start() {
     create();
 
-    _stopwatch = new Stopwatch();
+    _stopwatch = Stopwatch();
     _stopwatch.start();
 
     _resizeCanvas();
@@ -150,15 +150,15 @@ abstract class BaseGame implements State {
   /// Updates the state. Called each frame before [render].
   ///
   /// [delta] is the time in seconds since last frame.
-  update(num delta);
+  update(double delta);
 
   /// Renders the state. Called each frame after [update].
   ///
   /// [delta] is the time in seconds since last frame.
-  render(num delta);
+  render(double delta);
 
   /// Called after canvas changes size
-  resize(num width, num height) {}
+  resize(int width, int height) {}
 
   /// Pauses the game.
   pause() {}

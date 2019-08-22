@@ -53,7 +53,7 @@ class AnimatedTile extends Tile {
   /// A list of texture frames for this tile's animation.
   List<Texture> frames = [];
   /// A list of timings in seconds corresponding to textures in [frames].
-  List<num> timings = [];
+  List<double> timings = [];
 
   MapProperties properties;
 

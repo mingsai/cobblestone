@@ -17,11 +17,11 @@ class GLWrapper {
 
   /// Compiles a new shader program given the vertex and fragment source codes.
   ShaderProgram compileShader(String vertexSource, String fragmentSource) {
-    return new ShaderProgram.compile(this, vertexSource, fragmentSource);
+    return ShaderProgram.compile(this, vertexSource, fragmentSource);
   }
 
   /// Clears the screen either to [r] as a [Vector4] or [r], [g], [b], [a] as numbers.
-  clearScreen(r, [num g, num b, num a]) {
+  clearScreen(r, [double g, double b, double a]) {
     if (r is Vector4) {
       context.clearColor(r.r, r.g, r.b, r.a);
     } else {
@@ -32,7 +32,7 @@ class GLWrapper {
   }
 
   /// Sets the WebGL viewport to the given width and height
-  setGLViewport(num width, num height) {
+  setGLViewport(int width, int height) {
     context.viewport(0, 0, width, height);
   }
 

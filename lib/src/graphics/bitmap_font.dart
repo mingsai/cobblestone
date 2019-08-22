@@ -52,10 +52,10 @@ class BitmapFont {
     lineHeight = _getVariable(common, "lineHeight");
     base = _getVariable(common, "base");
 
-    this._characters = new Map();
+    this._characters = {};
     _data.where((e) => e[0] == "char").forEach((e) {
       var props = e[1];
-      _characters[_getVariable(props, "id")] = new _Character(
+      _characters[_getVariable(props, "id")] = _Character(
           _getVariable(props, "id"),
           _getVariable(props, "x"),
           _getVariable(props, "y"),
@@ -67,12 +67,12 @@ class BitmapFont {
           texture);
     });
 
-    this._kernings = new Map();
+    this._kernings = {};
     _data.where((e) => e[0] == "kerning").forEach((e) {
       var props = e[1];
       int second = _getVariable(props, "second");
       _kernings.putIfAbsent(second, () => []);
-      _kernings[second].add(new _Kerning(_getVariable(props, "first"),
+      _kernings[second].add(_Kerning(_getVariable(props, "first"),
           _getVariable(props, "second"), _getVariable(props, "amount")));
     });
 
@@ -200,7 +200,7 @@ class BitmapFont {
       width = measureWord(word);
 
       if (cursor + width > lineWidth) {
-        lines.add(new _Line(lineText.trim(), cursor - _space.xadvance));
+        lines.add(_Line(lineText.trim(), cursor - _space.xadvance));
         cursor = 0;
         lineText = "";
       }
@@ -208,7 +208,7 @@ class BitmapFont {
       cursor += width;
       cursor += _space.xadvance;
     }
-    lines.add(new _Line(lineText.trim(), cursor - _space.xadvance));
+    lines.add(_Line(lineText.trim(), cursor - _space.xadvance));
 
     return lines;
   }
@@ -238,7 +238,7 @@ class _Character {
 
   _Character(this.id, this.x, this.y, this.width, this.height, this.xoffset,
       this.yoffset, this.xadvance, this.font) {
-    this.glyph = new Texture.clone(font);
+    this.glyph = Texture.clone(font);
     glyph.setRegion(x, font.height - y - height, width, height);
   }
 }

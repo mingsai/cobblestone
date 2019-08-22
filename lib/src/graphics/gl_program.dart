@@ -16,10 +16,10 @@ class ShaderProgram {
   GL.RenderingContext _context;
 
   /// List of vertex attribute names and locations.
-  Map<String, int> attributes = new Map<String, int>();
+  Map<String, int> attributes = Map<String, int>();
   /// List of uniform names and locations.
   Map<String, GL.UniformLocation> uniforms =
-      new Map<String, GL.UniformLocation>();
+      Map<String, GL.UniformLocation>();
 
   /// The complete GL program to be used in rendering.
   GL.Program program;

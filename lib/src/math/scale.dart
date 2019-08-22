@@ -15,12 +15,12 @@ scaleCanvas(CanvasElement element, ScaleMode mode, int requestWidth,
     int requestHeight, int parentWidth, int parentHeight) {
   switch (mode) {
     case ScaleMode.fill:
-      num scale = max(parentWidth / requestWidth, parentHeight / requestHeight);
-      element.width = requestWidth * scale;
-      element.height = requestHeight * scale;
+      double scale = max(parentWidth / requestWidth, parentHeight / requestHeight);
+      element.width = (requestWidth * scale).toInt();
+      element.height = (requestHeight * scale).toInt();
       break;
     case ScaleMode.fit:
-      num scale = min(parentWidth / requestWidth, parentHeight / requestHeight);
+      double scale = min(parentWidth / requestWidth, parentHeight / requestHeight);
       element.width = (requestWidth * scale).toInt();
       element.height = (requestHeight * scale).toInt();
       break;

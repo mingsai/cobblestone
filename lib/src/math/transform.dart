@@ -11,7 +11,7 @@ class Transform {
   /// Translation vector of this transform.
   Vector2 translation;
   /// Clockwise rotation of this transform, in radians.
-  num rotation;
+  double rotation;
   /// Scale multipliers in each dimension for this transform.
   Vector2 scale;
 

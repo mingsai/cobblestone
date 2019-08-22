@@ -5,10 +5,10 @@ part of cobblestone;
 /// A container that tracks the current state of inputs on the keyboard.
 class Keyboard {
   /// A map between key codes and the time the key was pressed.
-  Map<int, num> _keys = new Map<int, num>();
+  Map<int, num> _keys = Map<int, num>();
 
   /// A map of keys pressed last frame.
-  Map<int, num> _lastKeys = new Map<int, num>();
+  Map<int, num> _lastKeys = Map<int, num>();
 
   /// A list of subscription events used to get keybord data.
   List<StreamSubscription> _subs = [];

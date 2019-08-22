@@ -11,10 +11,10 @@ class ShaderExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch(gl, assetManager.get("water"));
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch(gl, assetManager.get("water"));
     renderer.setAdditionalUniforms = () {
-      renderer.setUniform("waveData", new Vector2(angleWave, 0.9));
+      renderer.setUniform("waveData", Vector2(angleWave, 0.9));
       renderer.setUniform("uLightColor", Colors.navy);
     };
 

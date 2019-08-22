@@ -14,8 +14,8 @@ class FontExample extends BaseGame {
     font = assetManager.get("font");
     text = assetManager.get("lipsum");
 
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl);
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch.defaultShader(gl);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
@@ -45,7 +45,7 @@ class FontExample extends BaseGame {
 
   resize(num width, num height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
-    camera = new Camera2D.originBottomLeft(width, height);
+    camera = Camera2D.originBottomLeft(width, height);
   }
 
   @override
@@ -53,7 +53,7 @@ class FontExample extends BaseGame {
 
   startTween() {
     if(textWidth == 640) {
-      new Tween()
+      Tween()
         ..set = [(v) => textWidth = v.toInt()]
         ..get = [() => textWidth]
         ..target = [200]
@@ -62,7 +62,7 @@ class FontExample extends BaseGame {
         ..callback = startTween
         ..start(tweenManager);
     } else {
-      new Tween()
+      Tween()
         ..set = [(v) => textWidth = v.toInt()]
         ..get = [() => textWidth]
         ..target = [640]

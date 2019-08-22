@@ -12,19 +12,19 @@ class TweenExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl);
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch.defaultShader(gl);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
     nehe = assetManager.get("nehe.gif");
 
-    box = new Box(0.0, 0.0);
+    box = Box(0.0, 0.0);
 
     var getPos = [() => box.x, () => box.y];
     var setPos = [(v) => box.x = v, (v) => box.y = v];
 
-    new Tween()
+    Tween()
       ..get = getPos
       ..set = setPos
       ..target = [width - 50, height - 50]
@@ -32,7 +32,7 @@ class TweenExample extends BaseGame {
       ..delay = 1.0
       ..ease = Ease.backInOut
       ..callback = (() => print("Tween 1 Complete"))
-      ..chain(new Tween()
+      ..chain(Tween()
         ..get = getPos
         ..set = setPos
         ..target = [0.0, 0.0]

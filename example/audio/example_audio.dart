@@ -14,7 +14,7 @@ class AudioExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
+    camera = Camera2D.originBottomLeft(width, height);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
@@ -51,7 +51,7 @@ class AudioExample extends BaseGame {
     } else if (keyboard.keyJustReleased(KeyCode.ZERO)) {
       audio.stopAll();
     } else if (keyboard.keyJustReleased(KeyCode.F)) {
-      new Tween()
+      Tween()
           ..get = [() => music.volume]
           ..set = [(v) => music.volume = v]
           ..target = [0.0]

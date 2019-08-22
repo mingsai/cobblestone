@@ -61,8 +61,6 @@ class TilemapExample extends BaseGame {
     renderer.projection = camera.combined;
     renderer.begin();
 
-   
-
     if(keyboard.keyPressed(KeyCode.B)) {
       atlasMap.render(renderer, 0, 0, camera);
       

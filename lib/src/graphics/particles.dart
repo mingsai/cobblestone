@@ -5,7 +5,7 @@ Future<ParticleEffect> loadEffect(
     String effectUrl, Future<Texture> texture) async {
   var effectData = json.decode(await HttpRequest.getString(effectUrl));
   Texture effectTexture = await texture;
-  return new ParticleEffect.fromJSON(effectData, effectTexture);
+  return ParticleEffect.fromJSON(effectData, effectTexture);
 }
 
 /// The type of spawn pattern particles are created in.
@@ -234,7 +234,7 @@ class ParticleEmitter {
   /// Creates a particle emitter using the given effect.
   ParticleEmitter(this.effect, [this.rand]) {
     if (rand == null) {
-      rand = new Random();
+      rand = Random();
     }
     pos = Vector2.zero();
     particles = [];
@@ -325,7 +325,7 @@ class ParticleEmitter {
   /// Spawns a single particle at [pos] moving in direction [angle].
   spawnParticle(Vector2 pos, [double angle]) {
     if (particles.length < effect.maxParticles) {
-      Particle particle = new Particle(effect);
+      Particle particle = Particle(effect);
       particle.texture = effect.texture;
       particle.color = effect.colorStart.clone();
       particle.rotation = -(angle != null

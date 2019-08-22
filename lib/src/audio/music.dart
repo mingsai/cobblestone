@@ -2,8 +2,8 @@ part of cobblestone;
 
 /// Loads a sound using an [AudioElement].
 Future<Music> loadMusic(AudioWrapper audio, String url) async {
-  AudioElement element = new AudioElement(url);
-  return new Music(audio, element);
+  AudioElement element = AudioElement(url);
+  return Music(audio, element);
 }
 
 /// A longer sound, streamed from an [AudioElement].

@@ -16,28 +16,23 @@ var featureDemoNames = [
   'font'
 ];
 var featureDemoConstructors = [
-  () => new GeometryExample(),
-  () => new AtlasExample(),
-  () => new BatchExample(),
-  () => new FBOExample(),
-  () => new TilemapExample(),
-  () => new ShaderExample(),
-  () => new TweenExample(),
-  () => new AudioExample(),
-  () => new FontExample()
+  () => GeometryExample(),
+  () => AtlasExample(),
+  () => BatchExample(),
+  () => FBOExample(),
+  () => TilemapExample(),
+  () => ShaderExample(),
+  () => TweenExample(),
+  () => AudioExample(),
+  () => FontExample()
 ];
 
-var advancedDemoNames = [
-  'performance',
-  'handpainted',
-  'particles',
-  'lighting'
-];
+var advancedDemoNames = ['performance', 'handpainted', 'particles', 'lighting'];
 var advancedDemoConstructors = [
-      () => new PerformanceExample(),
-      () => new HandpaintedExample(),
-() => new ParticlesExample(),
-      () => new LightingExample()
+  () => PerformanceExample(),
+  () => HandpaintedExample(),
+  () => ParticlesExample(),
+  () => LightingExample()
 ];
 
 main() {
@@ -55,30 +50,29 @@ main() {
 }
 
 makeDemoLink(String demo) {
-  AnchorElement demoLink = new AnchorElement()
+  AnchorElement demoLink = AnchorElement()
     ..onClick.listen((e) => switchTo(demo))
     ..href = "#${demo}"
     ..text = demo;
 
-  AnchorElement sourceLink = new AnchorElement()
+  AnchorElement sourceLink = AnchorElement()
     ..href =
         'https://gitlab.com/ectucker/cobblestone/blob/master/example/${demo}/example_${demo}.dart'
     ..text = 'source';
 
-  Element group = new ParagraphElement()
+  Element group = ParagraphElement()
     ..append(demoLink)
     ..appendText(" - ")
     ..append(sourceLink);
 
-  Element li = new Element.li()
-    ..append(group);
+  Element li = Element.li()..append(group);
 
   return li;
 }
 
 switchTo(String demo) {
   example.stop();
-  if(featureDemoNames.contains(demo)) {
+  if (featureDemoNames.contains(demo)) {
     example = featureDemoConstructors[featureDemoNames.indexOf(demo)]();
   } else {
     example = advancedDemoConstructors[advancedDemoNames.indexOf(demo)]();

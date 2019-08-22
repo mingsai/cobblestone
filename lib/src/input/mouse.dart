@@ -3,7 +3,7 @@ part of cobblestone;
 /// A container that tracks current state of a user's mouse
 class Mouse {
   /// Width and height of the [BaseGame]
-  num _width, _height;
+  int _width, _height;
   CanvasElement _canvas;
 
   /// A list of subscription events used to get mouse data
@@ -18,10 +18,10 @@ class Mouse {
   Vector3 _coordTransform = Vector3.zero();
 
   /// A map between button numbers and the time the key was pressed
-  Map<int, num> _buttons = new Map<int, num>();
+  Map<int, num> _buttons = Map<int, num>();
 
   /// A map of buttons pressed last frame
-  Map<int, num> _lastButtons = new Map<int, num>();
+  Map<int, num> _lastButtons = Map<int, num>();
 
   /// Returns true if the left mouse button is currently down
   bool get leftDown => _buttons.containsKey(0);
@@ -72,20 +72,20 @@ class Mouse {
     canvasPos.setValues(
         e.client.x.toDouble(), (window.innerHeight - e.client.y).toDouble());
     var rect = _canvas.getBoundingClientRect();
-    screenPos = new Vector2(
+    screenPos = Vector2(
         (canvasPos.x - rect.left) * (_width / _canvas.width),
         (canvasPos.y - rect.top) * (_height / _canvas.height));
     if (screenPos.x < 0) {
       screenPos.x = 0.0;
     }
     if (screenPos.x > _width) {
-      screenPos.x = _width;
+      screenPos.x = _width.toDouble();
     }
     if (screenPos.y < 0) {
       screenPos.y = 0.0;
     }
     if (screenPos.y > _height) {
-      screenPos.y = _height;
+      screenPos.y = _height.toDouble();
     }
   }
 
@@ -105,7 +105,7 @@ class Mouse {
     _lastButtons.addAll(_buttons);
   }
 
-  _resize(num width, num height) {
+  _resize(int width, int height) {
     this._width = width;
     this._height = height;
   }

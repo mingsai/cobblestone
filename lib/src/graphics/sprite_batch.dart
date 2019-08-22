@@ -23,7 +23,7 @@ class SpriteBatch extends VertexBatch {
   /// Creates a new sprite batch with a custom shader
   SpriteBatch(GLWrapper wrapper, shaderProgram, {this.maxSprites = 2000})
       : super(wrapper, shaderProgram) {
-    color = new Vector4.all(1.0);
+    color = Vector4.all(1.0);
   }
 
   /// Creates a new sprite batch with a simple shader

@@ -14,8 +14,8 @@ class HandpaintedExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl);
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch.defaultShader(gl);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 

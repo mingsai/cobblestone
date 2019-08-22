@@ -1,7 +1,7 @@
 part of examples;
 
 const double gravity = -9.8;
-Random rand = new Random();
+Random rand = Random();
 
 class PerformanceExample extends BaseGame {
   Camera2D camera;
@@ -12,8 +12,8 @@ class PerformanceExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl, maxSprites: 20000);
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch.defaultShader(gl, maxSprites: 20000);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
@@ -21,7 +21,7 @@ class PerformanceExample extends BaseGame {
 
     List<Texture> textures = boulderSheet.split(16, 16);
     for (int i = 0; i < 100000; i++) {
-      boulders.add(new BoulderSprite(textures[rand.nextInt(textures.length)],
+      boulders.add(BoulderSprite(textures[rand.nextInt(textures.length)],
           rand.nextInt(width), rand.nextInt(height ~/ 2) + height / 2));
     }
   }

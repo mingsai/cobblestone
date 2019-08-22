@@ -79,5 +79,5 @@ double packColor(Vector4 color) {
   int g = (color.g * 255).floor().clamp(0, 255);
   int b = (color.b * 255).floor().clamp(0, 255);
   int a = (color.a * 255).floor().clamp(0, 254);
-  return new Float32List.view((new Uint8List.fromList([r, g, b, a])).buffer)[0];
+  return Float32List.view((Uint8List.fromList([r, g, b, a])).buffer)[0];
 }

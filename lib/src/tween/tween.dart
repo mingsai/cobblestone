@@ -56,7 +56,7 @@ class Tween {
   }
 
   /// Updates the tween to it position after [delta] more seconds
-  update(num delta) {
+  update(double delta) {
     _time += delta;
 
     if(_time > delay) {

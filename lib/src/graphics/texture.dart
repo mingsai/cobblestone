@@ -86,20 +86,20 @@ class Texture {
   GL.Texture texture;
 
   /// WebGL texture coordinate used for drawing this texture
-  num u, v, u2, v2;
+  double u, v, u2, v2;
 
   /// A string representing the original source of this texture, probably a filename or URL
   String source;
 
   /// The width of the full texture image.
-  num sourceWidth;
+  int sourceWidth;
   /// The height of the full texture image.
-  num sourceHeight;
+  int sourceHeight;
 
   /// The width of this texture region.
-  num width;
+  int width;
   /// The height of this texture region.
-  num height;
+  int height;
 
   /// Creates a new texture from a [GL.Texture].
   /// [loadTexture] should typically be used in place of directly calling this constructor.

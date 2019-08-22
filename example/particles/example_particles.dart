@@ -10,11 +10,11 @@ class ParticlesExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl);
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch.defaultShader(gl);
 
     ParticleEffect effect = assetManager.get("flame");
-    emitter = new ParticleEmitter(effect);
+    emitter = ParticleEmitter(effect);
 }
 
   @override
@@ -40,7 +40,7 @@ class ParticlesExample extends BaseGame {
   }
 
   resize(num width, num height) {
-    camera = new Camera2D.originBottomLeft(width, height);
+    camera = Camera2D.originBottomLeft(width, height);
   }
 
   @override

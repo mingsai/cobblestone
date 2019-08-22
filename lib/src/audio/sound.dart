@@ -4,7 +4,7 @@ part of cobblestone;
 Future<Sound> loadSound(AudioWrapper audio, String url) async {
   var request = await HttpRequest.request(url, responseType: 'arraybuffer');
   var buffer = await audio.context.decodeAudioData(request.response);
-  return new Sound(audio, buffer);
+  return Sound(audio, buffer);
 }
 
 /// A playable sound using WebAudio.

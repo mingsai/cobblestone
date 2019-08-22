@@ -22,7 +22,7 @@ class TweenManager {
   }
 
   /// Updates all tweens in the manager.
-  update(num delta) {
+  update(double delta) {
     for(var tween in _tweensToAdd) {
       _activeTweens.add(tween);
     }

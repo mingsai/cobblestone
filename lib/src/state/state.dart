@@ -61,14 +61,14 @@ abstract class State {
   /// Updates the state. Called each frame before [render].
   ///
   /// [delta] is the time in seconds since last frame.
-  update(num delta);
+  update(double delta);
 
   /// Renders the state. Called each frame after [update].
   ///
   /// [delta] is the time in seconds since last frame.
-  render(num delta);
+  render(double delta);
 
   /// Called after canvas changes size.
-  resize(num width, num height);
+  resize(int width, int height);
 
 }

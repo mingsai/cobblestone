@@ -9,10 +9,10 @@ class BatchExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    pointBatch = new PointBatch.defaultShader(gl, maxSprites: 2);
+    camera = Camera2D.originBottomLeft(width, height);
+    pointBatch = PointBatch.defaultShader(gl, maxSprites: 2);
 
-    debugBatch = new DebugBatch.defaultShader(gl, maxSprites: 8);
+    debugBatch = DebugBatch.defaultShader(gl, maxSprites: 8);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
@@ -29,25 +29,23 @@ class BatchExample extends BaseGame {
     pointBatch.projection = camera.combined;
     pointBatch.begin();
 
-    pointBatch.draw(
-        new Vector3(10.0, 10.0, 0.0), new Vector4(0.0, 1.0, 0.0, 1.0));
-    pointBatch.draw(
-        new Vector3(10.0, 20.0, 0.0), new Vector4(1.0, 1.0, 0.0, 1.0));
+    pointBatch.draw(Vector3(10.0, 10.0, 0.0), Vector4(0.0, 1.0, 0.0, 1.0));
+    pointBatch.draw(Vector3(10.0, 20.0, 0.0), Vector4(1.0, 1.0, 0.0, 1.0));
 
     pointBatch.end();
 
     debugBatch.projection = camera.combined;
     debugBatch.begin();
 
-    Aabb2 box = new Aabb2.centerAndHalfExtents(
-        new Vector2(10.0, 10.0), new Vector2(10.0, 100.0));
+    Aabb2 box = Aabb2.centerAndHalfExtents(
+        Vector2(10.0, 10.0), Vector2(10.0, 100.0));
     debugBatch.drawBox(box);
 
-    Obb3 ob = new Obb3();
-    Matrix3 rotation = new Matrix3.rotationZ(pi / 8);
+    Obb3 ob = Obb3();
+    Matrix3 rotation = Matrix3.rotationZ(pi / 8);
     ob
-      ..center.setFrom(new Vector3(100.0, 100.0, 0.0))
-      ..halfExtents.setFrom(new Vector3(50.0, 75.0, 0.0))
+      ..center.setFrom(Vector3(100.0, 100.0, 0.0))
+      ..halfExtents.setFrom(Vector3(50.0, 75.0, 0.0))
       ..rotate(rotation);
     debugBatch.drawBox(ob);
 

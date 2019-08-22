@@ -15,7 +15,7 @@ class AudioWrapper {
   ///
   /// The wrapper provided in BaseGame should typically be used instead.
   AudioWrapper() {
-    this.context = new WebAudio.AudioContext();
+    this.context = WebAudio.AudioContext();
   }
 
   /// Adds a sound to the list of sounds currently playing.
@@ -32,7 +32,7 @@ class AudioWrapper {
 
   /// Stops all currently playing sounds
   stopAll() {
-    var oldSounds = new List.from(sounds);
+    var oldSounds = List.from(sounds);
     for(var sound in oldSounds) {
       sound.stop();
     }

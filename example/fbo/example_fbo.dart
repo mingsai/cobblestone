@@ -14,15 +14,15 @@ class FBOExample extends BaseGame {
 
   @override
   create() {
-    camera = new Camera2D.originBottomLeft(width, height);
-    renderer = new SpriteBatch.defaultShader(gl);
+    camera = Camera2D.originBottomLeft(width, height);
+    renderer = SpriteBatch.defaultShader(gl);
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
     nehe = assetManager.get("nehe.gif");
     effect = assetManager.get("effect");
 
-    fbo = new Framebuffer(gl, canvasWidth, canvasHeight, shader: effect);
+    fbo = Framebuffer(gl, canvasWidth, canvasHeight, shader: effect);
   }
 
   @override

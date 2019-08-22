@@ -6,8 +6,8 @@ part of cobblestone;
 class Camera2D {
 
   // Camera values for near and far planes
-  static const num _near = -100;
-  static const num _far = 100;
+  static const double _near = -100;
+  static const double _far = 100;
 
   /// Projection matrix for the camera.
   Matrix4 projection;
@@ -24,17 +24,19 @@ class Camera2D {
   Quad view = Quad();
 
   /// Width of the view seen through this camera.
-  num viewWidth;
+  int viewWidth;
   /// Width of the view seen through this camera.
-  num viewHeight;
+  int viewHeight;
 
   // Offsets used to calculate view, set by constructors.
-  num _projOffsetX;
-  num _projOffsetY;
+  double _projOffsetX;
+  double _projOffsetY;
 
   /// Creates a camera width 0, 0 in the bottom left of the view.
   Camera2D.originBottomLeft(this.viewWidth, this.viewHeight) {
-    projection = makeOrthographicMatrix(0, viewWidth, 0, viewHeight, _near, _far);
+    projection = makeOrthographicMatrix(0, viewWidth.toDouble(), 0,
+        viewHeight.toDouble(),
+        _near, _far);
     _projOffsetX = 0;
     _projOffsetY = 0;
     update();
@@ -50,10 +52,10 @@ class Camera2D {
   }
 
   /// Creates a camera with a view bounded by [left], [right], [top], and [bottom].
-  Camera2D.sides(num left, num right, num top, num bottom) {
+  Camera2D.sides(double left, double right, double top, double bottom) {
     projection = makeOrthographicMatrix(left, right, bottom, top, _near, _far);
-    viewWidth = right - left;
-    viewHeight = top - bottom;
+    viewWidth = (right - left).toInt();
+    viewHeight = (top - bottom).toInt();
     _projOffsetX = -left;
     _projOffsetY = -bottom;
     update();
