@@ -1,5 +1,9 @@
 
 # Changelog  
+
+## 0.3.2
+
+- Internal renaming of imported libraries
   
 ## 0.3.1 Minor Typing
   

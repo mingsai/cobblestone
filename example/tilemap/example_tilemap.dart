@@ -53,7 +53,7 @@ class TilemapExample extends BaseGame {
   }
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(41 / 256, 38 / 256, 52 / 256, 1.0);
 
     camera.update();
@@ -94,13 +94,13 @@ class TilemapExample extends BaseGame {
     }
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
     camera = Camera2D.originBottomLeft(32 * 16, 18 * 16);
   }
 
   @override
-  update(num delta) {
+  update(double delta) {
     if (keyboard.keyJustPressed(KeyCode.W)) north = true;
     if (keyboard.keyJustPressed(KeyCode.D)) east = true;
     if (keyboard.keyJustPressed(KeyCode.S)) south = true;

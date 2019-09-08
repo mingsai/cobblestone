@@ -4,7 +4,7 @@ part of cobblestone;
 class AudioWrapper {
 
   /// The actual WebAudio context
-  WebAudio.AudioContext context;
+  web_audio.AudioContext context;
 
   /// A list of all audio currently playing.
   ///
@@ -15,7 +15,7 @@ class AudioWrapper {
   ///
   /// The wrapper provided in BaseGame should typically be used instead.
   AudioWrapper() {
-    this.context = WebAudio.AudioContext();
+    this.context = web_audio.AudioContext();
   }
 
   /// Adds a sound to the list of sounds currently playing.

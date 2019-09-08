@@ -7,7 +7,7 @@ part of cobblestone;
 Future<Tileset> loadTileset(String url, FutureOr<dynamic> atlas,
     [int extraSpacing = 0, int extraMargin = 0]) async {
   String file = await HttpRequest.getString(url);
-  XML.XmlDocument doc = XML.parse(file);
+  xml.XmlDocument doc = xml.parse(file);
   return Tileset.fromFile(doc, await atlas);
 }
 
@@ -44,7 +44,7 @@ class Tileset {
   /// [atlas] should be a texture atlas for sets made in the "Collection of Images" mode.
   ///
   /// [extraSpacing] and [extraMargin] should be set when using the Phaser Tile Extruder (https://github.com/sporadic-labs/tile-extruder) after creating a map.
-  Tileset.fromElement(XML.XmlElement element, var atlas,
+  Tileset.fromElement(xml.XmlElement element, var atlas,
       [int extraSpacing = 0, int extraMargin = 0]) {
     tilecount = _parseAttrib(element, "tilecount", int.parse);
 
@@ -69,7 +69,7 @@ class Tileset {
     } else if (atlas is Map<String, Texture>) {
       element.findElements("tile").forEach((tile) {
         int id = int.parse(tile.getAttribute("id"));
-        String source = Path.basenameWithoutExtension(
+        String source = path.basenameWithoutExtension(
             tile.findElements("image").first.getAttribute("source"));
         basicTiles[id + firstGID] = BasicTile(id, atlas[source], tile);
       });
@@ -97,7 +97,7 @@ class Tileset {
   /// [atlas] should be a texture atlas for sets made in the "Collection of Images" mode.
   ///
   /// [extraSpacing] and [extraMargin] should be set when using the Phaser Tile Extruder (https://github.com/sporadic-labs/tile-extruder) after creating a map.
-  Tileset.fromFile(XML.XmlDocument file, var atlas,
+  Tileset.fromFile(xml.XmlDocument file, var atlas,
       [int extraSpacing = 0, int extraMargin = 0])
       : this.fromElement(file.rootElement, atlas, extraSpacing, extraMargin);
 

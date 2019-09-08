@@ -26,7 +26,7 @@ abstract class MapObject {
   /// Creates a new map object from TMX data.
   ///
   /// The specific type of the object is determined by the data.
-  static MapObject load(ObjectGroup parent, XML.XmlElement object) {
+  static MapObject load(ObjectGroup parent, xml.XmlElement object) {
     String name = _parseAttrib(object, "name", (str) => str, "");
     String type = _parseAttrib(object, "type", (str) => str, "");
 

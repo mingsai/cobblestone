@@ -12,7 +12,7 @@ Future<Sound> loadSound(AudioWrapper audio, String url) async {
 /// Sounds are typically short files, use [Music] for longer tracks or narration.
 class Sound extends AudioPlayer {
   AudioWrapper _audio;
-  WebAudio.AudioContext _context;
+  web_audio.AudioContext _context;
 
   /// The raw audio data used to play this sound.
   var buffer;
@@ -20,7 +20,7 @@ class Sound extends AudioPlayer {
   var _sources;
   int _nextID = 0;
 
-  WebAudio.GainNode _gainNode;
+  web_audio.GainNode _gainNode;
 
   bool _playing = false;
 
@@ -58,7 +58,7 @@ class Sound extends AudioPlayer {
   }
 
   _createSourceNode(bool loop) {
-    WebAudio.AudioBufferSourceNode source = _context.createBufferSource();
+    web_audio.AudioBufferSourceNode source = _context.createBufferSource();
     source.buffer = buffer;
     source.loop = loop;
     source.start(0);

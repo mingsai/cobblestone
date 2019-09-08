@@ -30,7 +30,7 @@ class ShaderExample extends BaseGame {
   }
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
@@ -45,12 +45,12 @@ class ShaderExample extends BaseGame {
     renderer.end();
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
-  update(num delta) {
+  update(double delta) {
     angleWave += delta * 5.0;
     while (angleWave > pi * 2) {
       angleWave -= pi * 2;

@@ -10,7 +10,6 @@ var featureDemoNames = [
   'batches',
   'fbo',
   'tilemap',
-  'shaders',
   'tweens',
   'audio',
   'font'
@@ -21,16 +20,15 @@ var featureDemoConstructors = [
   () => BatchExample(),
   () => FBOExample(),
   () => TilemapExample(),
-  () => ShaderExample(),
   () => TweenExample(),
   () => AudioExample(),
   () => FontExample()
 ];
 
-var advancedDemoNames = ['performance', 'handpainted', 'particles', 'lighting'];
+var advancedDemoNames = ['performance', 'shaders', 'particles', 'lighting'];
 var advancedDemoConstructors = [
   () => PerformanceExample(),
-  () => HandpaintedExample(),
+  () => ShaderExample(),
   () => ParticlesExample(),
   () => LightingExample()
 ];

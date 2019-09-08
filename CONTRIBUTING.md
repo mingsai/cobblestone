@@ -22,7 +22,8 @@ Bug fixes and new features should be developed on your own branch of the reposit
 
 Before submitting your request, make sure:
 - [Demos](https://gitlab.com/ectucker/cobblestone/tree/master/example) still run properly.
-- Your code is all formatted properly with `dartfmt`
+- All code is all formatted properly with `dartfmt`
+- All code passes all lints enabled by [pedantic](https://pub.dev/packages/pedantic)
 - All new functions are documented
 - All API changes are listed in the changelog
 

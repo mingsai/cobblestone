@@ -29,7 +29,7 @@ class FontExample extends BaseGame {
   }
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(Colors.white);
 
     camera.update();
@@ -43,13 +43,13 @@ class FontExample extends BaseGame {
     renderer.end();
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
     camera = Camera2D.originBottomLeft(width, height);
   }
 
   @override
-  update(num delta) {}
+  update(double delta) {}
 
   startTween() {
     if(textWidth == 640) {

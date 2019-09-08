@@ -9,7 +9,7 @@ Future<Music> loadMusic(AudioWrapper audio, String url) async {
 /// A longer sound, streamed from an [AudioElement].
 class Music extends AudioPlayer {
   AudioWrapper _audio;
-  WebAudio.AudioContext _context;
+  web_audio.AudioContext _context;
 
   /// The media element for this music.
   MediaElement element;

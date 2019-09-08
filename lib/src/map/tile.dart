@@ -2,7 +2,6 @@ part of cobblestone;
 
 /// A tile on the map.
 abstract class Tile {
-
   /// The ID number of this tile.
   int id;
 
@@ -21,7 +20,6 @@ abstract class Tile {
 
 /// A static tile, with a single image.
 class BasicTile extends Tile {
-
   int id;
 
   Texture texture;
@@ -29,8 +27,8 @@ class BasicTile extends Tile {
   MapProperties properties;
 
   /// Creates a new basic tile with the given [id], [texture] and optionally TMX data.
-  BasicTile(this.id, this.texture, [XML.XmlElement data]) {
-    if(data != null) {
+  BasicTile(this.id, this.texture, [xml.XmlElement data]) {
+    if (data != null) {
       properties = MapProperties.fromChild(data);
     } else {
       properties = MapProperties.empty();
@@ -45,13 +43,13 @@ class BasicTile extends Tile {
 
 /// A tile that plays an animation in a loop.
 class AnimatedTile extends Tile {
-
   int id;
 
   Texture texture;
 
   /// A list of texture frames for this tile's animation.
   List<Texture> frames = [];
+
   /// A list of timings in seconds corresponding to textures in [frames].
   List<double> timings = [];
 
@@ -61,9 +59,12 @@ class AnimatedTile extends Tile {
   double currentTime = 0.0;
 
   /// Creates a new animated tile, with frames from the given set of basic tiles.
-  AnimatedTile(this.id, XML.XmlElement data, int firstGID, Map<int, BasicTile> basicTiles) {
-    for (XML.XmlElement frame in data.findElements("animation").first.findElements("frame")) {
-      frames.add(basicTiles[int.parse(frame.getAttribute("tileid")) + firstGID].texture);
+  AnimatedTile(this.id, xml.XmlElement data, int firstGID,
+      Map<int, BasicTile> basicTiles) {
+    for (var frame
+        in data.findElements("animation").first.findElements("frame")) {
+      frames.add(basicTiles[int.parse(frame.getAttribute("tileid")) + firstGID]
+          .texture);
       timings.add(double.parse(frame.getAttribute("duration")) / 1000);
     }
 

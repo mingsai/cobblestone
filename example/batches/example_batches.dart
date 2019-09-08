@@ -21,7 +21,7 @@ class BatchExample extends BaseGame {
   preload() {}
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
@@ -52,10 +52,10 @@ class BatchExample extends BaseGame {
     debugBatch.end();
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
-  update(num delta) {}
+  update(double delta) {}
 }

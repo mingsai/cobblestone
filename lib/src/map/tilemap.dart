@@ -10,7 +10,7 @@ Future<Tilemap> loadTilemap(String url,
     {FutureOr<Tileset> tileset, FutureOr<dynamic> atlas,
     int extraSpacing = 0, int extraMargin = 0}) async {
   String file = await HttpRequest.getString(url);
-  XML.XmlDocument doc = XML.parse(file);
+  xml.XmlDocument doc = xml.parse(file);
   return Tilemap(doc, tileset: await tileset, atlas: await atlas,
       extraSpacing: extraSpacing, extraMargin: extraMargin);
 }
@@ -18,7 +18,7 @@ Future<Tilemap> loadTilemap(String url,
 /// A 2D orthographic tilemap.
 class Tilemap {
   /// Raw XML data describing this tilemap.
-  XML.XmlDocument file;
+  xml.XmlDocument file;
 
   /// List of tile map layers in the map.
   List<TileLayer> layers = [];
@@ -70,10 +70,10 @@ class Tilemap {
           extraSpacing, extraMargin);
     }
 
-    for (XML.XmlElement layer in file.rootElement.findElements("layer")) {
+    for (xml.XmlElement layer in file.rootElement.findElements("layer")) {
       layers.add(TileLayer(this, layer));
     }
-    for (XML.XmlElement group in file.rootElement.findElements("objectgroup")) {
+    for (xml.XmlElement group in file.rootElement.findElements("objectgroup")) {
       objectGroups.add(ObjectGroup(this, group));
     }
 
@@ -132,13 +132,13 @@ class TileLayer {
   MapProperties properties;
 
   /// Creates a new tile layer from TMX data.
-  TileLayer(this.parent, XML.XmlElement layer) {
+  TileLayer(this.parent, xml.XmlElement layer) {
     width = int.parse(layer.getAttribute("width"));
     height = int.parse(layer.getAttribute("height"));
 
     name = layer.getAttribute("name");
 
-    XML.XmlElement data = layer.findElements("data").first;
+    xml.XmlElement data = layer.findElements("data").first;
     if (data.getAttribute("encoding") == "csv") {
       _tileIds = _parseCsv(data.text, int.parse);
     } else if (data.getAttribute("encoding") == "base64") {
@@ -205,10 +205,10 @@ class ObjectGroup {
   MapProperties properties;
 
   /// Creates a new object group from TMX data.
-  ObjectGroup(this.map, XML.XmlElement group) {
+  ObjectGroup(this.map, xml.XmlElement group) {
     name = group.getAttribute("name");
 
-    for (XML.XmlElement object in group.findElements("object")) {
+    for (xml.XmlElement object in group.findElements("object")) {
       objects.add(MapObject.load(this, object));
     }
 

@@ -6,11 +6,9 @@ class GeometryExample extends BaseGame {
   Camera2D camera;
 
   SpriteBatch renderer;
-  Texture nehe;
+  Texture rock;
 
-  bool get isLoaded => nehe != null;
-
-  num rot = pi / 4;
+  double rot = pi / 4;
 
   @override
   create() {
@@ -19,16 +17,16 @@ class GeometryExample extends BaseGame {
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
-    nehe = assetManager.get("nehe.gif");
+    rock = assetManager.get("rock.png");
   }
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture(gl, "geometry/nehe.gif"));
+    assetManager.load("rock.png", loadTexture(gl, "geometry/rock.png"));
   }
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
@@ -37,21 +35,21 @@ class GeometryExample extends BaseGame {
     renderer.begin();
 
     renderer.color = Colors.indianRed;
-    renderer.draw(nehe, 0.0, 0.0, width: 100.0, height: 100.0);
+    renderer.draw(rock, 0.0, 0.0, width: 100.0, height: 100.0);
 
     renderer.color = Colors.forestGreen;
-    renderer.draw(nehe, 25.0, 25.0,
+    renderer.draw(rock, 25.0, 25.0,
         width: 100.0, height: 100.0, flipX: true, flipY: true);
 
     renderer.color = Colors.saddleBrown;
-    renderer.draw(nehe, width - 50.0, 0.0, width: 50.0, height: height);
+    renderer.draw(rock, width - 50.0, 0.0, width: 50.0, height: height);
 
     renderer.color = Colors.lightSkyBlue;
-    renderer.draw(nehe, 0.0, height - 100.0,
+    renderer.draw(rock, 0.0, height - 100.0,
         width: 100.0, height: 100.0, flipY: true);
 
     renderer.color = Colors.lightGoldenrodYellow;
-    renderer.draw(nehe, width / 2 - 50, height / 2 - 50,
+    renderer.draw(rock, width / 2 - 50, height / 2 - 50,
         width: 100.0,
         height: 100.0,
         flipX: true,
@@ -61,12 +59,12 @@ class GeometryExample extends BaseGame {
     renderer.end();
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
-  update(num delta) {
+  update(double delta) {
     rot += 0.5 * delta;
   }
 

@@ -24,7 +24,6 @@ class PointBatch extends VertexBatch {
         WebGL.FLOAT, false, vertexSize * 4, 0);
     _context.vertexAttribPointer(shaderProgram.attributes[colorAttrib], 4,
         WebGL.FLOAT, false, vertexSize * 4, 3 * 4);
-    //print(shaderProgram.attributes);
   }
 
   /// Draws a point to the batch, with the given position and color.

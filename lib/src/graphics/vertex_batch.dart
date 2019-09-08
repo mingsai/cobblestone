@@ -4,7 +4,7 @@ part of cobblestone;
 abstract class VertexBatch {
   /// Reference to the game's [GLWrapper]
   GLWrapper wrapper;
-  GL.RenderingContext _context;
+  gl.RenderingContext _context;
 
   /// The maximum number of things to be drawn in this batch.
   ///
@@ -38,9 +38,9 @@ abstract class VertexBatch {
   Int16List indices;
 
   /// Reference to the actual WebGL vertex buffer.
-  GL.Buffer vertexBuffer;
+  gl.Buffer vertexBuffer;
   /// Reference to the actual WebGL index buffer.
-  GL.Buffer indexBuffer;
+  gl.Buffer indexBuffer;
 
   /// The shader program used by this batch.
   ShaderProgram shaderProgram;
@@ -140,7 +140,7 @@ abstract class VertexBatch {
     flush();
     if (spritesToEnd > maxSprites) {
       maxSprites = spritesToEnd;
-      print("Resized: " + maxSprites.toString());
+      print("Cobblestone: Resized batch to ${maxSprites} sprites");
       rebuildBuffer();
     }
     spritesToEnd = 0;

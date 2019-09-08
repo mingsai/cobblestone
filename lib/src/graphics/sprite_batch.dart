@@ -50,7 +50,7 @@ class SpriteBatch extends VertexBatch {
     y = y.toDouble();
 
     if (spritesInFlush >= maxSprites) {
-      print("Batch full");
+      print("Cobblestone: Warning: Batch full, forcing flush");
       flush();
     }
     if (this.texture != null) {

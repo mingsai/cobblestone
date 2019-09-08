@@ -8,12 +8,12 @@ class MapProperties {
   Map<String, dynamic> _properties = {};
 
   /// Loads a set of properties from TMX data.
-  MapProperties(XML.XmlElement properties) {
+  MapProperties(xml.XmlElement properties) {
     _loadProperties(properties);
   }
 
   /// Loads a set of properties from the children of the given [tag], or creates an empty set for an element without any.
-  MapProperties.fromChild(XML.XmlElement tag) {
+  MapProperties.fromChild(xml.XmlElement tag) {
     var propertiesTag = tag.findElements("properties");
     if(propertiesTag.isNotEmpty) {
       _loadProperties(propertiesTag.first);
@@ -24,8 +24,8 @@ class MapProperties {
   MapProperties.empty();
 
   /// Parses properties from the properties tag into this set.
-  void _loadProperties(XML.XmlElement properties) {
-    for(XML.XmlElement prop in properties.findElements("property")) {
+  void _loadProperties(xml.XmlElement properties) {
+    for(xml.XmlElement prop in properties.findElements("property")) {
       String type = prop.getAttribute("type");
       String name = prop.getAttribute("name");
       String value = prop.getAttribute("value");

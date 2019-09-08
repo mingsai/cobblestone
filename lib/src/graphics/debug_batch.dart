@@ -44,7 +44,6 @@ class DebugBatch extends VertexBatch {
 
   @override
   createIndices() {
-    print(maxSprites);
     for (int i = 0; i < indices.length; i++) {
       indices[i] = i;
     }

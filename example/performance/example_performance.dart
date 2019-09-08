@@ -22,7 +22,8 @@ class PerformanceExample extends BaseGame {
     List<Texture> textures = boulderSheet.split(16, 16);
     for (int i = 0; i < 100000; i++) {
       boulders.add(BoulderSprite(textures[rand.nextInt(textures.length)],
-          rand.nextInt(width), rand.nextInt(height ~/ 2) + height / 2));
+          rand.nextInt(width).toDouble(),
+          rand.nextInt(height ~/ 2) + height / 2));
     }
   }
 
@@ -32,7 +33,7 @@ class PerformanceExample extends BaseGame {
   }
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
@@ -46,19 +47,19 @@ class PerformanceExample extends BaseGame {
     renderer.end();
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
-  update(num delta) {}
+  update(double delta) {}
 }
 
 class BoulderSprite {
   Texture texture;
 
-  num speedX, speedY;
-  num x, y;
+  double speedX, speedY;
+  double x, y;
 
   BoulderSprite(this.texture, this.x, this.y) {
     speedX = (rand.nextDouble() * 100) - 50;

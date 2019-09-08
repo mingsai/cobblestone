@@ -4,7 +4,7 @@ part of cobblestone;
 ///
 /// If the element does not have the attribute, [defaultVal] or null is returned instead.
 T _parseAttrib<T>(
-    XML.XmlElement element, String attrib, T parseAttrib(String attrib),
+    xml.XmlElement element, String attrib, T parseAttrib(String attrib),
     [T defaultVal]) {
   String data = element.getAttribute(attrib);
 

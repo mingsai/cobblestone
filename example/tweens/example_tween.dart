@@ -6,7 +6,7 @@ class TweenExample extends BaseGame {
   Camera2D camera;
 
   SpriteBatch renderer;
-  Texture nehe;
+  Texture rock;
 
   Box box;
 
@@ -17,7 +17,7 @@ class TweenExample extends BaseGame {
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
-    nehe = assetManager.get("nehe.gif");
+    rock = assetManager.get("rock.png");
 
     box = Box(0.0, 0.0);
 
@@ -43,11 +43,11 @@ class TweenExample extends BaseGame {
 
   @override
   preload() {
-    assetManager.load("nehe.gif", loadTexture(gl, "tweens/nehe.gif", nearest));
+    assetManager.load("rock.png", loadTexture(gl, "tweens/rock.png", nearest));
   }
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(0.0, 0.0, 0.0, 1.0);
 
     camera.update();
@@ -55,17 +55,17 @@ class TweenExample extends BaseGame {
     renderer.projection = camera.combined;
     renderer.begin();
 
-    renderer.draw(nehe, box.x, box.y, width: 50, height: 50);
+    renderer.draw(rock, box.x, box.y, width: 50, height: 50);
 
     renderer.end();
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     gl.setGLViewport(canvasWidth, canvasHeight);
   }
 
   @override
-  update(num delta) {}
+  update(double delta) {}
 
   @override
   config() {

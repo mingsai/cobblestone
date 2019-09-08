@@ -1,7 +1,7 @@
 part of cobblestone;
 
 /// A function type used to convert an [ImageElement] into a WebGL texture
-typedef TextureHandler = GL.Texture Function(GLWrapper, ImageElement);
+typedef TextureHandler = gl.Texture Function(GLWrapper, ImageElement);
 
 /// Loads a texture from a url.
 ///
@@ -21,10 +21,10 @@ Future<Texture> loadTexture(GLWrapper wrapper, String url,
 }
 
 /// Converts an [ImageElement] to a mip-mapped texture.
-GL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
+gl.Texture mipMap(GLWrapper wrapper, ImageElement image) {
   var context = wrapper.context;
   
-  GL.Texture texture = context.createTexture();
+  gl.Texture texture = context.createTexture();
   context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   context.bindTexture(WebGL.TEXTURE_2D, texture);
   context.texImage2D(
@@ -40,10 +40,10 @@ GL.Texture mipMap(GLWrapper wrapper, ImageElement image) {
 }
 
 /// Converts an [ImageElement] to texture with nearest neighbor scaling.
-GL.Texture nearest(GLWrapper wrapper, ImageElement element) {
+gl.Texture nearest(GLWrapper wrapper, ImageElement element) {
   var context = wrapper.context;
 
-  GL.Texture texture = context.createTexture();
+  gl.Texture texture = context.createTexture();
   context.bindTexture(WebGL.TEXTURE_2D, texture);
   context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
@@ -57,10 +57,10 @@ GL.Texture nearest(GLWrapper wrapper, ImageElement element) {
 }
 
 /// Converts an [ImageElement] to a texture with linear scaling.
-GL.Texture linear(GLWrapper wrapper, ImageElement element) {
+gl.Texture linear(GLWrapper wrapper, ImageElement element) {
   var context = wrapper.context;
 
-  GL.Texture texture = context.createTexture();
+  gl.Texture texture = context.createTexture();
   context.bindTexture(WebGL.TEXTURE_2D, texture);
   context.pixelStorei(WebGL.UNPACK_FLIP_Y_WEBGL, 1);
   context.texImage2D(WebGL.TEXTURE_2D, 0, WebGL.RGBA, WebGL.RGBA,
@@ -80,10 +80,10 @@ GL.Texture linear(GLWrapper wrapper, ImageElement element) {
 class Texture {
   /// Reference to the game's [GLWrapper]
   GLWrapper wrapper;
-  GL.RenderingContext _context;
+  gl.RenderingContext _context;
 
   /// The actual
-  GL.Texture texture;
+  gl.Texture texture;
 
   /// WebGL texture coordinate used for drawing this texture
   double u, v, u2, v2;
@@ -101,7 +101,7 @@ class Texture {
   /// The height of this texture region.
   int height;
 
-  /// Creates a new texture from a [GL.Texture].
+  /// Creates a new texture from a [gl.Texture].
   /// [loadTexture] should typically be used in place of directly calling this constructor.
   Texture(this.wrapper, this.texture, this.source, this.sourceWidth, this.sourceHeight) {
     _context = wrapper.context;

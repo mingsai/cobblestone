@@ -13,21 +13,21 @@ Future<ShaderProgram> loadProgram(GLWrapper wrapper, String vertex, String fragm
 class ShaderProgram {
   /// Reference to the game's [GLWrapper]
   GLWrapper wrapper;
-  GL.RenderingContext _context;
+  gl.RenderingContext _context;
 
   /// List of vertex attribute names and locations.
   Map<String, int> attributes = Map<String, int>();
   /// List of uniform names and locations.
-  Map<String, GL.UniformLocation> uniforms =
-      Map<String, GL.UniformLocation>();
+  Map<String, gl.UniformLocation> uniforms =
+      Map<String, gl.UniformLocation>();
 
   /// The complete GL program to be used in rendering.
-  GL.Program program;
+  gl.Program program;
 
   /// The compiled fragment shader used in this program.
-  GL.Shader fragShader;
+  gl.Shader fragShader;
   /// The compiled vertex shader used in this program.
-  GL.Shader vertShader;
+  gl.Shader vertShader;
 
   /// Compiles a new shader with the text content of [vertexSource] and [fragmentSource].
   ShaderProgram.compile(this.wrapper, String vertexSource, String fragmentSource) {
@@ -47,7 +47,7 @@ class ShaderProgram {
     _context.linkProgram(program);
 
     if (!_context.getProgramParameter(program, WebGL.LINK_STATUS)) {
-      print("Could not initialise shaders");
+      print("Cobblestone: Warning: could not initialise shaders");
     }
 
     int activeAttributes =
@@ -55,13 +55,13 @@ class ShaderProgram {
     int activeUniforms = _context.getProgramParameter(program, WebGL.ACTIVE_UNIFORMS);
 
     for (int i = 0; i < activeAttributes; i++) {
-      GL.ActiveInfo a = _context.getActiveAttrib(program, i);
+      gl.ActiveInfo a = _context.getActiveAttrib(program, i);
       int attributeLocation = _context.getAttribLocation(program, a.name);
       attributes[a.name] = attributeLocation;
     }
 
     for (int i = 0; i < activeUniforms; i++) {
-      GL.ActiveInfo a = _context.getActiveUniform(program, i);
+      gl.ActiveInfo a = _context.getActiveUniform(program, i);
       uniforms[a.name] = _context.getUniformLocation(program, a.name);
     }
   }

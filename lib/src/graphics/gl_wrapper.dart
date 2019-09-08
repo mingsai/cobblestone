@@ -4,7 +4,7 @@ part of cobblestone;
 class GLWrapper {
 
   /// The actual WebGL rendering context.
-  GL.RenderingContext context;
+  gl.RenderingContext context;
 
   /// A default shader program used by a batch.
   ShaderProgram batchShader, wireShader, pointShader;

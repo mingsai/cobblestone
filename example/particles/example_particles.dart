@@ -23,7 +23,7 @@ class ParticlesExample extends BaseGame {
   }
 
   @override
-  render(num delta) {
+  render(double delta) {
     gl.clearScreen(Colors.gray);
 
     camera.update();
@@ -39,12 +39,12 @@ class ParticlesExample extends BaseGame {
     renderer.end();
   }
 
-  resize(num width, num height) {
+  resize(int width, int height) {
     camera = Camera2D.originBottomLeft(width, height);
   }
 
   @override
-  update(num delta) {
+  update(double delta) {
     emitter.pos = mouse.worldCoord(camera);
     emitter.update(delta);
   }

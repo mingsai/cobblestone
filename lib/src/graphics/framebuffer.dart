@@ -4,14 +4,14 @@ part of cobblestone;
 class Framebuffer {
   /// Reference to the game's [GLWrapper].
   GLWrapper wrapper;
-  GL.RenderingContext _context;
+  gl.RenderingContext _context;
 
   /// Texture rendered to by this framebuffer.
   ///
   /// Can be used to render the contents of the framebuffer to the screen in various configurations.
   Texture texture;
   /// Reference to the actual WebGL framebuffer object.
-  GL.Framebuffer buffer;
+  gl.Framebuffer buffer;
 
   /// Shader used by this framebuffer.
   ShaderProgram shader;
