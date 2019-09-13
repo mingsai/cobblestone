@@ -56,7 +56,8 @@ class Framebuffer {
   }
 
   /// Sets a uniform for this framebuffer's [shader].
-  void setUniform(String name, dynamic value) => shader.setUniform(name, value);
+  void setUniform(String name, dynamic value, [bool isInt = false]) =>
+      shader.setUniform(name, value, isInt);
 
   /// Renders the FBO to the screen via an internal [SpriteBatch].
   ///

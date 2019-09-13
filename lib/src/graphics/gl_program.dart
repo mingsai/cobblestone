@@ -48,6 +48,8 @@ class ShaderProgram {
 
     if (!_context.getProgramParameter(program, WebGL.LINK_STATUS)) {
       print("Cobblestone: Warning: could not initialise shaders");
+      print(_context.getShaderInfoLog(vertShader));
+      print(_context.getShaderInfoLog(fragShader));
     }
 
     int activeAttributes =
@@ -76,11 +78,27 @@ class ShaderProgram {
   /// Sets uniforms using Dart datatypes.
   ///
   /// These can be of type int, double, [Vector2], [Vector3], [Vector4], [Matrix4] or lists of the above.
-  setUniform(String name, dynamic value) {
-    if (value is int) {
-      _context.uniform1i(uniforms[name], value);
-    } else if (value is double) {
-      _context.uniform1f(uniforms[name], value);
+  ///
+  /// [isInt] must be set to true for integer uniforms, due to JS limitations
+  setUniform(String name, dynamic value, [bool isInt = false]) {
+    if(isInt) {
+      // Integer uniforms and integer vectors
+      if(value is num) {
+        _context.uniform1i(uniforms[name], value);
+      } else if (value is num) {
+        _context.uniform1i(uniforms[name], value.toInt());
+      } else if (value is Vector2) {
+        _context.uniform2i(uniforms[name], value.x.toInt(), value.y.toInt());
+      } else if (value is Vector3) {
+        _context.uniform3i(uniforms[name],
+            value.x.toInt(), value.y.toInt(), value.z.toInt());
+      } else if (value is Vector4) {
+        _context.uniform4i(uniforms[name],
+            value.x.toInt(), value.y.toInt(), value.z.toInt(), value.w.toInt());
+      }
+      // Float uniforms and vectors
+    } else if (value is num) {
+      _context.uniform1f(uniforms[name], value.toDouble());
     } else if (value is Vector2) {
       _context.uniform2f(uniforms[name], value.x, value.y);
     } else if (value is Vector3) {
@@ -90,10 +108,9 @@ class ShaderProgram {
     } else if (value is Matrix4) {
       _context.uniformMatrix4fv(uniforms[name], false, value.storage);
     } else if(value is List) {
-      name = name + '[0]'; //Really weird way an array uniform is distinguished
-      if (value[0] is int) {
-        _context.uniform1iv(uniforms[name], value);
-      } else if (value[0] is double) {
+      // Float array uniforms
+      name = name + '[0]'; // Really weird way an array uniform is distinguished
+      if (value[0] is double) {
         _context.uniform1fv(uniforms[name], value);
       } else if (value[0] is Vector2) {
         var array = [];

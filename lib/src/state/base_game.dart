@@ -18,6 +18,12 @@ abstract class BaseGame implements State {
   /// The method used to scale the game canvas.
   ScaleMode scaleMode = ScaleMode.fit;
 
+  /// Ratio between canvas physical pixels and CSS pixels
+  double pixelRatio;
+
+  /// If set to true, will scale the canvas size up fully on HDPI screens
+  bool enableHDPI = true;
+
   /// HTML canvas element the game is drawn on.
   CanvasElement canvas;
   /// The actual width of the canvas.
@@ -64,15 +70,17 @@ abstract class BaseGame implements State {
     config();
     gl = GLWrapper(canvas.getContext3d());
     keyboard = Keyboard();
-    mouse = Mouse(canvas);
+    mouse = Mouse(canvas, enableHDPI);
     _resizeCanvas();
     _startLoop();
   }
 
   // Resizes the canvas upon resize events.
   _resizeCanvas() {
+    pixelRatio = window.devicePixelRatio;
+
     scaleCanvas(canvas, scaleMode, requestedWidth, requestedHeight,
-        window.innerWidth, window.innerHeight);
+        window.innerWidth, window.innerHeight, enableHDPI);
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
 

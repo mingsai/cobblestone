@@ -32,8 +32,8 @@ class LightingExample extends BaseGame {
       renderer.setUniform('uScreenRes',
           Vector2(width.toDouble(), height.toDouble()));
       renderer.setUniform('uFalloff', attenuation);
-      renderer.setUniform('uDiffuse', wall.bind(1));
-      renderer.setUniform('uNormal', wallNorm.bind(2));
+      renderer.setUniform('uDiffuse', wall.bind(1), true);
+      renderer.setUniform('uNormal', wallNorm.bind(2), true);
     };
 
     gl.setGLViewport(canvasWidth, canvasHeight);

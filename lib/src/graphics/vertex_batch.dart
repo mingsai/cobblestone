@@ -129,8 +129,8 @@ abstract class VertexBatch {
   /// Sets a uniform for the batch shader.
   ///
   /// See [ShaderProgram.setUniform].
-  void setUniform(String name, dynamic value) =>
-      shaderProgram.setUniform(name, value);
+  void setUniform(String name, dynamic value, [bool isInt = false]) =>
+      shaderProgram.setUniform(name, value, isInt);
 
   /// Sets WebGL pointers to shader vertex attributes.
   void setAttribPointers();

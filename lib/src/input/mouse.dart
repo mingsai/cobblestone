@@ -14,6 +14,12 @@ class Mouse {
   /// The current position of the mouse on the engine screen, as created by the [BaseGame]'s [ScaleMode]
   Vector2 screenPos = Vector2.zero();
 
+  /// Configures the mouse to account for DPI when calculating canvas position
+  bool handleHDPI;
+
+  /// Ratio of CSS to canvas pixels; used for HDPI support
+  double _pixelRatio;
+
   /// Temporary variable used for camera unprojection
   Vector3 _coordTransform = Vector3.zero();
 
@@ -51,7 +57,7 @@ class Mouse {
       !_lastButtons.containsKey(2) && _buttons.containsKey(2);
 
   /// Creates a new Mouse and subscribes to input events
-  Mouse(this._canvas) {
+  Mouse(this._canvas, this.handleHDPI) {
     _subs.add(window.onMouseDown.listen((MouseEvent e) {
       _updatePos(e);
       if (!_buttons.containsKey(e.button)) _buttons[e.button] = e.timeStamp;
@@ -65,6 +71,8 @@ class Mouse {
     _subs.add(window.onContextMenu.listen((MouseEvent e) {
       e.preventDefault();
     }));
+
+    _pixelRatio = handleHDPI ? window.devicePixelRatio : 1;
   }
 
   /// Calculate screenPos from the canvasPos of the event
@@ -73,8 +81,8 @@ class Mouse {
         e.client.x.toDouble(), (window.innerHeight - e.client.y).toDouble());
     var rect = _canvas.getBoundingClientRect();
     screenPos = Vector2(
-        (canvasPos.x - rect.left) * (_width / _canvas.width),
-        (canvasPos.y - rect.top) * (_height / _canvas.height));
+        (canvasPos.x - rect.left) * (_width / _canvas.width) * _pixelRatio,
+        (canvasPos.y - rect.top) * (_height / _canvas.height) * _pixelRatio);
     if (screenPos.x < 0) {
       screenPos.x = 0.0;
     }
@@ -108,6 +116,8 @@ class Mouse {
   _resize(int width, int height) {
     this._width = width;
     this._height = height;
+
+    _pixelRatio = handleHDPI ? window.devicePixelRatio : 1;
   }
 
   _cancelSubs() {

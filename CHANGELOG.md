@@ -1,6 +1,12 @@
 
 # Changelog  
 
+## 0.3.3
+
+- Added `enableHDPI` variable in `BaseGame` to configure High DPI support
+- Added `pixelRatio` property to help with accounting for DPI in rendering
+- Added `isInt` parameter to `setUniform` to allow integers and doubles to be distinguished in setting uniforms
+
 ## 0.3.2
 
 - Internal renaming of imported libraries

@@ -4,7 +4,7 @@ class FontExample extends BaseGame {
   SpriteBatch renderer;
   Camera2D camera;
 
-  int textWidth = 640;
+  int textWidth;
 
   BitmapFont font;
   String text;
@@ -19,7 +19,8 @@ class FontExample extends BaseGame {
 
     gl.setGLViewport(canvasWidth, canvasHeight);
 
-    startTween();
+    textWidth = (width * 0.6).toInt();
+    firstTween();
   }
 
   @override
@@ -39,7 +40,7 @@ class FontExample extends BaseGame {
     gl.context.enable(WebGL.BLEND);
     gl.context.blendFunc(WebGL.SRC_ALPHA, WebGL.ONE_MINUS_SRC_ALPHA);
     renderer.begin();
-    font.drawParagraph(renderer, (width - textWidth) ~/ 2, height, text, lineWidth: textWidth, align: TextAlign.right, scale: 1.0);
+    font.drawParagraph(renderer, (width - textWidth) ~/ 2, height, text, lineWidth: textWidth, align: TextAlign.right, scale: pixelRatio);
     renderer.end();
   }
 
@@ -51,26 +52,26 @@ class FontExample extends BaseGame {
   @override
   update(double delta) {}
 
-  startTween() {
-    if(textWidth == 640) {
-      Tween()
-        ..set = [(v) => textWidth = v.toInt()]
-        ..get = [() => textWidth]
-        ..target = [200]
-        ..duration = 10
-        ..ease = Ease.quartOut
-        ..callback = startTween
-        ..start(tweenManager);
-    } else {
-      Tween()
-        ..set = [(v) => textWidth = v.toInt()]
-        ..get = [() => textWidth]
-        ..target = [640]
-        ..duration = 10
-        ..ease = Ease.quartOut
-        ..callback = startTween
-        ..start(tweenManager);
-    }
+  firstTween() {
+    Tween()
+      ..set = [(v) => textWidth = v.toInt()]
+      ..get = [() => textWidth]
+      ..target = [0.2 * width]
+      ..duration = 10
+      ..ease = Ease.quartOut
+      ..callback = secondTween
+      ..start(tweenManager);
+  }
+
+  secondTween() {
+    Tween()
+      ..set = [(v) => textWidth = v.toInt()]
+      ..get = [() => textWidth]
+      ..target = [width * 0.6]
+      ..duration = 10
+      ..ease = Ease.quartOut
+      ..callback = firstTween
+      ..start(tweenManager);
   }
 
   @override

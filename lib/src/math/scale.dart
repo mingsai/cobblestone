@@ -12,21 +12,23 @@ enum ScaleMode {
 
 /// Scales [element] based on [mode].
 scaleCanvas(CanvasElement element, ScaleMode mode, int requestWidth,
-    int requestHeight, int parentWidth, int parentHeight) {
+    int requestHeight, int parentWidth, int parentHeight,
+    bool handleHDPI) {
+  double devicePixelRatio = handleHDPI ? window.devicePixelRatio : 1;
   switch (mode) {
     case ScaleMode.fill:
       double scale = max(parentWidth / requestWidth, parentHeight / requestHeight);
-      element.width = (requestWidth * scale).toInt();
-      element.height = (requestHeight * scale).toInt();
+      element.width = (requestWidth * scale * devicePixelRatio).toInt();
+      element.height = (requestHeight * scale * devicePixelRatio).toInt();
       break;
     case ScaleMode.fit:
       double scale = min(parentWidth / requestWidth, parentHeight / requestHeight);
-      element.width = (requestWidth * scale).toInt();
-      element.height = (requestHeight * scale).toInt();
+      element.width = (requestWidth * scale * devicePixelRatio).toInt();
+      element.height = (requestHeight * scale * devicePixelRatio).toInt();
       break;
     case ScaleMode.resize:
-      element.width = window.innerWidth;
-      element.height = window.innerHeight;
+      element.width = (window.innerWidth * devicePixelRatio).toInt();
+      element.height = (window.innerHeight * devicePixelRatio).toInt();
       break;
   }
 }
